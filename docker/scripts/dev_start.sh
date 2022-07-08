@@ -260,7 +260,8 @@ function docker_restart_volume() {
 function restart_map_volume_if_needed() {
     local map_name="$1"
     local map_version="$2"
-    local map_volume="apollo_map_volume-${map_name}_${USER}"
+    # local map_volume="apollo_map_volume-${map_name}_${USER}"
+    local map_volume="apollo_map_volume-${map_name}"
     local map_path="/apollo/modules/map/data/${map_name}"
 
     if [[ ${MAP_VOLUMES_CONF} == *"${map_volume}"* ]]; then
@@ -397,13 +398,9 @@ function main() {
         ${MAP_VOLUMES_CONF} \
         ${OTHER_VOLUMES_CONF} \
         ${local_volumes} \
-        --net host \
         -w /apollo \
-        --add-host "${DEV_INSIDE}:127.0.0.1" \
-        --add-host "${local_host}:127.0.0.1" \
         --hostname "${DEV_INSIDE}" \
         --shm-size "${SHM_SIZE}" \
-        --pid=host \
         -v /dev/null:/dev/raw1394 \
         "${DEV_IMAGE}" \
         /bin/bash
