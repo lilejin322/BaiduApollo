@@ -14,8 +14,9 @@
  * limitations under the License.
  *****************************************************************************/
 
-#include "modules/dreamview/backend/sim_control/sim_control.h"
-
+#include "modules/sim_control/sim_control.h"
+#include <iostream>
+#include <string>
 #include "cyber/common/file.h"
 #include "cyber/time/clock.h"
 #include "modules/common/adapters/adapter_gflags.h"
@@ -64,14 +65,23 @@ bool IsSameHeader(const Header& lhs, const Header& rhs) {
 
 SimControl::SimControl(const MapService* map_service)
     : map_service_(map_service),
-      node_(cyber::CreateNode("sim_control")),
+      node_(cyber::CreateNode(
+        std::string("sim_control_standalone_")
+        )),
       current_trajectory_(std::make_shared<ADCTrajectory>()) {
   InitTimerAndIO();
 }
 
 void SimControl::InitTimerAndIO() {
   localization_reader_ =
-      node_->CreateReader<LocalizationEstimate>(FLAGS_localization_topic);
+      node_->CreateReader<LocalizationEstimate>(
+        FLAGS_localization_topic,
+      [this](const std::shared_ptr<LocalizationEstimate>& loc) {
+        if(loc->header().module_name().compare("SimControl") != 0) {
+          this->Start();
+        }
+      }
+      );
   planning_reader_ = node_->CreateReader<ADCTrajectory>(
       FLAGS_planning_trajectory_topic,
       [this](const std::shared_ptr<ADCTrajectory>& trajectory) {
@@ -82,29 +92,14 @@ void SimControl::InitTimerAndIO() {
       [this](const std::shared_ptr<RoutingResponse>& routing) {
         this->OnRoutingResponse(routing);
       });
-  navigation_reader_ = node_->CreateReader<NavigationInfo>(
-      FLAGS_navigation_topic,
-      [this](const std::shared_ptr<NavigationInfo>& navigation_info) {
-        this->OnReceiveNavigationInfo(navigation_info);
-      });
-  prediction_reader_ = node_->CreateReader<PredictionObstacles>(
-      FLAGS_prediction_topic,
-      [this](const std::shared_ptr<PredictionObstacles>& obstacles) {
-        this->OnPredictionObstacles(obstacles);
-      });
 
   localization_writer_ =
       node_->CreateWriter<LocalizationEstimate>(FLAGS_localization_topic);
   chassis_writer_ = node_->CreateWriter<Chassis>(FLAGS_chassis_topic);
-  prediction_writer_ =
-      node_->CreateWriter<PredictionObstacles>(FLAGS_prediction_topic);
 
   // Start timer to publish localization and chassis messages.
   sim_control_timer_.reset(new cyber::Timer(
       kSimControlIntervalMs, [this]() { this->RunOnce(); }, false));
-  sim_prediction_timer_.reset(new cyber::Timer(
-      kSimPredictionIntervalMs, [this]() { this->PublishDummyPrediction(); },
-      false));
 }
 
 void SimControl::Init(double start_velocity,
@@ -232,17 +227,6 @@ void SimControl::OnRoutingResponse(
   }
 }
 
-void SimControl::OnPredictionObstacles(
-    const std::shared_ptr<PredictionObstacles>& obstacles) {
-  std::lock_guard<std::mutex> lock(mutex_);
-
-  if (!enabled_) {
-    return;
-  }
-
-  send_dummy_prediction_ = obstacles->header().module_name() == "SimPrediction";
-}
-
 void SimControl::Start() {
   std::lock_guard<std::mutex> lock(mutex_);
 
@@ -257,7 +241,7 @@ void SimControl::Start() {
 
     InternalReset();
     sim_control_timer_->Start();
-    sim_prediction_timer_->Start();
+    // sim_prediction_timer_->Start();
     enabled_ = true;
   }
 }
@@ -267,7 +251,7 @@ void SimControl::Stop() {
 
   if (enabled_) {
     sim_control_timer_->Stop();
-    sim_prediction_timer_->Stop();
+    // sim_prediction_timer_->Stop();
     enabled_ = false;
   }
 }
@@ -307,7 +291,6 @@ void SimControl::RunOnce() {
     AERROR << "Failed to calculate next point with perfect control model";
     return;
   }
-
   PublishChassis(trajectory_point.v(), gear_position);
   PublishLocalization(trajectory_point);
 }
@@ -449,18 +432,6 @@ void SimControl::PublishLocalization(const TrajectoryPoint& point) {
   adc_position_.set_x(pose->position().x());
   adc_position_.set_y(pose->position().y());
   adc_position_.set_z(pose->position().z());
-}
-
-void SimControl::PublishDummyPrediction() {
-  auto prediction = std::make_shared<PredictionObstacles>();
-  {
-    std::lock_guard<std::mutex> lock(mutex_);
-    if (!send_dummy_prediction_) {
-      return;
-    }
-    FillHeader("SimPrediction", prediction.get());
-  }
-  prediction_writer_->Write(prediction);
 }
 
 }  // namespace dreamview

@@ -77,3 +77,10 @@ output
 
 # Flamegraph files
 tools/FlameGraph
+
+# MAGGIE
+cyber_recorder.*
+sim_control_main.*
+records/*
+protobufs/*
+movies/*

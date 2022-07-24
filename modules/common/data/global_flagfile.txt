@@ -18,3 +18,7 @@
 --use_cyber_time=true
 
 --map_dir=/apollo/modules/map/data/san_mateo
+
+--map_dir=/apollo/modules/map/data/borregas_ave_fix
+
+--map_dir=/apollo/modules/map/data/borregas_ave

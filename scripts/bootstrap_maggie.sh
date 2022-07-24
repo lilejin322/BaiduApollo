@@ -17,7 +17,6 @@
 ###############################################################################
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DREAMVIEW_URL="http://localhost:8888"
 
 cd "${DIR}/.."
 
@@ -27,30 +26,14 @@ ulimit -c unlimited
 source "${DIR}/apollo_base.sh"
 
 function start() {
-  for mod in ${APOLLO_BOOTSTRAP_EXTRA_MODULES}; do
-    echo "Starting ${mod}"
-    nohup cyber_launch start ${mod} &
-  done
-  ./scripts/monitor.sh start
-  ./scripts/dreamview.sh start
-  if [ $? -eq 0 ]; then
-    sleep 2 # wait for some time before starting to check
-    http_status="$(curl -o /dev/null -x '' -I -L -s -w '%{http_code}' ${DREAMVIEW_URL})"
-    if [ $http_status -eq 200 ]; then
-      echo "Dreamview is running at" $DREAMVIEW_URL
-    else
-      echo "Failed to start Dreamview. Please check /apollo/data/log or /apollo/data/core for more information"
-    fi
-  fi
+  ./scripts/routing.sh start
+  ./scripts/prediction.sh start
+  ./scripts/planning.sh start
+  nohup /apollo/bazel-bin/modules/custom_nodes/simplified_planning &
 }
 
 function stop() {
-  ./scripts/dreamview.sh stop
-  ./scripts/monitor.sh stop
-  for mod in ${APOLLO_BOOTSTRAP_EXTRA_MODULES}; do
-    echo "Stopping ${mod}"
-    nohup cyber_launch stop ${mod}
-  done
+  ps -ef | grep -E 'planning|routing|prediction|simplified_planning|cyber_bridge' | grep -v 'grep' | awk '{print $2}' | xargs kill -9
 }
 
 case $1 in

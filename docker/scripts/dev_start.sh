@@ -399,7 +399,7 @@ function main() {
         ${OTHER_VOLUMES_CONF} \
         ${local_volumes} \
         -w /apollo \
-        --hostname "${DEV_INSIDE}" \
+        --hostname "${DEV_CONTAINER}" \
         --shm-size "${SHM_SIZE}" \
         -v /dev/null:/dev/raw1394 \
         "${DEV_IMAGE}" \

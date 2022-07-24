@@ -374,6 +374,16 @@ void SimulationWorldUpdater::RegisterMessageHandlers() {
       "Dump", [this](const Json &json, WebSocketHandler::Connection *conn) {
         sim_world_service_.DumpMessages();
       });
+  
+    websocket_->RegisterMessageHandler(
+      "StartSimControl", [this](const Json &json, WebSocketHandler::Connection *conn) {
+        sim_control_->Start();
+      });
+
+    websocket_->RegisterMessageHandler(
+      "StopSimControl", [this](const Json &json, WebSocketHandler::Connection *conn) {
+        sim_control_->Stop();
+      });
 
   websocket_->RegisterMessageHandler(
       "ToggleSimControl",
