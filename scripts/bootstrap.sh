@@ -33,9 +33,6 @@ function start() {
   done
   ./scripts/monitor.sh start
   ./scripts/dreamview.sh start
-  ./scripts/planning.sh start
-  ./scripts/routing.sh start
-  ./scripts/prediction.sh start
   if [ $? -eq 0 ]; then
     sleep 2 # wait for some time before starting to check
     http_status="$(curl -o /dev/null -x '' -I -L -s -w '%{http_code}' ${DREAMVIEW_URL})"
@@ -48,7 +45,6 @@ function start() {
 }
 
 function stop() {
-  ps -ef | grep -E 'planning|routing|prediction' | grep -v 'grep' | awk '{print $2}' | xargs kill -9
   ./scripts/dreamview.sh stop
   ./scripts/monitor.sh stop
   for mod in ${APOLLO_BOOTSTRAP_EXTRA_MODULES}; do
