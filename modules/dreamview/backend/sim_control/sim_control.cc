@@ -67,7 +67,6 @@ SimControl::SimControl(const MapService* map_service)
       node_(cyber::CreateNode("sim_control")),
       current_trajectory_(std::make_shared<ADCTrajectory>()) {
   InitTimerAndIO();
-  Start();
 }
 
 void SimControl::InitTimerAndIO() {
