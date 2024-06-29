@@ -399,12 +399,12 @@ void SimulationWorldUpdater::RegisterMessageHandlers() {
 
   websocket_->RegisterMessageHandler(
       "StartSimControl", [this](const Json &json, WebSocketHandler::Connection *conn) {
-        sim_control_->Start();
+        sim_control_manager_->Start();
       });
 
   websocket_->RegisterMessageHandler(
       "StopSimControl", [this](const Json &json, WebSocketHandler::Connection *conn) {
-        sim_control_->Stop();
+        sim_control_manager_->Stop();
       });
 
   websocket_->RegisterMessageHandler(
