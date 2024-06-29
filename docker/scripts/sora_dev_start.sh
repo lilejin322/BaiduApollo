@@ -17,29 +17,27 @@
 ###############################################################################
 CURR_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 source "${CURR_DIR}/docker_base.sh"
+DOCKER_RUN_CMD="sudo docker run"
+
 
 CACHE_ROOT_DIR="${APOLLO_ROOT_DIR}/.cache"
 
 DOCKER_REPO="apolloauto/apollo"
-DEV_CONTAINER_PREFIX='apollo_dev_'
-DEV_CONTAINER="${DEV_CONTAINER_PREFIX}${USER}"
+DEV_CONTAINER="apollo_dev_${USER}"
 DEV_INSIDE="in-dev-docker"
 
 SUPPORTED_ARCHS=(x86_64 aarch64)
 TARGET_ARCH="$(uname -m)"
 
-VERSION_X86_64="dev-x86_64-18.04-20221124_1708"
+VERSION_X86_64="dev-x86_64-18.04-20210914_1336"
 TESTING_VERSION_X86_64="dev-x86_64-18.04-testing-20210112_0008"
 
 VERSION_AARCH64="dev-aarch64-18.04-20201218_0030"
 USER_VERSION_OPT=
 
-FAST_MODE="n"
+FAST_MODE="no"
 
 GEOLOC=
-TIMEZONE_CN=(
-  "Time zone: Asia/Shanghai (CST, +0800)"
-)
 
 USE_LOCAL_IMAGE=0
 CUSTOM_DIST=
@@ -49,35 +47,17 @@ VOLUME_VERSION="latest"
 SHM_SIZE="2G"
 USER_SPECIFIED_MAPS=
 MAP_VOLUMES_CONF=
+OTHER_VOLUMES_CONF=
 
-# Install python tools
-source docker/setup_host/host_env.sh
-DEFAULT_PYTHON_TOOLS=(
-  amodel~=0.1.0
-)
-
-# Model
-MODEL_REPOSITORY="https://apollo-pkg-beta.cdn.bcebos.com/perception_model"
-DEFAULT_INSTALL_MODEL=(
-  "${MODEL_REPOSITORY}/tl_detection_caffe.zip"
-  "${MODEL_REPOSITORY}/horizontal_caffe.zip"
-  "${MODEL_REPOSITORY}/quadrate_caffe.zip"
-  "${MODEL_REPOSITORY}/vertical_caffe.zip"
-  "${MODEL_REPOSITORY}/darkSCNN_caffe.zip"
-  "${MODEL_REPOSITORY}/cnnseg16_caffe.zip"
-  "${MODEL_REPOSITORY}/3d-r4-half_caffe.zip"
-)
-
-# Map
 DEFAULT_MAPS=(
     sunnyvale_big_loop
     sunnyvale_loop
     sunnyvale_with_two_offices
     san_mateo
-    apollo_virutal_map
 )
 
 DEFAULT_TEST_MAPS=(
+    sunnyvale_big_loop
     sunnyvale_loop
 )
 
@@ -86,7 +66,7 @@ function show_usage() {
 Usage: $0 [options] ...
 OPTIONS:
     -h, --help             Display this help and exit.
-    -f, --fast <y|n>       Fast mode without pulling all map volumes and perception models.
+    -f, --fast             Fast mode without pulling all map volumes.
     -g, --geo <us|cn|none> Pull docker image from geolocation specific registry mirror.
     -l, --local            Use local docker image.
     -t, --tag <TAG>        Specify docker image with tag <TAG> to start.
@@ -102,7 +82,6 @@ function parse_arguments() {
     local custom_dist=""
     local shm_size=""
     local geo=""
-    local fast_mode=""
 
     while [ $# -gt 0 ]; do
         local opt="$1"
@@ -129,9 +108,7 @@ function parse_arguments() {
                 ;;
 
             -f | --fast)
-                fast_mode="$1"
-                shift
-                optarg_check_for_opt "${opt}" "${fast_mode}"
+                FAST_MODE="yes"
                 ;;
 
             -g | --geo)
@@ -171,7 +148,6 @@ function parse_arguments() {
     done # End while loop
 
     [[ -n "${geo}" ]] && GEOLOC="${geo}"
-    [[ -n "${fast_mode}" ]] && FAST_MODE="${fast_mode}"
     [[ -n "${custom_version}" ]] && USER_VERSION_OPT="${custom_version}"
     [[ -n "${custom_dist}" ]] && CUSTOM_DIST="${custom_dist}"
     [[ -n "${shm_size}" ]] && SHM_SIZE="${shm_size}"
@@ -215,18 +191,6 @@ function check_target_arch() {
     exit 1
 }
 
-function check_timezone_cn() {
-    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-    time_zone=$(timedatectl | grep "Time zone" | xargs)
-
-    for tz in "${TIMEZONE_CN[@]}"; do
-        if [[ "${time_zone}" == "${tz}" ]]; then
-            GEOLOC="cn"
-            return 0
-        fi
-    done
-}
-
 function setup_devices_and_mount_local_volumes() {
     local __retval="$1"
 
@@ -236,21 +200,9 @@ function setup_devices_and_mount_local_volumes() {
     setup_device
 
     local volumes="-v $APOLLO_ROOT_DIR:/apollo"
-
-    [ -d "${APOLLO_CONFIG_HOME}" ] || mkdir -p "${APOLLO_CONFIG_HOME}"
-    volumes="-v ${APOLLO_CONFIG_HOME}:${APOLLO_CONFIG_HOME} ${volumes}"
-
     local teleop="${APOLLO_ROOT_DIR}/../apollo-teleop"
     if [ -d "${teleop}" ]; then
-        volumes="${volumes} -v ${teleop}:/apollo/modules/teleop ${volumes}"
-    fi
-    local apollo_tools="${APOLLO_ROOT_DIR}/../apollo-tools"
-    if [ -d "${apollo_tools}" ]; then
-        volumes="${volumes} -v ${apollo_tools}:/tools"
-    fi
-    # Mount PYTHON_INSTALL_PATH to apollo docker
-    if [ -d "${PYTHON_INSTALL_PATH}" ]; then
-        volumes="${volumes} -v ${PYTHON_INSTALL_PATH}:${PYTHON_INSTALL_PATH}"
+        volumes="-v ${teleop}:/apollo/modules/teleop ${volumes}"
     fi
 
     local os_release="$(lsb_release -rs)"
@@ -280,7 +232,7 @@ function setup_devices_and_mount_local_volumes() {
 function docker_pull() {
     local img="$1"
     if [[ "${USE_LOCAL_IMAGE}" -gt 0 ]]; then
-        if docker images --format "{{.Repository}}:{{.Tag}}" | grep -q "${img}"; then
+        if sudo docker images --format "{{.Repository}}:{{.Tag}}" | grep -q "${img}"; then
             info "Local image ${img} found and will be used."
             return
         fi
@@ -291,7 +243,7 @@ function docker_pull() {
     fi
 
     info "Start pulling docker image ${img} ..."
-    if ! docker pull "${img}"; then
+    if ! sudo docker pull "${img}"; then
         error "Failed to pull docker image : ${img}"
         exit 1
     fi
@@ -303,14 +255,14 @@ function docker_restart_volume() {
     local path="$3"
     info "Create volume ${volume} from image: ${image}"
     docker_pull "${image}"
-    docker volume rm "${volume}" >/dev/null 2>&1
-    docker run -v "${volume}":"${path}" --rm "${image}" true
+    sudo docker volume rm "${volume}" >/dev/null 2>&1
+    sudo docker run -v "${volume}":"${path}" --rm "${image}" true
 }
 
 function restart_map_volume_if_needed() {
     local map_name="$1"
     local map_version="$2"
-    #local map_volume="apollo_map_volume-${map_name}_${USER}"
+    # local map_volume="apollo_map_volume-${map_name}_${USER}"
     local map_volume="apollo_map_volume-${map_name}"
     local map_path="/apollo/modules/map/data/${map_name}"
 
@@ -338,7 +290,7 @@ function mount_map_volumes() {
         done
     fi
 
-    if [ "$FAST_MODE" == "n" ] || [ "$FAST_MODE" == "no" ]; then
+    if [[ "$FAST_MODE" == "no" ]]; then
         for map_name in ${DEFAULT_MAPS[@]}; do
             restart_map_volume_if_needed "${map_name}" "${VOLUME_VERSION}"
         done
@@ -349,29 +301,41 @@ function mount_map_volumes() {
     fi
 }
 
-function install_python_tools() {
-  export PYTHONUSERBASE=${PYTHON_INSTALL_PATH}
+function mount_other_volumes() {
+    info "Mount other volumes ..."
+    local volume_conf=
 
-  for tool in ${DEFAULT_PYTHON_TOOLS[@]}; do
-    info "Install python tool ${tool} ..."
-    # Use /usr/bin/pip3 because native python is used in the container.
-    /usr/bin/pip3 install --user "${tool}"
-    if [ $? -ne 0 ]; then
-        error "Failed to install ${tool}"
-        exit 1
+    # AUDIO
+    local audio_volume="apollo_audio_volume_${USER}"
+    local audio_image="${DOCKER_REPO}:data_volume-audio_model-${TARGET_ARCH}-latest"
+    local audio_path="/apollo/modules/audio/data/"
+    docker_restart_volume "${audio_volume}" "${audio_image}" "${audio_path}"
+    volume_conf="${volume_conf} --volume ${audio_volume}:${audio_path}"
+
+    # YOLOV4
+    local yolov4_volume="apollo_yolov4_volume_${USER}"
+    local yolov4_image="${DOCKER_REPO}:yolov4_volume-emergency_detection_model-${TARGET_ARCH}-latest"
+    local yolov4_path="/apollo/modules/perception/camera/lib/obstacle/detector/yolov4/model/"
+    docker_restart_volume "${yolov4_volume}" "${yolov4_image}" "${yolov4_path}"
+    volume_conf="${volume_conf} --volume ${yolov4_volume}:${yolov4_path}"
+
+    # FASTER_RCNN
+    local faster_rcnn_volume="apollo_faster_rcnn_volume_${USER}"
+    local faster_rcnn_image="${DOCKER_REPO}:faster_rcnn_volume-traffic_light_detection_model-${TARGET_ARCH}-latest"
+    local faster_rcnn_path="/apollo/modules/perception/production/data/perception/camera/models/traffic_light_detection/faster_rcnn_model"
+    docker_restart_volume "${faster_rcnn_volume}" "${faster_rcnn_image}" "${faster_rcnn_path}"
+    volume_conf="${volume_conf} --volume ${faster_rcnn_volume}:${faster_rcnn_path}"
+
+    # SMOKE
+    if [[ "${TARGET_ARCH}" == "x86_64" ]]; then
+        local smoke_volume="apollo_smoke_volume_${USER}"
+        local smoke_image="${DOCKER_REPO}:smoke_volume-yolo_obstacle_detection_model-${TARGET_ARCH}-latest"
+        local smoke_path="/apollo/modules/perception/production/data/perception/camera/models/yolo_obstacle_detector/smoke_libtorch_model"
+        docker_restart_volume "${smoke_volume}" "${smoke_image}" "${smoke_path}"
+        volume_conf="${volume_conf} --volume ${smoke_volume}:${smoke_path}"
     fi
-  done
-}
 
-function install_perception_models() {
-  if [ "$FAST_MODE" == "n" ] || [ "$FAST_MODE" == "no" ]; then
-    for model_url in ${DEFAULT_INSTALL_MODEL[@]}; do
-        info "Install model ${model_url} ..."
-        amodel install "${model_url}" -s
-    done
-  else
-    warning "Skip the model installation, if you need to run the perception module, you can manually install."
-  fi
+    OTHER_VOLUMES_CONF="${volume_conf}"
 }
 
 function main() {
@@ -385,8 +349,6 @@ function main() {
     fi
 
     determine_dev_image "${USER_VERSION_OPT}"
-
-    [[ -z "${GEOLOC}" ]] && check_timezone_cn
     geo_specific_config "${GEOLOC}"
 
     if [[ "${USE_LOCAL_IMAGE}" -gt 0 ]]; then
@@ -409,18 +371,7 @@ function main() {
     setup_devices_and_mount_local_volumes local_volumes
 
     mount_map_volumes
-
-    if ! [ -x "$(command -v pip3)" ]; then
-      warning "Skip install perception models!!! " \
-          "Need pip3 to install Apollo model management tool!" \
-          "Try \"sudo apt install python3-pip\" "
-    else
-      info "Installing python tools ..."
-      install_python_tools
-
-      info "Installing perception models ..."
-      install_perception_models
-    fi
+    mount_other_volumes
 
     info "Starting Docker container \"${DEV_CONTAINER}\" ..."
 
@@ -443,12 +394,11 @@ function main() {
         -e DOCKER_GRP="${group}" \
         -e DOCKER_GRP_ID="${gid}" \
         -e DOCKER_IMG="${DEV_IMAGE}" \
-        -e PYTHON_INSTALL_PATH="${PYTHON_INSTALL_PATH}" \
-        -e PYTHON_VERSION="${PYTHON_VERSION}" \
         -e USE_GPU_HOST="${USE_GPU_HOST}" \
         -e NVIDIA_VISIBLE_DEVICES=all \
         -e NVIDIA_DRIVER_CAPABILITIES=compute,video,graphics,utility \
         ${MAP_VOLUMES_CONF} \
+        ${OTHER_VOLUMES_CONF} \
         ${local_volumes} \
         -w /apollo \
         --hostname "${DEV_CONTAINER}" \

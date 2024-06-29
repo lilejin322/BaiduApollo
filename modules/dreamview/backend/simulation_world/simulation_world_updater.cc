@@ -398,6 +398,16 @@ void SimulationWorldUpdater::RegisterMessageHandlers() {
       });
 
   websocket_->RegisterMessageHandler(
+      "StartSimControl", [this](const Json &json, WebSocketHandler::Connection *conn) {
+        sim_control_->Start();
+      });
+
+  websocket_->RegisterMessageHandler(
+      "StopSimControl", [this](const Json &json, WebSocketHandler::Connection *conn) {
+        sim_control_->Stop();
+      });
+
+  websocket_->RegisterMessageHandler(
       "ToggleSimControl",
       [this](const Json &json, WebSocketHandler::Connection *conn) {
         auto enable = json.find("enable");
