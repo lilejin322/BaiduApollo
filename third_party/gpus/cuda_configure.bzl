@@ -39,7 +39,7 @@ load(
 
 _GCC_HOST_COMPILER_PATH = "GCC_HOST_COMPILER_PATH"
 _GCC_HOST_COMPILER_PREFIX = "GCC_HOST_COMPILER_PREFIX"
-_CLANG_CUDA_COMPILER_PATH = "CLANG_CUDA_COMPILER_PATH"
+_CLANG_CUDA_COMPILER_PATH = "/usr/bin/clang"       # The original one is "CLANG_CUDA_COMPILER_PATH"
 _TF_SYSROOT = "TF_SYSROOT"
 _CUDA_TOOLKIT_PATH = "CUDA_TOOLKIT_PATH"
 _TF_CUDA_VERSION = "TF_CUDA_VERSION"
@@ -783,7 +783,7 @@ def _flag_enabled(repository_ctx, flag_name):
     return get_host_environ(repository_ctx, flag_name) == "1"
 
 def _use_cuda_clang(repository_ctx):
-    return _flag_enabled(repository_ctx, "TF_CUDA_CLANG")
+    return True                            # The original one is _flag_enabled(repository_ctx, "TF_CUDA_CLANG")
 
 def _tf_sysroot(repository_ctx):
     return get_host_environ(repository_ctx, _TF_SYSROOT, "")

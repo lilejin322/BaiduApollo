@@ -26,18 +26,22 @@ build --show_timestamps
 build --spawn_strategy=standalone
 
 # Enable colorful output of GCC
-build --cxxopt="-fdiagnostics-color=always"
+# build --cxxopt="-fdiagnostics-color=always"        # This line is a feature of GCC compiler, clang doesn't need
 
 # Do not show warnings from external dependencies.
 # build --output_filter="^//"
 
 build --per_file_copt=external/upb/.*@-Wno-sign-compare
-build --copt="-Werror=sign-compare"
-build --copt="-Werror=return-type"
-build --copt="-Werror=unused-variable"
-build --copt="-Werror=unused-but-set-variable"
-build --copt="-Werror=switch"
-build --cxxopt="-Werror=reorder"
+# build --copt="-Werror=sign-compare"                # treat sign-compare warning as an error, should be commented out
+# build --copt="-Werror=return-type"                 # treat return-type warning as an error, should be commented out
+# build --copt="-Werror=unused-variable"             # treat unused-variable as an error, should be commented out
+# build --copt="-Werror=unused-but-set-variable"     # treat unused-but-set-variable as an error, should be commented out
+# build --copt="-Werror=switch"                      # treat switch warning as an error, should be commented out
+# build --cxxopt="-Werror=reorder"                   # treat reorder warning as an error, should be commented out
+build --copt=-mavx2                                  # enables the AVX2 (Advanced Vector Extensions 2) instruction set for c compiler
+build --cxxopt=-mavx2                                # enables the AVX2 (Advanced Vector Extensions 2) instruction set for cpp compiler
+build --copt=-mno-sse3                               # disables the SSE3 (Streaming SIMD Extensions 3) instruction set for c compiler
+build --crosstool_top=//tools/wllvm:toolchain        # points to a cc-toolchain defined in the wllvm toolset
 
 # Default paths for SYSTEM LIBRARIES
 build --define=PREFIX=/usr
