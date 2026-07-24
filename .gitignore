@@ -85,3 +85,22 @@ tools/FlameGraph
 modules/studio_connector
 
 #WORKSPACE
+
+# Perception models
+modules/perception/data/models/
+
+# Third-party link
+third_party/bazel_skylib
+third_party/grpc
+third_party/rules_proto
+third_party/rules_python
+
+# aem
+.aem/
+
+# dev
+dev/
+
+# MacOSX
+.DS_Store
+__MACOSX/
