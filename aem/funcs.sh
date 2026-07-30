@@ -671,6 +671,19 @@ apollo_container_download_arm_lib() {
 }
 export -f apollo_container_download_arm_lib
 
+apollo_patch_buildtool_network_check() {
+  # apollo-neo-buildtool ships a Procedure._check_network() that passes
+  # ">/dev/null 2>&1" as literal argv to curl (no shell=True), so curl
+  # always fails and buildtool wrongly thinks it's offline. The volume
+  # backing /opt is only populated with the image/package content once the
+  # container actually starts, and `apt install --only-upgrade` above can
+  # restore the buggy file again on every (re)creation, so re-apply this
+  # patch every time, after mounting/creating the container.
+  local container_aem_path="/opt/apollo/aem"
+  apollo_execute_cmd_in_container "python3 ${container_aem_path}/patches/fix_buildtool_network_check.py"
+}
+export -f apollo_patch_buildtool_network_check
+
 apollo_container_created_post_action() {
   local init_packages=(
     'apollo-neo-buildtool'
@@ -684,6 +697,7 @@ apollo_container_created_post_action() {
   apollo_execute_cmd_in_container "ln -snf ${container_aem_path}/auto_complete.zsh /usr/share/zsh/functions/Completion/Unix/_aem"
   apollo_execute_cmd_in_container "[[ $(uname -m) == "aarch64" ]] && [[ -e /sys/kernel/debug ]] && chmod +rx /sys/kernel/debug"
   apollo_execute_cmd_in_container "apt update && apt install --only-upgrade -y ${init_packages[@]}"
+  apollo_patch_buildtool_network_check
   apollo_execute_cmd_in_container "chmod 777 /opt/apollo/neo/packages/buildtool/latest/setup.sh"
   apollo_execute_cmd_in_container "mkdir -pv /opt/apollo/neo/etc && chmod 777 -R /opt/apollo/neo/etc"
   apollo_container_created_start_user
