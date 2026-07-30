@@ -1,22 +1,17 @@
 #!/usr/bin/env python3
 """Force buildtool's Procedure._check_network to the retry-based implementation.
 
-Upstream apollo-neo-buildtool has shipped at least two variants of this
-method:
-  - a buggy one that calls `subprocess.call(cmd)` (a list, no shell=True),
-    so ">/dev/null 2>&1" gets passed to curl as literal argv and curl
-    always errors out, permanently forcing offline mode; and
-  - a "fixed" single-attempt one (`--max-time 5`, one curl call, no retry)
-    that no longer has that bug but gives up after one 5s attempt, so a
-    transient network hiccup still flips buildtool into offline mode.
+The apollo-neo-buildtool package installs a single-attempt _check_network
+(one curl call, 5s timeout, no retry), so any transient network hiccup
+flips buildtool into permanent offline mode for the rest of the run. We
+want the retry version below instead (7 attempts, 15s timeout each).
 
-Either way we want the retry version below (7 attempts, 15s timeout each,
-proper shell=True). This replaces the whole method body unconditionally
-(matched by its `def _check_network(self):` header up to the next method
-at the same indentation), regardless of which variant is currently
-installed, so it's robust to upstream rewrites. Re-applied on every
-container (re)creation because `apt install --only-upgrade` can reinstall
-a different variant. Safe to run repeatedly (idempotent).
+This replaces the whole method body unconditionally (matched by its
+`def _check_network(self):` header up to the next method at the same
+indentation), regardless of exactly how the currently installed body is
+written. Re-applied on every container (re)creation because
+`apt install --only-upgrade` reinstalls the single-attempt version every
+time. Safe to run repeatedly (idempotent).
 """
 import glob
 import re

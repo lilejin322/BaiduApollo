@@ -672,13 +672,14 @@ apollo_container_download_arm_lib() {
 export -f apollo_container_download_arm_lib
 
 apollo_patch_buildtool_network_check() {
-  # apollo-neo-buildtool ships a Procedure._check_network() that passes
-  # ">/dev/null 2>&1" as literal argv to curl (no shell=True), so curl
-  # always fails and buildtool wrongly thinks it's offline. The volume
-  # backing /opt is only populated with the image/package content once the
-  # container actually starts, and `apt install --only-upgrade` above can
-  # restore the buggy file again on every (re)creation, so re-apply this
-  # patch every time, after mounting/creating the container.
+  # apollo-neo-buildtool ships a single-attempt Procedure._check_network()
+  # (one curl call, 5s timeout, no retry), so any transient network hiccup
+  # flips buildtool into permanent offline mode. Force it back to a
+  # retry-based version instead. The volume backing /opt is only populated
+  # with the image/package content once the container actually starts, and
+  # `apt install --only-upgrade` above reinstalls the single-attempt
+  # version every time, so re-apply this patch every time, after
+  # mounting/creating the container.
   local container_aem_path="/opt/apollo/aem"
   apollo_execute_cmd_in_container "python3 ${container_aem_path}/patches/fix_buildtool_network_check.py"
 }
