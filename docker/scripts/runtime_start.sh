@@ -151,8 +151,8 @@ function determine_runtime_image() {
 
 function check_host_environment() {
     if [[ "${HOST_OS}" != "Linux" ]]; then
-        warning "Linux ONLY support for Apollo Runtime Docker!"
-        exit 1
+        warning "Linux ONLY support for Apollo Runtime Docker, but continuing..."
+        # exit 1  # comment out exit
     fi
     if [[ "${HOST_ARCH}" != "x86_64" ]]; then
         warning "Apollo Runtime Docker supports x86_64 ONLY!"

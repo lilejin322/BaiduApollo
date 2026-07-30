@@ -5,7 +5,7 @@ TOP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 source "${TOP_DIR}/scripts/apollo.bashrc"
 
 ARCH="$(uname -m)"
-SUPPORTED_ARCHS=" x86_64 aarch64 "
+SUPPORTED_ARCHS=" x86_64 aarch64 arm64 "
 APOLLO_VERSION="@non-git"
 APOLLO_ENV=""
 
@@ -16,7 +16,13 @@ AVAILABLE_COMMANDS="config build build_dbg build_opt build_cpu build_gpu build_o
                     buildify check build_fe build_teleop build_prof doc clean format usage -h --help"
 
 function check_architecture_support() {
-  if [[ "${SUPPORTED_ARCHS}" != *" ${ARCH} "* ]]; then
+  # Map arm64 to aarch64 for verification
+  local check_arch="${ARCH}"
+  if [[ "${ARCH}" == "arm64" ]]; then
+    check_arch="aarch64"
+  fi
+  
+  if [[ "${SUPPORTED_ARCHS}" != *" ${check_arch} "* ]]; then
     error "Unsupported CPU arch: ${ARCH}. Currently, Apollo only" \
       "supports running on the following CPU archs:"
     error "${TAB}${SUPPORTED_ARCHS}"
@@ -27,9 +33,9 @@ function check_architecture_support() {
 function check_platform_support() {
   local platform="$(uname -s)"
   if [[ "${platform}" != "Linux" ]]; then
-    error "Unsupported platform: ${platform}."
-    error "${TAB}Apollo is expected to run on Linux systems (E.g., Debian/Ubuntu)."
-    exit 1
+    warning "Unsupported platform: ${platform}, but continuing..."
+    warning "${TAB}Apollo is expected to run on Linux systems (E.g., Debian/Ubuntu)."
+    # exit 1  # comment out for exit
   fi
 }
 

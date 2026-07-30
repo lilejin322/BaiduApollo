@@ -31,7 +31,7 @@ DOCKER_REPO="apolloauto/apollo"
 DOCKER_PULL_CMD="docker pull"
 SHM_SIZE="2G"
 
-SUPPORTED_ARCHS=(x86_64 aarch64)
+SUPPORTED_ARCHS=(x86_64 aarch64 arm64)
 TARGET_ARCH=""
 
 USE_LOCAL_IMAGE=0
@@ -41,8 +41,14 @@ GEOLOC=
 
 function _target_arch_check() {
     local arch="$1"
+    # Map arm64 to aarch64 for verification
+    local check_arch="${arch}"
+    if [[ "${arch}" == "arm64" ]]; then
+        check_arch="aarch64"
+    fi
+    
     for k in "${SUPPORTED_ARCHS[@]}"; do
-        if [[ "${k}" == "${arch}" ]]; then
+        if [[ "${k}" == "${check_arch}" ]]; then
             return
         fi
     done

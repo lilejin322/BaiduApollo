@@ -45,12 +45,22 @@ USE_AMD_GPU=0
 USE_NVIDIA_GPU=0
 
 function determine_gpu_use_host() {
-  if [[ "${HOST_ARCH}" == "aarch64" ]]; then
-    if lsmod | grep -q "^nvgpu"; then
+  # map arm64 to aarch64
+  local check_arch="${HOST_ARCH}"
+  if [[ "${HOST_ARCH}" == "arm64" ]]; then
+    check_arch="aarch64"
+  fi
+  
+  if [[ "${check_arch}" == "aarch64" ]]; then
+    # macOS does not have lsmod command, skip GPU detection
+    if [[ "$(uname -s)" == "Darwin" ]]; then
+      USE_GPU_HOST=0
+      USE_NVIDIA_GPU=0
+    elif lsmod | grep -q "^nvgpu"; then
       USE_GPU_HOST=1
       USE_NVIDIA_GPU=1
     fi
-  elif [[ "${HOST_ARCH}" == "x86_64" ]]; then
+  elif [[ "${check_arch}" == "x86_64" ]]; then
     if [[ ! -x "$(command -v nvidia-smi)" ]]; then
       warning "No nvidia-smi found."
     elif [[ -z "$(nvidia-smi)" ]]; then

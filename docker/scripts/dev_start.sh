@@ -27,8 +27,12 @@ DEV_INSIDE="in-dev-docker"
 
 CO_DEV_PATH=
 
-SUPPORTED_ARCHS=(x86_64 aarch64)
+SUPPORTED_ARCHS=(x86_64 aarch64 arm64)
 TARGET_ARCH="$(uname -m)"
+# map arm64 to aarch64
+if [[ "${TARGET_ARCH}" == "arm64" ]]; then
+  TARGET_ARCH="aarch64"
+fi
 
 VERSION_X86_64="dev-x86_64-18.04-20230831_1143"
 TESTING_VERSION_X86_64="dev-x86_64-18.04-testing-20210112_0008"
@@ -255,8 +259,8 @@ function determine_dev_image() {
 
 function check_host_environment() {
   if [[ "${HOST_OS}" != "Linux" ]]; then
-    warning "Running Apollo dev container on ${HOST_OS} is UNTESTED, exiting..."
-    exit 1
+    warning "Running Apollo dev container on ${HOST_OS} is UNTESTED, but continuing..."
+    # exit 1  # comment out exit
   fi
 }
 
@@ -312,26 +316,37 @@ function setup_devices_and_mount_local_volumes() {
     volumes="${volumes} -v ${apollo_tools}:/tools"
   fi
 
-  local os_release="$(lsb_release -rs)"
-  case "${os_release}" in
-    16.04)
-      warning "[Deprecated] Support for Ubuntu 16.04 will be removed" \
-        "in the near future. Please upgrade to ubuntu 18.04+."
-      volumes="${volumes} -v /dev:/dev"
-      ;;
-    18.04 | 20.04 | *)
-      volumes="${volumes} -v /dev:/dev"
-      ;;
-  esac
+  # macOS does not have lsb_release command, skip device mounts
+  if [[ "$(uname -s)" == "Darwin" ]]; then
+    warning "Running on macOS, skipping device mounts for compatibility"
+  else
+    local os_release="$(lsb_release -rs)"
+    case "${os_release}" in
+      16.04)
+        warning "[Deprecated] Support for Ubuntu 16.04 will be removed" \
+          "in the near future. Please upgrade to ubuntu 18.04+."
+        volumes="${volumes} -v /dev:/dev"
+        ;;
+      18.04 | 20.04 | *)
+        volumes="${volumes} -v /dev:/dev"
+        ;;
+    esac
+  fi
   # local tegra_dir="/usr/lib/aarch64-linux-gnu/tegra"
   # if [[ "${TARGET_ARCH}" == "aarch64" && -d "${tegra_dir}" ]]; then
   #    volumes="${volumes} -v ${tegra_dir}:${tegra_dir}:ro"
   # fi
-  volumes="${volumes} -v /media:/media \
+  # macOS does not have /media directory, skip mounting
+  if [[ "$(uname -s)" == "Darwin" ]]; then
+    volumes="${volumes} -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
+                        -v /etc/localtime:/etc/localtime:ro"
+  else
+    volumes="${volumes} -v /media:/media \
                         -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
                         -v /etc/localtime:/etc/localtime:ro \
                         -v /usr/src:/usr/src \
                         -v /lib/modules:/lib/modules"
+  fi
   volumes="$(tr -s " " <<< "${volumes}")"
   eval "${__retval}='${volumes}'"
 }
@@ -459,8 +474,8 @@ function main() {
   local local_volumes=
   setup_devices_and_mount_local_volumes local_volumes
 
-  mount_map_volumes
-  mount_other_volumes
+  # mount_map_volumes
+  # mount_other_volumes
 
   warning "Starting in 9.0 we do not automatically download models!" \
     "If you want to run the perception module, download the model manually" \
@@ -495,13 +510,14 @@ function main() {
     ${MAP_VOLUMES_CONF} \
     ${OTHER_VOLUMES_CONF} \
     ${local_volumes} \
-    --net host \
+    -p 8888:8888 \
+    -p 8899:8899 \
+    -p 9090:9090 \
     -w /apollo \
     --add-host "${DEV_INSIDE}:127.0.0.1" \
     --add-host "${local_host}:127.0.0.1" \
     --hostname "${DEV_INSIDE}" \
     --shm-size "${SHM_SIZE}" \
-    --pid=host \
     -v /dev/null:/dev/raw1394 \
     "${DEV_IMAGE}" \
     /bin/bash

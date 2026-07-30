@@ -104,7 +104,7 @@ apollo_cc_library(
         "submodules/evaluator_submodule.cc",
         "submodules/predictor_submodule.cc",
         "submodules/submodule_output.cc",
-    ] + if_aarch64(["common/affine_transform.cc"]),
+    ], # + if_aarch64(["common/affine_transform.cc"]),
     hdrs = [
         "common/environment_features.h",
         "common/feature_output.h",
@@ -169,7 +169,7 @@ apollo_cc_library(
         "submodules/evaluator_submodule.h",
         "submodules/predictor_submodule.h",
         "submodules/submodule_output.h",
-    ] + if_aarch64(["common/affine_transform.h"]),
+    ], # + if_aarch64(["common/affine_transform.h"]),
     copts = ["-fopenmp"] + PREDICTION_COPTS,
     linkopts = ["-lgomp"],
     deps = [
