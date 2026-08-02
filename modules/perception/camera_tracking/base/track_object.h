@@ -25,7 +25,7 @@ namespace apollo {
 namespace perception {
 namespace camera {
 
-struct alignas(16) TrackObject {
+struct alignas(32) TrackObject {
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   PatchIndicator indicator;
   double timestamp;

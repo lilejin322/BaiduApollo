@@ -35,7 +35,7 @@ namespace apollo {
 namespace perception {
 namespace camera {
 
-struct alignas(16) Hypothesis {
+struct alignas(32) Hypothesis {
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   int target;
   int object;

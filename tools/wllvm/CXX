@@ -1,0 +1,22 @@
+#!/bin/bash
+
+export PATH=/usr/local/cuda-11.1/bin:/apollo/scripts:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+export LD_LIBRARY_PATH=/usr/lib64:$LD_LIBRARY_PATH
+export LLVM_COMPILER=clang
+export WLLVM_BC_STORE=/apollo_workspace/wllvm_bc
+export LLVM_BITCODE_GENERATION_FLAGS="-flto -fwhole-program-vtables"
+export THE_USER=$(whoami)
+
+# See tools/wllvm/CC for why multi-arch CUDA fatbin compiles must bypass wllvm.
+arch_count=0
+for arg in "$@"; do
+  case "$arg" in
+    --cuda-gpu-arch=*) arch_count=$((arch_count + 1)) ;;
+  esac
+done
+
+if [ "$arch_count" -ge 2 ]; then
+  exec clang++ "$@"
+fi
+
+exec /home/$THE_USER/.local/bin/wllvm++ "$@"

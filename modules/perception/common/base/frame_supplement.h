@@ -26,7 +26,7 @@ namespace apollo {
 namespace perception {
 namespace base {
 // sensor-specific frame supplements: Lidar, Radar, Camera
-struct alignas(16) LidarFrameSupplement {
+struct alignas(32) LidarFrameSupplement {
   // @brief valid only when on_use = true
   bool on_use = false;
 
@@ -43,7 +43,7 @@ typedef std::shared_ptr<LidarFrameSupplement> LidarFrameSupplementPtr;
 typedef std::shared_ptr<const LidarFrameSupplement>
     LidarFrameSupplementConstPtr;
 
-struct alignas(16) RadarFrameSupplement {
+struct alignas(32) RadarFrameSupplement {
   // @brief valid only when on_use = true
   bool on_use = false;
   void Reset() { on_use = false; }
@@ -52,7 +52,7 @@ typedef std::shared_ptr<RadarFrameSupplement> RadarFrameSupplementPtr;
 typedef std::shared_ptr<const RadarFrameSupplement>
     RadarFrameSupplementConstPtr;
 
-struct alignas(16) CameraFrameSupplement {
+struct alignas(32) CameraFrameSupplement {
   // @brief valid only when on_use = true
   bool on_use = false;
 
@@ -73,7 +73,7 @@ typedef std::shared_ptr<CameraFrameSupplement> CameraFrameSupplementPtr;
 typedef std::shared_ptr<const CameraFrameSupplement>
     CameraFrameSupplementConstPtr;
 
-struct alignas(16) UltrasonicFrameSupplement {
+struct alignas(32) UltrasonicFrameSupplement {
   // @brief valid only when on_use = true
   bool on_use = false;
 

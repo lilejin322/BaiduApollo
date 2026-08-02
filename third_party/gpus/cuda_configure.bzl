@@ -47,6 +47,13 @@ load(
 _GCC_HOST_COMPILER_PATH = "GCC_HOST_COMPILER_PATH"
 _GCC_HOST_COMPILER_PREFIX = "GCC_HOST_COMPILER_PREFIX"
 _CLANG_CUDA_COMPILER_PATH = "CLANG_CUDA_COMPILER_PATH"
+
+# Optional override for the compiler used on non-CUDA (".cu"-less) translation
+# units compiled through this crosstool. Defaults to the same compiler as
+# GCC_HOST_COMPILER_PATH when unset. This lets a GPU build keep nvcc on a
+# real gcc (via GCC_HOST_COMPILER_PATH) while routing ordinary C/C++ files
+# through a different host compiler (e.g. a wllvm wrapper for bitcode capture).
+_CPU_COMPILER_PATH = "CPU_COMPILER_PATH"
 _TF_SYSROOT = "TF_SYSROOT"
 _CUDA_TOOLKIT_PATH = "CUDA_TOOLKIT_PATH"
 _TF_CUDA_VERSION = "TF_CUDA_VERSION"
@@ -132,7 +139,7 @@ def _normalize_include_path(repository_ctx, path):
         return path[len(crosstool_folder) + 1:]
     return path
 
-def _get_cxx_inc_directories_impl(repository_ctx, cc, lang_is_cpp, tf_sysroot):
+def _get_cxx_inc_directories_impl(repository_ctx, cc, lang_is_cpp, tf_sysroot, extra_flags = []):
     """Compute the list of default C or C++ include directories."""
     if lang_is_cpp:
         lang = "c++"
@@ -142,7 +149,7 @@ def _get_cxx_inc_directories_impl(repository_ctx, cc, lang_is_cpp, tf_sysroot):
     if tf_sysroot:
         sysroot += ["--sysroot", tf_sysroot]
     result = raw_exec(repository_ctx, [cc, "-E", "-x" + lang, "-", "-v"] +
-                                      sysroot)
+                                      sysroot + extra_flags)
     stderr = err_out(result)
     index1 = stderr.find(_INC_DIR_MARKER_BEGIN)
     if index1 == -1:
@@ -164,7 +171,7 @@ def _get_cxx_inc_directories_impl(repository_ctx, cc, lang_is_cpp, tf_sysroot):
         for p in inc_dirs.split("\n")
     ]
 
-def get_cxx_inc_directories(repository_ctx, cc, tf_sysroot):
+def get_cxx_inc_directories(repository_ctx, cc, tf_sysroot, extra_flags = []):
     """Compute the list of default C and C++ include directories."""
 
     # For some reason `clang -xc` sometimes returns include paths that are
@@ -175,12 +182,14 @@ def get_cxx_inc_directories(repository_ctx, cc, tf_sysroot):
         cc,
         True,
         tf_sysroot,
+        extra_flags,
     )
     includes_c = _get_cxx_inc_directories_impl(
         repository_ctx,
         cc,
         False,
         tf_sysroot,
+        extra_flags,
     )
 
     return includes_cpp + [
@@ -982,11 +991,41 @@ def _create_local_cuda_repository(repository_ctx):
     cc = find_cc(repository_ctx)
     cc_fullpath = cc
 
+    cpu_compiler_override = get_host_environ(repository_ctx, _CPU_COMPILER_PATH)
+    cpu_compiler = cpu_compiler_override if cpu_compiler_override else str(cc)
+
+    host_compiler_prefix = get_host_environ(repository_ctx, _GCC_HOST_COMPILER_PREFIX)
+    if not host_compiler_prefix:
+        host_compiler_prefix = "/usr/bin"
+
     host_compiler_includes = get_cxx_inc_directories(
         repository_ctx,
         cc_fullpath,
         tf_sysroot,
     )
+
+    if cpu_compiler_override:
+        # CPU_COMPILER_PATH points at a different compiler (e.g. clang via
+        # wllvm) than the gcc used for nvcc's own host codegen. Its builtin
+        # include directories (e.g. /usr/lib/clang/<ver>/include) differ from
+        # gcc's and must also be whitelisted, or Bazel's header check rejects
+        # them as "undeclared inclusion(s)" for ordinary (non-CUDA) sources.
+        # The toolchain's no_canonical_prefixes feature always passes
+        # "-no-canonical-prefixes" to the compiler, which stops clang from
+        # resolving symlinks when it locates its own install dir, so it
+        # reports its resource dir via the symlink alias (e.g.
+        # /usr/lib/clang/<ver>) rather than the fully-resolved path (e.g.
+        # /usr/lib/llvm-14/lib/clang/<ver>). Probe with the same flag or the
+        # detected paths won't match what the real compile reports.
+        for inc_dir in get_cxx_inc_directories(
+            repository_ctx,
+            cpu_compiler_override,
+            tf_sysroot,
+            ["-no-canonical-prefixes"],
+        ):
+            if inc_dir not in host_compiler_includes:
+                host_compiler_includes.append(inc_dir)
+
     cuda_defines = {}
     cuda_defines["%{builtin_sysroot}"] = tf_sysroot
     cuda_defines["%{cuda_toolkit_path}"] = ""
@@ -994,10 +1033,6 @@ def _create_local_cuda_repository(repository_ctx):
     if is_cuda_clang:
         cuda_defines["%{cuda_toolkit_path}"] = cuda_config.config["cuda_toolkit_path"]
         cuda_defines["%{compiler}"] = "clang"
-
-    host_compiler_prefix = get_host_environ(repository_ctx, _GCC_HOST_COMPILER_PREFIX)
-    if not host_compiler_prefix:
-        host_compiler_prefix = "/usr/bin"
 
     cuda_defines["%{host_compiler_prefix}"] = host_compiler_prefix
 
@@ -1044,14 +1079,18 @@ def _create_local_cuda_repository(repository_ctx):
         # pick the shortest possible path for system includes when creating the
         # .d file - given that includes that are prefixed with "../" multiple
         # time quickly grow longer than the root of the tree, this can lead to
-        # bazel's header check failing.
-        cuda_defines["%{extra_no_canonical_prefixes_flags}"] = "\"-fno-canonical-system-headers\""
+        # bazel's header check failing. This flag is gcc-specific (clang rejects
+        # it as an unknown argument), so only add it when CPU_COMPILER_PATH
+        # hasn't been overridden to point at a non-gcc compiler.
+        cuda_defines["%{extra_no_canonical_prefixes_flags}"] = (
+            "" if cpu_compiler_override else "\"-fno-canonical-system-headers\""
+        )
 
         nvcc_path = "{}/nvcc".format(cuda_config.config["cuda_binary_dir"])
         cuda_defines["%{compiler_deps}"] = ":crosstool_wrapper_driver_is_not_gcc"
 
         wrapper_defines = {
-            "%{cpu_compiler}": str(cc),
+            "%{cpu_compiler}": cpu_compiler,
             "%{cuda_version}": cuda_config.cuda_version,
             "%{nvcc_path}": nvcc_path,
             "%{gcc_host_compiler_path}": str(cc),
@@ -1190,6 +1229,7 @@ _ENVIRONS = [
     _GCC_HOST_COMPILER_PATH,
     _GCC_HOST_COMPILER_PREFIX,
     _CLANG_CUDA_COMPILER_PATH,
+    _CPU_COMPILER_PATH,
     "TF_NEED_CUDA",
     "TF_CUDA_CLANG",
     _CUDA_TOOLKIT_PATH,

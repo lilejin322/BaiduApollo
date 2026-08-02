@@ -29,7 +29,7 @@ build --spawn_strategy=standalone
 # build --experimental_sandbox_async_tree_delete_idle_threads=1
 
 # Enable colorful output of GCC
-build --cxxopt="-fdiagnostics-color=always"
+# build --cxxopt="-fdiagnostics-color=always"        # This line is a feature of GCC compiler, clang doesn't need
 
 # Do not show warnings from external dependencies.
 # build --output_filter="^//"
@@ -37,11 +37,20 @@ build --cxxopt="-fdiagnostics-color=always"
 build --per_file_copt=external/upb/.*@-Wno-sign-compare
 build --per_file_copt=external/upb/.*@-Wno-error=stringop-truncation
 # build --copt="-Werror=sign-compare"
-build --copt="-Werror=return-type"
+# build --copt="-Werror=return-type"                 # treat return-type warning as an error, should be commented out
 # build --copt="-Werror=unused-variable"
-build --copt="-Werror=unused-but-set-variable"
-build --copt="-Werror=switch"
-build --cxxopt="-Werror=reorder"
+# build --copt="-Werror=unused-but-set-variable"     # treat unused-but-set-variable as an error, should be commented out
+# build --copt="-Werror=switch"                      # treat switch warning as an error, should be commented out
+# build --cxxopt="-Werror=reorder"                   # treat reorder warning as an error, should be commented out
+
+# Enable AVX2 support
+build --copt=-mavx2
+build --cxxopt=-mavx2
+
+build --copt=-Wno-error=unknown-warning-option
+build --cxxopt=-Wno-error=unknown-warning-option
+
+build --copt=-mno-sse3                               # disables the SSE3 (Streaming SIMD Extensions 3) instruction set for c compiler
 
 # Default paths for SYSTEM LIBRARIES
 build --define=PREFIX=/usr
@@ -145,3 +154,41 @@ coverage --test_tag_filters=-cpplint
 # +------------------------------------------------------------+
 # Python support was configured by third_party/py .
 # build --remote_cache="http://localhost:8080/
+
+# Force using wllvm
+build --action_env=CC=/apollo_workspace/tools/wllvm/CC
+build --action_env=CXX=/apollo_workspace/tools/wllvm/CXX
+# Route the @local_config_cuda crosstool's non-CUDA (CPU_COMPILER) branch
+# through wllvm too, while leaving nvcc's own host compiler
+# (GCC_HOST_COMPILER_PATH, in .apollo.bazelrc) on real gcc. --repo_env (not
+# --action_env) is required here since this is read by the cuda_configure.bzl
+# repository rule at repo-configure time, not by build actions.
+build --repo_env=CPU_COMPILER_PATH=/apollo_workspace/tools/wllvm/CC
+
+# Disable problematic compiler flags
+build --copt=-Wno-unknown-warning-option
+build --copt=-Wno-unused-command-line-argument
+build --cxxopt=-Wno-write-strings
+build --cxxopt=-fpermissive
+
+# Ignore warnings for problematic flags
+build --copt=-Wno-error
+build --cxxopt=-Wno-error
+
+# OpenMP support
+build --copt=-fopenmp
+build --cxxopt=-fopenmp
+build --linkopt=-fopenmp
+# The unversioned libomp.so (needed for -lomp) only exists under
+# /usr/lib/llvm-14/lib, not in the linker's default search path in Ubuntu 22.04.
+build --linkopt=-L/usr/lib/llvm-14/lib
+build --linkopt=-lomp
+
+# Basic compilation flags
+build --copt=-fPIC
+build --cxxopt=-fPIC
+
+# Linker configuration
+build --linkopt=-fuse-ld=gold
+build --linkopt=-Wl,--no-as-needed
+build --linkopt=-Wl,--allow-multiple-definition

@@ -104,3 +104,6 @@ dev/
 # MacOSX
 .DS_Store
 __MACOSX/
+
+# wllvm_bc
+wllvm_bc/

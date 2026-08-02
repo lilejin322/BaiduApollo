@@ -25,7 +25,7 @@ namespace apollo {
 namespace perception {
 namespace base {
 
-struct alignas(16) Landmark {
+struct alignas(32) Landmark {
   // @brief object type, required
   VisualLandmarkType type = VisualLandmarkType::RoadArrow;
   // @brief probability for each type, required

@@ -25,7 +25,7 @@ namespace perception {
 namespace base {
 
 template <typename T>
-struct alignas(16) Point {
+struct alignas(32) Point {
   T x = 0;
   T y = 0;
   T z = 0;
@@ -100,7 +100,7 @@ using Point3DI = Point3D<int>;
 using Point3DD = Point3D<double>;
 
 template <typename T>
-struct alignas(16) RadarPoint {
+struct alignas(32) RadarPoint {
   T x = 0;
   T y = 0;
   T z = 0;
