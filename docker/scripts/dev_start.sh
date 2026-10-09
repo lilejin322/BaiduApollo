@@ -18,8 +18,6 @@
 CURR_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 source "${CURR_DIR}/docker_base.sh"
 
-CACHE_ROOT_DIR="${APOLLO_ROOT_DIR}/.cache"
-
 DOCKER_REPO="apolloauto/apollo"
 DEV_CONTAINER_PREFIX='apollo_dev_'
 DEV_CONTAINER="${DEV_CONTAINER_PREFIX}${USER}"
@@ -294,8 +292,6 @@ function check_timezone_cn() {
 function setup_devices_and_mount_local_volumes() {
   local __retval="$1"
 
-  [ -d "${CACHE_ROOT_DIR}" ] || mkdir -p "${CACHE_ROOT_DIR}"
-
   source "${APOLLO_ROOT_DIR}/scripts/apollo_base.sh"
   setup_device
 
@@ -438,6 +434,24 @@ function mount_other_volumes() {
   OTHER_VOLUMES_CONF="${volume_conf}"
 }
 
+# Bazel writes /apollo/.cache on the Linux VM disk. The host tree is source only.
+function setup_bazel_cache_volume() {
+  BAZEL_CACHE_VOLUME="apollo_bazel_${USER}"
+  docker volume create "${BAZEL_CACHE_VOLUME}" >/dev/null
+  info "Mounting Bazel cache volume ${BAZEL_CACHE_VOLUME} at /apollo/.cache."
+}
+
+function postrun_bazel_cache_owner() {
+  local container="$1"
+  local uid="$2"
+  local gid="$3"
+  info "Setting /apollo/.cache owner to ${uid}:${gid} ..."
+  if ! docker exec -u root "${container}" chown "${uid}:${gid}" /apollo/.cache; then
+    error "Failed to set owner of /apollo/.cache in ${container}"
+    exit 1
+  fi
+}
+
 function main() {
   check_host_environment
   check_target_arch
@@ -473,6 +487,9 @@ function main() {
 
   local local_volumes=
   setup_devices_and_mount_local_volumes local_volumes
+  setup_bazel_cache_volume
+  # Nested mount: covers the .cache directory inside the source bind mount.
+  local_volumes="${local_volumes} -v ${BAZEL_CACHE_VOLUME}:/apollo/.cache"
 
   # mount_map_volumes
   # mount_other_volumes
@@ -529,6 +546,7 @@ function main() {
   set +x
 
   postrun_start_user "${DEV_CONTAINER}"
+  postrun_bazel_cache_owner "${DEV_CONTAINER}" "${uid}" "${gid}"
   postrun_cross_platfrom_download "${DEV_CONTAINER}" "${CROSS_PLATFORM_FLAG}"
 
   ok "Congratulations! You have successfully finished setting up Apollo Dev Environment."
