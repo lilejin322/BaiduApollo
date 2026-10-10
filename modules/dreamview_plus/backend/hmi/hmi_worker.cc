@@ -40,7 +40,8 @@
 #include "modules/dreamview/backend/common/fuel_monitor/fuel_monitor_manager.h"
 #include "modules/dreamview/backend/common/fuel_monitor/preprocess_monitor.h"
 #include "modules/dreamview/backend/common/vehicle_manager/vehicle_manager.h"
-#include "modules/dreamview/backend/common/sim_control_manager/sim_control_manager.h"
+#include "modules/sim_control/common/sim_control_gflags.h"
+#include "modules/sim_control/sim_control_client.h"
 #include "modules/dreamview/backend/common/util/hmi_util.h"
 
 DEFINE_string(cyber_recorder_play_command, "cyber_recorder play -p 1 -f ",
@@ -48,6 +49,8 @@ DEFINE_string(cyber_recorder_play_command, "cyber_recorder play -p 1 -f ",
 
 namespace apollo {
 namespace dreamview {
+
+using apollo::sim_control::SimControlClient;
 namespace {
 
 using apollo::audio::AudioEvent;
@@ -366,7 +369,7 @@ bool HMIWorker::Trigger(const HMIAction action, const std::string &value) {
       ret = ChangeMap(value);
       // after change map;if sim_control is enabled,restart adc position
       // with new map and sim control
-      SimControlManager::Instance()->Restart();
+      SimControlClient::Instance()->Restart();
       break;
     case HMIAction::CHANGE_VEHICLE:
       ChangeVehicle(value);
@@ -884,7 +887,7 @@ bool HMIWorker::StopModuleByCommand(const std::string &stop_command) const {
 //     double x;
 //     double y;
 //     bool need_to_change_map = true;
-//     // 调用该函数前已经做过判断；不需要再判断；肯定能找到
+//     // The caller has already checked this; the scenario set is guaranteed to exist.
 //     // auto &scenario_set = status_.scenario_set();
 //     // if (scenario_set.find(scenario_set_id) == scenario_set.end()) {
 //     //   AERROR << "Failed to find scenario set!";
@@ -925,9 +928,9 @@ bool HMIWorker::StopModuleByCommand(const std::string &stop_command) const {
 //   // }
 //   // After changing the map, reset the start point from the scenario by
 //   // sim_control
-//   SimControlManager::Instance()->Restart(x, y);
+//   SimControlClient::Instance()->Restart(x, y);
 //   // if (startObstacle) {
-//   //   // 启动sim obstacle
+//   //   // Start sim_obstacle.
 //   //   const std::string start_command = "nohup " + absolute_path + " " +
 //   //                                     scenario_path +
 //   FLAGS_gflag_command_arg +
@@ -998,7 +1001,7 @@ void HMIWorker::ChangeScenario(const std::string &scenario_info) {
   }
 
   // Used to stop the vehicle when selecting the control-driven dynamics model.
-  SimControlManager::Instance()->Reset();
+  SimControlClient::Instance()->Reset();
 
   if (!StopScenarioSimulation()) {
     AWARN << "Failed to stop Scenario simulation";
@@ -1009,7 +1012,7 @@ void HMIWorker::ChangeScenario(const std::string &scenario_info) {
       return;
     }
   }
-  SimControlManager::Instance()->Restart(scenario_start_x, scenario_start_y);
+  SimControlClient::Instance()->Restart(scenario_start_x, scenario_start_y);
 
   {
     WLock wlock(status_mutex_);
@@ -1033,7 +1036,7 @@ void HMIWorker::ChangeDynamicModel(const std::string &dynamic_model_name) {
     AERROR << "Failed to change empty dynamic model!";
     return;
   }
-  auto sim_control_manager = SimControlManager::Instance();
+  auto sim_control_manager = SimControlClient::Instance();
   if (!sim_control_manager->IsEnabled()) {
     AERROR << "Sim control is not enabled!";
     return;
@@ -1076,7 +1079,7 @@ bool HMIWorker::UpdateScenarioSetToStatus(
 
 bool HMIWorker::UpdateDynamicModelToStatus(
     const std::string &dynamic_model_name) {
-  auto sim_control_manager = SimControlManager::Instance();
+  auto sim_control_manager = SimControlClient::Instance();
   if (!sim_control_manager->IsEnabled()) {
     AERROR << "Sim control is not enabled or missing dynamic model name "
               "param!";
@@ -1272,7 +1275,7 @@ bool HMIWorker::LoadScenarios() {
 }
 
 bool HMIWorker::LoadDynamicModels() {
-  auto sim_control_manager = SimControlManager::Instance();
+  auto sim_control_manager = SimControlClient::Instance();
   nlohmann::json load_res;
   if (sim_control_manager->IsEnabled()) {
     load_res = sim_control_manager->LoadDynamicModels();
@@ -1358,7 +1361,7 @@ void HMIWorker::DeleteDynamicModel(const std::string &dynamic_model_name) {
       return;
     }
   }
-  auto sim_control_manager = SimControlManager::Instance();
+  auto sim_control_manager = SimControlClient::Instance();
   if (!sim_control_manager->IsEnabled()) {
     AERROR << "Sim control is not enabled!";
     return;
@@ -1631,7 +1634,7 @@ void HMIWorker::ClearInvalidResourceUnderChangeOperation(
   }
     // dynamic model resource clear and sim control manager start/stop
     // sim control status changed when operation change
-    auto sim_control_manager = SimControlManager::Instance();
+    auto sim_control_manager = SimControlClient::Instance();
     auto iter = std::find(OperationBasedOnSimControl.begin(),
                           OperationBasedOnSimControl.end(), operation);
     if (iter != OperationBasedOnSimControl.end()) {

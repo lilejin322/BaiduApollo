@@ -14,7 +14,7 @@
  * limitations under the License.
  *****************************************************************************/
 
-#include "modules/dreamview/backend/common/sim_control_manager/dynamic_model/perfect_control/sim_perfect_control.h"
+#include "modules/sim_control/dynamic_model/perfect_control/sim_perfect_control.h"
 
 #include "cyber/blocker/blocker_manager.h"
 #include "cyber/time/clock.h"
@@ -24,6 +24,7 @@
 
 #include "modules/common_msgs/chassis_msgs/chassis.pb.h"
 #include "modules/common/adapters/adapter_gflags.h"
+#include "modules/common/configs/config_gflags.h"
 #include "modules/common/math/quaternion.h"
 
 using apollo::canbus::Chassis;
@@ -47,13 +48,10 @@ class SimControlTest : public ::testing::Test {
   virtual void SetUp() {
     FLAGS_map_dir = "modules/dreamview/backend/testdata";
     FLAGS_base_map_filename = "garage.bin";
-
-    map_service_.reset(new MapService(false));
-    sim_control_.reset(new SimPerfectControl(map_service_.get()));
+    sim_control_.reset(new SimPerfectControl());
   }
 
  protected:
-  std::unique_ptr<MapService> map_service_;
   std::unique_ptr<SimPerfectControl> sim_control_;
 };
 
@@ -78,7 +76,7 @@ void SetTrajectory(const std::vector<double> &xs, const std::vector<double> &ys,
 }
 
 TEST_F(SimControlTest, Test) {
-  sim_control_->Init(false);
+  sim_control_->Init(false, nlohmann::json::object());
   sim_control_->enabled_ = true;
 
   planning::ADCTrajectory adc_trajectory;
@@ -169,7 +167,7 @@ TEST_F(SimControlTest, Test) {
 TEST_F(SimControlTest, TestDummyPrediction) {
   Clock::SetMode(ClockMode::MODE_MOCK);
 
-  sim_control_->Init(false);
+  sim_control_->Init(false, nlohmann::json::object());
   sim_control_->enabled_ = true;
 
   auto obstacles = std::make_shared<PredictionObstacles>();

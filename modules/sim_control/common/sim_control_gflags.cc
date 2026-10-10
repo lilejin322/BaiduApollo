@@ -14,9 +14,27 @@
  * limitations under the License.
  *****************************************************************************/
 
-#include "modules/dreamview/backend/common/sim_control_manager/common/sim_control_gflags.h"
+#include "modules/sim_control/common/sim_control_gflags.h"
 
 DEFINE_string(sim_control_module_name, "sim_control", "Module name");
+
+DEFINE_string(sim_perfect_control, "Simulation Perfect Control",
+              "Default perfect-control dynamic model name.");
+
+DEFINE_string(resource_dynamic_model_path,
+              "/.apollo/resources/dynamic_models/models/",
+              "Dynamic model package placement, relative to $HOME.");
+
+DEFINE_string(dynamic_model_library_path,
+              "/.apollo/resources/dynamic_models/library/",
+              "Dynamic model library placement, relative to $HOME.");
+
+DEFINE_string(dynamic_model_package_library_path,
+              "/opt/apollo/neo/lib/modules/dynamic_model/",
+              "Installed dynamic model package library path.");
+
+DEFINE_string(sim_obstacle_stop_command, "pkill -9 -f \"sim_obstacle\" ",
+              "Command used to stop sim_obstacle when sim control stops.");
 
 DEFINE_string(dynamic_model_name, "perfect_control",
               "the name for the selected model");

@@ -94,6 +94,7 @@ apollo_cc_library(
         "//modules/dreamview/proto:record_cc_proto",
         "//modules/dreamview/proto:scenario_cc_proto",
         "//modules/dreamview/backend/common:dreamview_common",
+        "//modules/sim_control:sim_control_client",
         "@boost",
         "@civetweb//:civetweb++",
         "@com_github_gflags_gflags//:gflags",

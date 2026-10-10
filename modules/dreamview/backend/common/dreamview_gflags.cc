@@ -126,27 +126,12 @@ DEFINE_string(plugin_channel_prefix, "/apollo/dreamview/plugins/",
 DEFINE_string(resource_scenario_path, "/.apollo/resources/scenario_sets/",
               "Scenario set placement");
 
-DEFINE_string(resource_dynamic_model_path,
-              "/.apollo/resources/dynamic_models/models/",
-              "Dynamic Models placement");
-
 DEFINE_string(dynamic_model_root_path, "/.apollo/resources/dynamic_models/",
               "Dynamic Model root directory");
-
-DEFINE_string(dynamic_model_library_path,
-              "/.apollo/resources/dynamic_models/library/",
-              "Dynamic Model libs placement");
-
-DEFINE_string(dynamic_model_package_library_path,
-              "/opt/apollo/neo/lib/modules/dynamic_model/",
-              "Dynamic Model package lib path");
 
 DEFINE_string(apollo_package_meta_info_path_prefix,
               "/opt/apollo/neo/share/packages/",
               "apollo package meta info path prefix");
-
-DEFINE_string(sim_obstacle_stop_command, "pkill -9 -f \"sim_obstacle\" ",
-              "Sim obstacle stop command");
 
 DEFINE_string(sim_obstacle_path,
               "/opt/apollo/neo/bin/sim_obstacle",
@@ -155,9 +140,6 @@ DEFINE_string(sim_obstacle_path,
 DEFINE_string(gflag_command_arg,
               " --flagfile=/apollo/modules/common/data/global_flagfile.txt",
               "sim obstacle need use gflag!");
-
-DEFINE_string(sim_perfect_control, "Simulation Perfect Control",
-              "sim perfect control!");
 
 DEFINE_string(resource_record_path, "/.apollo/resources/records/",
               "Records placement");

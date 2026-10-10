@@ -13,16 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *****************************************************************************/
-#include "modules/dreamview/backend/common/sim_control_manager/core/dynamic_model_factory.h"
+#include "modules/sim_control/core/dynamic_model_factory.h"
 
-#include "modules/dreamview/backend/common/sim_control_manager/proto/dynamic_model_conf.pb.h"
+#include "modules/sim_control/proto/dynamic_model_conf.pb.h"
 
 #include "cyber/class_loader/shared_library/exceptions.h"
 #include "cyber/class_loader/shared_library/shared_library.h"
 #include "modules/common/util/util.h"
-#include "modules/dreamview/backend/common/dreamview_gflags.h"
-#include "modules/dreamview/backend/common/map_service/map_service.h"
-#include "modules/dreamview/backend/common/sim_control_manager/dynamic_model/perfect_control/sim_perfect_control.h"
+#include "modules/sim_control/dynamic_model/perfect_control/sim_perfect_control.h"
 
 namespace apollo {
 namespace dreamview {
@@ -60,7 +58,7 @@ DynamicModelFactory::~DynamicModelFactory() {
 }
 
 void DynamicModelFactory::RegisterSimPerfectControl() {
-  // map_service当参数
+  // The perfect-control model owns its map; nothing is passed in.
   if (s_dynamic_model_map_.find(FLAGS_sim_perfect_control) ==
       s_dynamic_model_map_.end()) {
     // Avoid dumplicate register dynamic model which is already registered
@@ -68,7 +66,7 @@ void DynamicModelFactory::RegisterSimPerfectControl() {
     s_dynamic_model_map_[FLAGS_sim_perfect_control].dynamic_model_name =
         FLAGS_sim_perfect_control;
     s_dynamic_model_map_[FLAGS_sim_perfect_control].dynamic_model_ptr =
-        new SimPerfectControl(new MapService());
+        new SimPerfectControl();
   }
 }
 

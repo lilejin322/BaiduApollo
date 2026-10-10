@@ -110,6 +110,7 @@ apollo_cc_library(
         "//modules/common_msgs/audio_msgs:audio_event_cc_proto",
         "//modules/common_msgs/chassis_msgs:chassis_cc_proto",
         "//modules/dreamview/backend/common:dreamview_common",
+        "//modules/sim_control:sim_control_client",
         "//modules/dreamview/proto:camera_update_cc_proto",
         "//modules/common_msgs/dreamview_msgs:hmi_config_cc_proto",
         "//modules/common_msgs/dreamview_msgs:hmi_mode_cc_proto",

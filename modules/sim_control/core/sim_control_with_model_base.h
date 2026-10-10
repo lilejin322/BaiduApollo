@@ -24,7 +24,7 @@
 #include "modules/common_msgs/planning_msgs/planning_command.pb.h"
 #include "modules/common_msgs/prediction_msgs/prediction_obstacle.pb.h"
 #include "modules/common_msgs/routing_msgs/routing.pb.h"
-#include "modules/dreamview/backend/common/sim_control_manager/proto/sim_control_internal.pb.h"
+#include "modules/sim_control/proto/sim_control_internal.pb.h"
 
 #include "cyber/common/log.h"
 #include "cyber/cyber.h"
@@ -34,10 +34,9 @@
 #include "modules/common/math/math_utils.h"
 #include "modules/common/math/quaternion.h"
 #include "modules/common/util/message_util.h"
-#include "modules/dreamview/backend/common/dreamview_gflags.h"
-#include "modules/dreamview/backend/common/map_service/map_service.h"
-#include "modules/dreamview/backend/common/sim_control_manager/common/sim_control_gflags.h"
-#include "modules/dreamview/backend/common/sim_control_manager/core/sim_control_base.h"
+#include "modules/sim_control/common/sim_control_gflags.h"
+#include "modules/sim_control/sim_map.h"
+#include "modules/sim_control/core/sim_control_base.h"
 
 /**
  * @namespace apollo::dreamview
@@ -150,7 +149,7 @@ class SimControlWithModelBase : public SimControlBase {
 
   // Whether to send dummy predictions
   bool send_dummy_prediction_ = true;
-  MapService* map_service_;
+  std::unique_ptr<SimMap> map_service_;
 };
 
 }  // namespace dreamview

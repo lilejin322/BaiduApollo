@@ -23,13 +23,14 @@
 #include "modules/common/util/map_util.h"
 #include "modules/dreamview/backend/common/dreamview_gflags.h"
 #include "modules/dreamview/backend/common/fuel_monitor/fuel_monitor_manager.h"
-#include "modules/dreamview/backend/common/sim_control_manager/sim_control_manager.h"
+#include "modules/sim_control/sim_control_client.h"
 #include "modules/map/hdmap/hdmap_util.h"
 
 namespace apollo {
 namespace dreamview {
 
 using apollo::common::monitor::MonitorMessageItem;
+using apollo::sim_control::SimControlClient;
 using apollo::common::util::ContainsKey;
 using apollo::common::util::JsonUtil;
 using apollo::cyber::common::GetProtoFromASCIIFile;
@@ -77,7 +78,7 @@ void SimulationWorldUpdater::RegisterMessageHandlers() {
       [this](WebSocketHandler::Connection *conn) {
         Json response;
         response["type"] = "SimControlStatus";
-        response["enabled"] = SimControlManager::Instance()->IsEnabled();
+        response["enabled"] = SimControlClient::Instance()->IsEnabled();
         websocket_->SendData(conn, response.dump());
       });
 
@@ -164,14 +165,14 @@ void SimulationWorldUpdater::RegisterMessageHandlers() {
       "SetStartPoint",
       [this](const Json &json, WebSocketHandler::Connection *conn) {
         auto point = json["point"];
-        if (!SimControlManager::Instance()->IsEnabled()) {
+        if (!SimControlClient::Instance()->IsEnabled()) {
           AWARN << "Set start point need start sim_control.";
         } else {
           if (!ContainsKey(point, "heading")) {
             AWARN << "Set start point need set heading.";
             return;
           }
-          SimControlManager::Instance()->ReSetPoinstion(point["x"], point["y"],
+          SimControlClient::Instance()->ReSetPoinstion(point["x"], point["y"],
                                                point["heading"]);
 
           // Send a ActionCommand to clear the trajectory of planning.
@@ -420,7 +421,7 @@ void SimulationWorldUpdater::RegisterMessageHandlers() {
   websocket_->RegisterMessageHandler(
       "Reset", [this](const Json &json, WebSocketHandler::Connection *conn) {
         sim_world_service_.SetToClear();
-        SimControlManager::Instance()->Reset();
+        SimControlClient::Instance()->Reset();
       });
 
   websocket_->RegisterMessageHandler(
@@ -434,9 +435,9 @@ void SimulationWorldUpdater::RegisterMessageHandlers() {
         auto enable = json.find("enable");
         if (enable != json.end() && enable->is_boolean()) {
           if (*enable) {
-            SimControlManager::Instance()->Start();
+            SimControlClient::Instance()->Start();
           } else {
-            SimControlManager::Instance()->Stop();
+            SimControlClient::Instance()->Stop();
           }
         }
       });

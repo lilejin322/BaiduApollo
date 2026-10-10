@@ -32,6 +32,7 @@
 #include "modules/common/util/map_util.h"
 #include "modules/common/util/message_util.h"
 #include "modules/dreamview/backend/common/dreamview_gflags.h"
+#include "modules/sim_control/common/sim_control_gflags.h"
 #include "modules/dreamview/backend/common/fuel_monitor/data_collection_monitor.h"
 #include "modules/dreamview/backend/common/fuel_monitor/fuel_monitor_gflags.h"
 #include "modules/dreamview/backend/common/fuel_monitor/fuel_monitor_manager.h"
@@ -502,11 +503,11 @@ bool HMIWorker::ChangeMap(const std::string &map_name,
 
   // true : restart dynamic model on change map
   // false : change scenario not restart
-  // 1. 场景切换到空场景
-  // 2. 场景切换到其他地图
+  // 1. Switching to an empty scenario.
+  // 2. Switching the scenario onto another map.
   if (restart_dynamic_model) {
     callback_api_("RestartDynamicModel", {});
-    // 场景id不为空进行切换地图需要停止sim_obstacle
+    // Stop sim_obstacle when changing the map for a non-empty scenario.
     StopModuleByCommand(FLAGS_sim_obstacle_stop_command);
     {
       WLock wlock(status_mutex_);
@@ -892,7 +893,7 @@ bool HMIWorker::ResetSimObstacle(const std::string &scenario_id) {
   info["y"] = y;
   callback_api_("SimControlRestart", info);
   if (startObstacle) {
-    // 启动sim obstacle
+    // Start sim_obstacle.
     const std::string start_command = "nohup " + absolute_path + " " +
                                       scenario_path + FLAGS_gflag_command_arg +
                                       " &";

@@ -80,23 +80,13 @@ DECLARE_string(plugin_channel_prefix);
 
 DECLARE_string(resource_scenario_path);
 
-DECLARE_string(resource_dynamic_model_path);
-
 DECLARE_string(dynamic_model_root_path);
 
-DECLARE_string(dynamic_model_library_path);
-
-DECLARE_string(dynamic_model_package_library_path);
-
 DECLARE_string(apollo_package_meta_info_path_prefix);
-
-DECLARE_string(sim_obstacle_stop_command);
 
 DECLARE_string(sim_obstacle_path);
 
 DECLARE_string(gflag_command_arg);
-
-DECLARE_string(sim_perfect_control);
 
 DECLARE_string(resource_record_path);
 

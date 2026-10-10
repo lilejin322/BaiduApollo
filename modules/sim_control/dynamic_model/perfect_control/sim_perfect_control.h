@@ -32,9 +32,8 @@
 #include "modules/common_msgs/routing_msgs/routing.pb.h"
 
 #include "cyber/cyber.h"
-#include "modules/dreamview/backend/common/dreamview_gflags.h"
-#include "modules/dreamview/backend/common/map_service/map_service.h"
-#include "modules/dreamview/backend/common/sim_control_manager/core/sim_control_base.h"
+#include "modules/sim_control/core/sim_control_base.h"
+#include "modules/sim_control/sim_map.h"
 
 /**
  * @namespace apollo::dreamview
@@ -53,9 +52,8 @@ class SimPerfectControl final : public SimControlBase {
  public:
   /**
    * @brief Constructor of SimPerfectControl.
-   * @param map_service the pointer of MapService.
    */
-  explicit SimPerfectControl(const MapService *map_service);
+  SimPerfectControl();
 
   /**
    * @brief setup callbacks and timer
@@ -139,7 +137,7 @@ class SimPerfectControl final : public SimControlBase {
 
   void InternalReset();
 
-  const MapService *map_service_ = nullptr;
+  std::unique_ptr<SimMap> map_service_;
 
   std::unique_ptr<cyber::Node> node_;
 

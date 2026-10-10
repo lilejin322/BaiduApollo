@@ -22,6 +22,7 @@
 #include "cyber/time/clock.h"
 #include "modules/common/configs/vehicle_config_helper.h"
 #include "modules/dreamview/backend/common/dreamview_gflags.h"
+#include "modules/sim_control/sim_control_client.h"
 namespace {
 std::map<std::string, int> plugin_function_map = {
     {"UpdateScenarioSetToStatus", 0},
@@ -45,6 +46,7 @@ namespace apollo {
 namespace dreamview {
 
 using apollo::common::Status;
+using apollo::sim_control::SimControlClient;
 using apollo::common::VehicleConfigHelper;
 using cyber::common::PathExists;
 
@@ -165,7 +167,7 @@ Status Dreamview::Start() {
 
 void Dreamview::Stop() {
   server_->close();
-  SimControlManager::Instance()->Stop();
+  SimControlClient::Instance()->Stop();
   point_cloud_updater_->Stop();
   hmi_->Stop();
   perception_camera_updater_->Stop();
@@ -221,7 +223,7 @@ bool Dreamview::PluginCallbackHMI(const std::string& function_name,
   }
   switch (plugin_function_map[function_name]) {
     case 0: {
-      // 解析结果
+      // Parse the callback parameters.
       if (param_json["data"].contains("scenario_set_id") &&
           param_json["data"].contains("scenario_set_name")) {
         const std::string scenario_set_id =

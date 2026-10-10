@@ -22,8 +22,8 @@
 #include "nlohmann/json.hpp"
 
 #include "cyber/common/macros.h"
-#include "modules/dreamview/backend/common/sim_control_manager/core/sim_control_base.h"
-#include "modules/dreamview/backend/common/sim_control_manager/core/sim_control_with_model_base.h"
+#include "modules/sim_control/core/sim_control_base.h"
+#include "modules/sim_control/core/sim_control_with_model_base.h"
 
 namespace apollo {
 namespace dreamview {

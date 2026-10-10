@@ -14,7 +14,7 @@
  * limitations under the License.
  *****************************************************************************/
 
-#include "modules/dreamview/backend/common/sim_control_manager/common/sim_control_util.h"
+#include "modules/sim_control/common/sim_control_util.h"
 
 #include <cmath>
 

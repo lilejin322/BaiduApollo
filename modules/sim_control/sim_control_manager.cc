@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *****************************************************************************/
-#include "modules/dreamview/backend/common/sim_control_manager/sim_control_manager.h"
+#include "modules/sim_control/sim_control_manager.h"
 
 #include "nlohmann/json.hpp"
 

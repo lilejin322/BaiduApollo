@@ -23,13 +23,14 @@
 #include "modules/common/util/map_util.h"
 #include "modules/dreamview/backend/common/dreamview_gflags.h"
 #include "modules/dreamview/backend/common/fuel_monitor/fuel_monitor_manager.h"
-#include "modules/dreamview/backend/common/sim_control_manager/sim_control_manager.h"
+#include "modules/sim_control/sim_control_client.h"
 #include "modules/map/hdmap/hdmap_util.h"
 
 namespace apollo {
 namespace dreamview {
 
 using apollo::common::monitor::MonitorMessageItem;
+using apollo::sim_control::SimControlClient;
 using apollo::common::util::ContainsKey;
 using apollo::common::util::JsonUtil;
 using apollo::cyber::common::GetProtoFromASCIIFile;
@@ -615,7 +616,7 @@ void SimulationWorldUpdater::RegisterMessageHandlers() {
           return;
         }
         response["data"]["requestId"] = request_id;
-        auto sim_control_manager = SimControlManager::Instance();
+        auto sim_control_manager = SimControlClient::Instance();
         if (!sim_control_manager->IsEnabled()) {
           AWARN << "Set start point need start sim_control.";
           response["data"]["info"]["code"] = -1;
@@ -893,7 +894,7 @@ void SimulationWorldUpdater::RegisterMessageHandlers() {
           return;
         }
         sim_world_service_.SetToClear();
-        SimControlManager::Instance()->Reset();
+        SimControlClient::Instance()->Reset();
         response["action"] = "response";
         response["data"]["info"]["code"] = 0;
         response["data"]["info"]["message"] = "Success";
@@ -1000,7 +1001,7 @@ void SimulationWorldUpdater::RegisterMessageHandlers() {
               "Failed to stop scenario simulation";
         } else {
           // Stop the vehicle at the current frame.
-          SimControlManager::Instance()->Reset();
+          SimControlClient::Instance()->Reset();
           response["data"]["info"]["code"] = 0;
           response["data"]["info"]["message"] = "Success";
         }
@@ -1074,7 +1075,7 @@ void SimulationWorldUpdater::RegisterMessageHandlers() {
         double x, y;
         JsonUtil::GetNumber(extrem_point["start"], "x", &x);
         JsonUtil::GetNumber(extrem_point["start"], "y", &y);
-        SimControlManager::Instance()->Restart(x, y);
+        SimControlClient::Instance()->Restart(x, y);
         if (!hmi_->StopScenarioSimulation()) {
           AWARN << "Failed to stop scenario simulation.";
         }

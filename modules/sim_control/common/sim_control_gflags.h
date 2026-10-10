@@ -26,6 +26,16 @@ DECLARE_string(backward_fnn_model_path);
 
 DECLARE_string(sim_control_module_name);
 
+DECLARE_string(sim_perfect_control);
+
+DECLARE_string(resource_dynamic_model_path);
+
+DECLARE_string(dynamic_model_library_path);
+
+DECLARE_string(dynamic_model_package_library_path);
+
+DECLARE_string(sim_obstacle_stop_command);
+
 DECLARE_string(calibration_conf_file);
 
 DECLARE_string(echo_lincoln_conf_file);

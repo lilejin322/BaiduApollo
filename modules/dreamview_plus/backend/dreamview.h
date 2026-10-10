@@ -35,7 +35,6 @@
 #include "modules/dreamview_plus/backend/obstacle_updater/obstacle_updater.h"
 #include "modules/dreamview/backend/common/plugins/plugin_manager.h"
 #include "modules/dreamview_plus/backend/point_cloud/point_cloud_updater.h"
-#include "modules/dreamview/backend/common/sim_control_manager/sim_control_manager.h"
 #include "modules/dreamview_plus/backend/simulation_world/simulation_world_updater.h"
 #include "modules/dreamview_plus/backend/socket_manager/socket_manager.h"
 #include "modules/dreamview_plus/backend/updater/updater_manager.h"

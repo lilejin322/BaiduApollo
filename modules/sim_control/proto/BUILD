@@ -17,4 +17,9 @@ proto_library(
     srcs = ["dynamic_model_conf.proto"],
 )
 
+proto_library(
+    name = "sim_control_command_proto",
+    srcs = ["sim_control_command.proto"],
+)
+
 apollo_package()

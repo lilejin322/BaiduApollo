@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *****************************************************************************/
-#include "modules/dreamview/backend/common/sim_control_manager/common/interpolation_2d.h"
+#include "modules/sim_control/common/interpolation_2d.h"
 
 #include <cmath>
 

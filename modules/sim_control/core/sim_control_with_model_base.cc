@@ -14,9 +14,7 @@
  * limitations under the License.
  *****************************************************************************/
 
-#include "modules/dreamview/backend/common/sim_control_manager/core/sim_control_with_model_base.h"
-
-#include "modules/dreamview/backend/common/map_service/map_service.h"
+#include "modules/sim_control/core/sim_control_with_model_base.h"
 
 namespace apollo {
 namespace dreamview {
@@ -46,7 +44,7 @@ SimControlWithModelBase::SimControlWithModelBase(const std::string& node_name)
     : node_(cyber::CreateNode(node_name)),
       gear_position_(0),
       dt_(0.01),
-      map_service_(new MapService()) {
+      map_service_(new SimMap()) {
   InitTimerAndIO();
 }
 

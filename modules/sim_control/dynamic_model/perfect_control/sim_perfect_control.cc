@@ -14,11 +14,12 @@
  * limitations under the License.
  *****************************************************************************/
 
-#include "modules/dreamview/backend/common/sim_control_manager/dynamic_model/perfect_control/sim_perfect_control.h"
+#include "modules/sim_control/dynamic_model/perfect_control/sim_perfect_control.h"
 
 #include "cyber/common/file.h"
 #include "cyber/time/clock.h"
 #include "modules/common/adapters/adapter_gflags.h"
+#include "modules/common/configs/config_gflags.h"
 #include "modules/common/math/linear_interpolation.h"
 #include "modules/common/math/math_utils.h"
 #include "modules/common/math/quaternion.h"
@@ -63,9 +64,9 @@ bool IsSameHeader(const Header &lhs, const Header &rhs) {
 
 }  // namespace
 
-SimPerfectControl::SimPerfectControl(const MapService *map_service)
+SimPerfectControl::SimPerfectControl()
     : SimControlBase(),
-      map_service_(map_service),
+      map_service_(new SimMap()),
       node_(cyber::CreateNode("sim_perfect_control")),
       current_trajectory_(std::make_shared<ADCTrajectory>()) {
   InitTimerAndIO();

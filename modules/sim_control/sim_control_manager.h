@@ -23,9 +23,9 @@
 #include "cyber/cyber.h"
 #include "cyber/common/macros.h"
 #include "modules/common/configs/config_gflags.h"
-#include "modules/dreamview/backend/common/sim_control_manager/common/sim_control_gflags.h"
-#include "modules/dreamview/backend/common/sim_control_manager/core/dynamic_model_factory.h"
-#include "modules/dreamview/backend/common/sim_control_manager/core/sim_control_base.h"
+#include "modules/sim_control/common/sim_control_gflags.h"
+#include "modules/sim_control/core/dynamic_model_factory.h"
+#include "modules/sim_control/core/sim_control_base.h"
 
 /**
  * @namespace apollo::dreamview
