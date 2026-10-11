@@ -33,6 +33,7 @@
 #include "modules/common/util/message_util.h"
 #include "modules/dreamview/backend/common/dreamview_gflags.h"
 #include "modules/sim_control/common/sim_control_gflags.h"
+#include "modules/sim_control/sim_control_client.h"
 #include "modules/dreamview/backend/common/fuel_monitor/data_collection_monitor.h"
 #include "modules/dreamview/backend/common/fuel_monitor/fuel_monitor_gflags.h"
 #include "modules/dreamview/backend/common/fuel_monitor/fuel_monitor_manager.h"
@@ -60,6 +61,7 @@ using apollo::external_command::CommandStatus;
 using apollo::localization::LocalizationEstimate;
 using apollo::monitor::ComponentStatus;
 using apollo::monitor::SystemStatus;
+using apollo::sim_control::SimControlClient;
 using google::protobuf::util::JsonStringToMessage;
 using RLock = boost::shared_lock<boost::shared_mutex>;
 using WLock = boost::unique_lock<boost::shared_mutex>;
@@ -697,10 +699,88 @@ void HMIWorker::ResetMode() const {
   record_count_ = 0;
 }
 
+void HMIWorker::SyncSimControlProcess() {
+  const double now = Clock::NowInSeconds();
+  if (now < next_sim_control_sync_s_) {
+    return;
+  }
+  next_sim_control_sync_s_ = now + 1.0;
+
+  std::string cached;
+  {
+    RLock rlock(status_mutex_);
+    cached = status_.current_dynamic_model();
+  }
+  if (cached.empty()) {
+    return;
+  }
+
+  const auto service = SimControlClient::Instance()->QueryStatus();
+  // A missed reply is not a process restart. The next reply carries the
+  // instance id, and a blip must not stop and start the running model.
+  if (!service.reachable) {
+    return;
+  }
+
+  const bool first_observation = !sim_control_instance_known_;
+  const bool restarted = sim_control_instance_known_ &&
+                         service.instance_id != sim_control_instance_id_;
+  sim_control_instance_id_ = service.instance_id;
+  sim_control_instance_known_ = true;
+
+  if (!service.current_dynamic_model.empty()) {
+    if (cached != service.current_dynamic_model) {
+      WLock wlock(status_mutex_);
+      status_.set_current_dynamic_model(service.current_dynamic_model);
+      status_changed_ = true;
+    }
+    return;
+  }
+
+  std::string cached_after;
+  {
+    RLock rlock(status_mutex_);
+    cached_after = status_.current_dynamic_model();
+  }
+  if (cached_after != cached || cached_after.empty()) {
+    return;
+  }
+
+  // A new process enables the manager and selects nothing. Put the model the
+  // HMI still has selected onto that process. The same process with an empty
+  // model was stopped on purpose, so only drop the stale name.
+  if (service.enabled && (restarted || first_observation)) {
+    AINFO << "Restoring dynamic model after sim_control restart: "
+          << cached_after;
+    ChangeDynamicModel(cached_after);
+    {
+      RLock rlock(status_mutex_);
+      if (status_.current_dynamic_model() == cached_after) {
+        return;
+      }
+    }
+    WLock wlock(status_mutex_);
+    if (status_.current_dynamic_model() == cached_after) {
+      status_.set_current_dynamic_model("");
+      status_changed_ = true;
+    }
+    return;
+  }
+
+  if (!first_observation && !restarted) {
+    WLock wlock(status_mutex_);
+    if (status_.current_dynamic_model() == cached_after) {
+      status_.set_current_dynamic_model("");
+      status_changed_ = true;
+    }
+  }
+}
+
 void HMIWorker::StatusUpdateThreadLoop() {
   constexpr int kLoopIntervalMs = 200;
   while (!stop_) {
     std::this_thread::sleep_for(std::chrono::milliseconds(kLoopIntervalMs));
+    SyncSimControlProcess();
     UpdateComponentStatus();
     bool status_changed = false;
     {

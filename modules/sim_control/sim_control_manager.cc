@@ -37,10 +37,12 @@ Json SimControlManager::LoadDynamicModels() {
   return result;
 }
 
-void SimControlManager::Reset() {
+bool SimControlManager::Reset() {
   if (IsEnabled() && model_ptr_) {
     model_ptr_->Reset();
+    return true;
   }
+  return false;
 }
 
 void SimControlManager::ResetDynamicModel() {
@@ -96,35 +98,35 @@ void SimControlManager::Start() {
   }
 }
 
-void SimControlManager::ReSetPoinstion(double x, double y, double heading) {
+bool SimControlManager::ReSetPoinstion(double x, double y, double heading) {
   if (!IsEnabled() || !model_ptr_) {
     AERROR << "Sim control is invalid,Failed to ReSetPoinstion!";
-    return;
+    return false;
   }
   model_ptr_->ReSetPoinstion(x, y, heading);
-  return;
+  return true;
 }
 
-void SimControlManager::Restart(double x, double y) {
+bool SimControlManager::Restart(double x, double y) {
   // reset start point for dynamic model.
   if (!IsEnabled() || !model_ptr_) {
     AERROR << "Sim control is invalid,Failed to restart!";
-    return;
+    return false;
   }
   model_ptr_->Stop();
   model_ptr_->Start(x, y);
-  return;
+  return true;
 }
 
-void SimControlManager::Restart() {
+bool SimControlManager::Restart() {
   // reset start point for dynamic model.
   if (!IsEnabled() || !model_ptr_) {
     AERROR << "Sim control is invalid,Failed to restart!";
-    return;
+    return false;
   }
   model_ptr_->Stop();
   model_ptr_->Start();
-  return;
+  return true;
 }
 
 void SimControlManager::RunOnce() { model_ptr_->RunOnce(); }

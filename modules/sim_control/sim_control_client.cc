@@ -22,6 +22,7 @@
 #include <cstdlib>
 #include <string>
 
+#include "modules/common/adapters/adapter_gflags.h"
 #include "modules/common/configs/config_gflags.h"
 #include "modules/sim_control/sim_control_channel.h"
 
@@ -32,7 +33,27 @@ namespace {
 constexpr std::chrono::seconds kCommandTimeout(15);
 constexpr char kStartCommand[] = "bash /apollo/scripts/sim_control.sh start";
 constexpr char kStopCommand[] = "bash /apollo/scripts/sim_control.sh stop";
+
+void AddSharedFlag(SimControlCommand* command, const char* name,
+                   const std::string& value) {
+  command->add_shared_flag(std::string(name) + "=" + value);
+}
+
 }  // namespace
+
+void CopySharedRuntimeFlags(SimControlCommand* command) {
+  command->clear_shared_flag();
+  AddSharedFlag(command, "use_navigation_mode",
+                FLAGS_use_navigation_mode ? "true" : "false");
+  AddSharedFlag(command, "localization_topic", FLAGS_localization_topic);
+  AddSharedFlag(command, "chassis_topic", FLAGS_chassis_topic);
+  AddSharedFlag(command, "planning_trajectory_topic",
+                FLAGS_planning_trajectory_topic);
+  AddSharedFlag(command, "planning_command", FLAGS_planning_command);
+  AddSharedFlag(command, "prediction_topic", FLAGS_prediction_topic);
+  AddSharedFlag(command, "navigation_topic", FLAGS_navigation_topic);
+  AddSharedFlag(command, "control_command_topic", FLAGS_control_command_topic);
+}
 
 SimControlClient::SimControlClient() {
   node_ = apollo::cyber::CreateNode("sim_control_client");
@@ -57,6 +78,7 @@ std::shared_ptr<SimControlCommandResult> SimControlClient::Call(
   if (!request->has_map_dir() && !FLAGS_map_dir.empty()) {
     request->set_map_dir(FLAGS_map_dir);
   }
+  CopySharedRuntimeFlags(request.get());
   auto response = client_->SendRequest(request, kCommandTimeout);
   if (response == nullptr) {
     AERROR << "sim_control did not answer "
@@ -66,16 +88,31 @@ std::shared_ptr<SimControlCommandResult> SimControlClient::Call(
   return response;
 }
 
-bool SimControlClient::IsEnabled() {
+bool SimControlClient::IsEnabled() { return QueryStatus().enabled; }
+
+SimControlServiceStatus SimControlClient::QueryStatus() {
+  SimControlServiceStatus status;
   if (client_ == nullptr ||
       !client_->WaitForService(std::chrono::milliseconds(200))) {
-    return false;
+    return status;
   }
   SimControlCommand command;
   command.set_command(IS_ENABLED);
+  if (!FLAGS_map_dir.empty()) {
+    command.set_map_dir(FLAGS_map_dir);
+  }
+  CopySharedRuntimeFlags(&command);
   auto request = std::make_shared<SimControlCommand>(command);
   auto response = client_->SendRequest(request, std::chrono::seconds(2));
-  return response != nullptr && response->enabled();
+  if (response == nullptr) {
+    return status;
+  }
+  status.reachable = true;
+  status.enabled = response->enabled();
+  status.model_running = response->model_running();
+  status.instance_id = response->instance_id();
+  status.current_dynamic_model = response->current_dynamic_model();
+  return status;
 }
 
 nlohmann::json SimControlClient::LoadDynamicModels() {
@@ -121,41 +158,57 @@ bool SimControlClient::DeleteDynamicModel(
   return response != nullptr && response->success();
 }
 
-void SimControlClient::Restart(double x, double y) {
+bool SimControlClient::Restart(double x, double y) {
   SimControlCommand command;
   command.set_command(RESTART);
   command.set_has_pose(true);
   command.set_x(x);
   command.set_y(y);
-  Call(command);
+  auto response = Call(command);
+  return response != nullptr && response->success();
 }
 
-void SimControlClient::ReSetPoinstion(double x, double y, double heading) {
+bool SimControlClient::ReSetPoinstion(double x, double y, double heading) {
   SimControlCommand command;
   command.set_command(SET_POSITION);
   command.set_has_pose(true);
   command.set_x(x);
   command.set_y(y);
   command.set_heading(heading);
-  Call(command);
+  auto response = Call(command);
+  return response != nullptr && response->success();
 }
 
-void SimControlClient::Restart() {
+bool SimControlClient::Restart() {
   SimControlCommand command;
   command.set_command(RESTART);
-  Call(command);
+  auto response = Call(command);
+  return response != nullptr && response->success();
 }
 
-void SimControlClient::Reset() {
+bool SimControlClient::Reset() {
   SimControlCommand command;
   command.set_command(RESET);
-  Call(command);
+  auto response = Call(command);
+  return response != nullptr && response->success();
 }
 
 void SimControlClient::Start() {
   if (client_ != nullptr &&
       client_->WaitForService(std::chrono::milliseconds(200))) {
-    AINFO << "sim_control is already running.";
+    if (IsEnabled()) {
+      AINFO << "sim_control is already running.";
+      return;
+    }
+    // STOP leaves the process up and the manager disabled. The old in-process
+    // Start() turned the manager back on; do that instead of treating the
+    // process as already started.
+    SimControlCommand command;
+    command.set_command(START);
+    auto response = Call(command);
+    if (response == nullptr || !response->success() || !response->enabled()) {
+      AERROR << "sim_control is running but could not be enabled.";
+    }
     return;
   }
   AINFO << "Starting sim_control with: " << kStartCommand;

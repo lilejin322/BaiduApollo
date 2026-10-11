@@ -170,8 +170,8 @@ nlohmann::json Dreamview::HMICallbackSimControl(
       if (param_json.contains("x") && param_json.contains("y")) {
         const double x = param_json["x"];
         const double y = param_json["y"];
-        SimControlClient::Instance()->Restart(x, y);
-        callback_res["result"] = true;
+        callback_res["result"] =
+            SimControlClient::Instance()->Restart(x, y);
       }
     } break;
     case 1: {
@@ -233,8 +233,7 @@ nlohmann::json Dreamview::HMICallbackSimControl(
     case 6: {
       // restart dynamic model
       map_service_->ReloadMap(true);
-      SimControlClient::Instance()->Restart();
-      callback_res["result"] = true;
+      callback_res["result"] = SimControlClient::Instance()->Restart();
       break;
     }
     default:

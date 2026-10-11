@@ -26,6 +26,7 @@ apollo_cc_library(
     deps = [
         ":sim_control_gflags",
         "//cyber",
+        "//modules/common/adapters:adapter_gflags",
         "//modules/common/configs:config_gflags",
         "//modules/sim_control/proto:sim_control_command_cc_proto",
         "@com_github_nlohmann_json//:json",
@@ -95,6 +96,7 @@ apollo_component(
         ":sim_control",
         "//cyber",
         "//modules/common/configs:config_gflags",
+        "@com_github_gflags_gflags//:gflags",
         "//modules/map:apollo_map",
         "//modules/sim_control/proto:sim_control_command_cc_proto",
         "@com_github_nlohmann_json//:json",
@@ -109,6 +111,7 @@ apollo_cc_binary(
     ],
     copts = SIM_CONTROL_COPTS,
     deps = [
+        ":sim_control_client",
         ":sim_control_gflags",
         "//cyber",
         "//modules/common/configs:config_gflags",

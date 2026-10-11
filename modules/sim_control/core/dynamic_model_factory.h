@@ -36,6 +36,10 @@ class DynamicModelFactory {
   bool UnregisterDynamicModel(const std::string &dynamic_model_name);
   void GetDynamicModelPath(const std::string &dynamic_model_name,
                            std::string *path, bool get_conf_json = true);
+  // False until the singleton constructor returns. Perfect control binds its
+  // channel readers in that constructor, so shared channel flags have to be
+  // applied before the first call that creates the factory.
+  static bool IsConstructed();
 
  private:
   std::string dynamic_model_local_path_;

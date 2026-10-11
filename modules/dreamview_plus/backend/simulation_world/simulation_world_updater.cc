@@ -654,7 +654,13 @@ void SimulationWorldUpdater::RegisterMessageHandlers() {
             return;
           }
         }
-        sim_control_manager->ReSetPoinstion(x, y, heading);
+        if (!sim_control_manager->ReSetPoinstion(x, y, heading)) {
+          response["data"]["info"]["code"] = -1;
+          response["data"]["info"]["message"] =
+              "Failed to set start point because sim control did not apply it.";
+          websocket_->SendData(conn, response.dump());
+          return;
+        }
         // Send a ActionCommand to clear the trajectory of planning.
         if (isProcessRunning("planning.dag")) {
           auto action_command = std::make_shared<ActionCommand>();
@@ -894,10 +900,15 @@ void SimulationWorldUpdater::RegisterMessageHandlers() {
           return;
         }
         sim_world_service_.SetToClear();
-        SimControlClient::Instance()->Reset();
         response["action"] = "response";
-        response["data"]["info"]["code"] = 0;
-        response["data"]["info"]["message"] = "Success";
+        if (!SimControlClient::Instance()->Reset()) {
+          response["data"]["info"]["code"] = -1;
+          response["data"]["info"]["message"] =
+              "Failed to reset sim control.";
+        } else {
+          response["data"]["info"]["code"] = 0;
+          response["data"]["info"]["message"] = "Success";
+        }
         response["data"]["requestId"] = request_id;
         websocket_->SendData(conn, response.dump());
       });
@@ -1001,9 +1012,14 @@ void SimulationWorldUpdater::RegisterMessageHandlers() {
               "Failed to stop scenario simulation";
         } else {
           // Stop the vehicle at the current frame.
-          SimControlClient::Instance()->Reset();
-          response["data"]["info"]["code"] = 0;
-          response["data"]["info"]["message"] = "Success";
+          if (!SimControlClient::Instance()->Reset()) {
+            response["data"]["info"]["code"] = -1;
+            response["data"]["info"]["message"] =
+                "Failed to reset sim control.";
+          } else {
+            response["data"]["info"]["code"] = 0;
+            response["data"]["info"]["message"] = "Success";
+          }
         }
         websocket_->SendData(conn, response.dump());
       });
@@ -1075,7 +1091,13 @@ void SimulationWorldUpdater::RegisterMessageHandlers() {
         double x, y;
         JsonUtil::GetNumber(extrem_point["start"], "x", &x);
         JsonUtil::GetNumber(extrem_point["start"], "y", &y);
-        SimControlClient::Instance()->Restart(x, y);
+        if (!SimControlClient::Instance()->Restart(x, y)) {
+          response["data"]["info"]["code"] = -1;
+          response["data"]["info"]["message"] =
+              "Failed to restart sim control.";
+          websocket_->SendData(conn, response.dump());
+          return;
+        }
         if (!hmi_->StopScenarioSimulation()) {
           AWARN << "Failed to stop scenario simulation.";
         }

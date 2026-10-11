@@ -45,10 +45,14 @@ class SimControlManager {
   bool ChangeDynamicModel(const std::string &dynamic_model_name);
   bool DeleteDynamicModel(const std::string &dynamic_model_name);
   void ResetDynamicModel();
-  void Restart(double x, double y);
-  void ReSetPoinstion(double x, double y, double heading);
-  void Restart();
-  void Reset();
+  // False when sim control is disabled or no model is selected. The command
+  // is not applied in that case.
+  bool Restart(double x, double y);
+  bool ReSetPoinstion(double x, double y, double heading);
+  bool Restart();
+  bool Reset();
+  std::string CurrentDynamicModel() const { return current_dynamic_model_; }
+  bool HasModel() const { return model_ptr_ != nullptr; }
 
   virtual ~SimControlManager() { Stop(); }
 

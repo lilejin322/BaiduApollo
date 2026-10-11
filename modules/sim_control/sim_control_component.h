@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <cstdint>
 #include <memory>
 #include <mutex>
 
@@ -40,6 +41,8 @@ class SimControlComponent final : public apollo::cyber::Component<> {
       apollo::cyber::Service<SimControlCommand, SimControlCommandResult>>
       command_service_;
   std::mutex mutex_;
+  // Identifies this process so Dreamview can tell a restart from a live one.
+  uint64_t instance_id_ = 0;
 };
 
 CYBER_REGISTER_COMPONENT(SimControlComponent)

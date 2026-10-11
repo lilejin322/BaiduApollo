@@ -25,8 +25,13 @@ message SimControlCommand {
   // When true, RESTART uses (x, y) as the start point.
   optional bool has_pose = 6;
   // Map directory from the caller. The sim_control process reloads its HD map
-  // when this differs from the map it currently has loaded.
+  // when a map-using command carries a directory that differs from the map it
+  // currently has loaded. Stop and status commands ignore this field.
   optional string map_dir = 7;
+  // name=value gflags that used to be shared because Dreamview and sim_control
+  // were one process. use_navigation_mode is applied on every command. Channel
+  // names are applied only before a dynamic model binds its readers.
+  repeated string shared_flag = 8;
 }
 
 message SimControlCommandResult {
@@ -34,4 +39,10 @@ message SimControlCommandResult {
   optional bool enabled = 2;
   optional string message = 3;
   repeated string loaded_dynamic_models = 4;
+  optional string current_dynamic_model = 5;
+  // Stable for one sim_control process. Dreamview uses a change to detect a
+  // restart and restore the model the HMI still has selected.
+  optional uint64 instance_id = 6;
+  optional bool model_running = 7;
+  optional bool use_navigation_mode = 8;
 }

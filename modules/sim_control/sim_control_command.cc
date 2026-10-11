@@ -24,6 +24,7 @@
 #include "modules/sim_control/common/sim_control_gflags.h"
 #include "modules/sim_control/proto/sim_control_command.pb.h"
 #include "modules/sim_control/sim_control_channel.h"
+#include "modules/sim_control/sim_control_client.h"
 
 namespace {
 
@@ -44,6 +45,7 @@ std::shared_ptr<apollo::sim_control::SimControlCommandResult> Send(
   if (!FLAGS_map_dir.empty()) {
     request->set_map_dir(FLAGS_map_dir);
   }
+  apollo::sim_control::CopySharedRuntimeFlags(request.get());
   return client->SendRequest(request, kCommandTimeout);
 }
 

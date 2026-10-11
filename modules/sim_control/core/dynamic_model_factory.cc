@@ -15,6 +15,8 @@
  *****************************************************************************/
 #include "modules/sim_control/core/dynamic_model_factory.h"
 
+#include <atomic>
+
 #include "modules/sim_control/proto/dynamic_model_conf.pb.h"
 
 #include "cyber/class_loader/shared_library/exceptions.h"
@@ -48,12 +50,18 @@ struct DynamicModelInfo {
 };
 unordered_map<string, DynamicModelInfo> s_dynamic_model_map_;
 unordered_map<string, int> s_dm_lib_count_;
+std::atomic<bool> s_factory_constructed{false};
 
 DynamicModelFactory::DynamicModelFactory() : dynamic_model_local_path_("") {
   home_path_ = cyber::common::GetEnv("HOME");
   dynamic_model_local_path_ = home_path_ + FLAGS_resource_dynamic_model_path;
   // init should register default sim control:SimPerfectControl
   RegisterSimPerfectControl();
+  s_factory_constructed.store(true);
+}
+
+bool DynamicModelFactory::IsConstructed() {
+  return s_factory_constructed.load();
 }
 
 DynamicModelFactory::~DynamicModelFactory() {

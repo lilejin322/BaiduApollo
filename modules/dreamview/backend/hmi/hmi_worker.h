@@ -17,6 +17,7 @@
 #pragma once
 
 #include <atomic>
+#include <cstdint>
 #include <map>
 #include <memory>
 #include <string>
@@ -115,6 +116,8 @@ class HMIWorker {
   void InitReadersAndWriters();
   void InitStatus();
   void StatusUpdateThreadLoop();
+  // Re-selects the cached dynamic model after the sim_control process restarts.
+  void SyncSimControlProcess();
   // get command result
   std::string GetCommandRes(const std::string& cmd);
 
@@ -211,6 +214,10 @@ class HMIWorker {
   std::shared_ptr<cyber::Writer<apollo::common::DriveEvent>>
       drive_event_writer_;
   DvCallback callback_api_;
+
+  uint64_t sim_control_instance_id_ = 0;
+  bool sim_control_instance_known_ = false;
+  double next_sim_control_sync_s_ = 0;
 };
 
 }  // namespace dreamview

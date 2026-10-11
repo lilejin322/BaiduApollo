@@ -172,8 +172,12 @@ void SimulationWorldUpdater::RegisterMessageHandlers() {
             AWARN << "Set start point need set heading.";
             return;
           }
-          SimControlClient::Instance()->ReSetPoinstion(point["x"], point["y"],
-                                               point["heading"]);
+          if (!SimControlClient::Instance()->ReSetPoinstion(
+                  point["x"], point["y"], point["heading"])) {
+            AWARN << "Failed to set start point because sim control did not "
+                     "apply it.";
+            return;
+          }
 
           // Send a ActionCommand to clear the trajectory of planning.
           if (isProcessRunning("planning.dag")) {
@@ -421,7 +425,9 @@ void SimulationWorldUpdater::RegisterMessageHandlers() {
   websocket_->RegisterMessageHandler(
       "Reset", [this](const Json &json, WebSocketHandler::Connection *conn) {
         sim_world_service_.SetToClear();
-        SimControlClient::Instance()->Reset();
+        if (!SimControlClient::Instance()->Reset()) {
+          AWARN << "Failed to reset sim control.";
+        }
       });
 
   websocket_->RegisterMessageHandler(
