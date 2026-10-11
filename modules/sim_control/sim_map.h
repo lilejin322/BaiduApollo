@@ -21,8 +21,9 @@
 namespace apollo {
 namespace dreamview {
 
-// Lane queries sim control needs from the HD map. This replaces Dreamview's
-// MapService so the module does not link the Dreamview backend.
+// Map queries sim control needs. This replaces Dreamview's MapService so the
+// module does not link the Dreamview backend. PointIsValid follows
+// MapService: any sim-map element within 20 meters counts.
 class SimMap {
  public:
   bool PointIsValid(double x, double y) const;
@@ -31,6 +32,10 @@ class SimMap {
                                double* s) const;
 
   bool GetStartPoint(apollo::common::PointENU* start_point) const;
+
+  // Reloads the process-wide HD map. Shares one lock with every query so a
+  // reader cannot use a map object while it is being replaced.
+  static bool ReloadMaps();
 };
 
 }  // namespace dreamview

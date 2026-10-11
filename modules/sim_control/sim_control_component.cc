@@ -16,11 +16,13 @@
 
 #include "modules/sim_control/sim_control_component.h"
 
+#include <string>
+
 #include "nlohmann/json.hpp"
 
 #include "modules/common/configs/config_gflags.h"
-#include "modules/map/hdmap/hdmap_util.h"
 #include "modules/sim_control/sim_control_channel.h"
+#include "modules/sim_control/sim_map.h"
 #include "modules/sim_control/sim_control_manager.h"
 
 namespace apollo {
@@ -29,6 +31,11 @@ namespace sim_control {
 using apollo::dreamview::SimControlManager;
 
 bool SimControlComponent::Init() {
+  // The process being up is the switch. Enable before registering the
+  // service: a client returns as soon as it sees the service, and its next
+  // IS_ENABLED must not race this. Selecting a dynamic model is a later
+  // command, sent by Dreamview or scripts/sim_control_model.sh.
+  SimControlManager::Instance()->Start();
   command_service_ =
       node_->CreateService<SimControlCommand, SimControlCommandResult>(
           kSimControlCommandService,
@@ -40,28 +47,34 @@ bool SimControlComponent::Init() {
     AERROR << "Failed to create " << kSimControlCommandService;
     return false;
   }
-  // The process being up is the switch. HMI starts and stops that process
-  // with a shell command; later commands arrive on this service.
-  SimControlManager::Instance()->Start();
   AINFO << "sim_control command service ready: " << kSimControlCommandService;
   return true;
+}
+
+void SimControlComponent::Clear() {
+  std::lock_guard<std::mutex> lock(mutex_);
+  SimControlManager::Instance()->Stop();
 }
 
 void SimControlComponent::OnCommand(
     const std::shared_ptr<SimControlCommand>& request,
     std::shared_ptr<SimControlCommandResult>& response) {
   std::lock_guard<std::mutex> lock(mutex_);
+  auto* manager = SimControlManager::Instance();
   bool reload_map = request->command() == RESTART;
   if (request->has_map_dir() && !request->map_dir().empty() &&
       request->map_dir() != FLAGS_map_dir) {
     FLAGS_map_dir = request->map_dir();
     reload_map = true;
   }
-  if (reload_map && !apollo::hdmap::HDMapUtil::ReloadMaps()) {
+  if (reload_map && !apollo::dreamview::SimMap::ReloadMaps()) {
     AERROR << "Failed to reload map from " << FLAGS_map_dir;
+    response->set_success(false);
+    response->set_message("Failed to reload map from " + FLAGS_map_dir);
+    response->set_enabled(manager->IsEnabled());
+    return;
   }
 
-  auto* manager = SimControlManager::Instance();
   response->set_success(true);
   switch (request->command()) {
     case START:

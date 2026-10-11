@@ -16,6 +16,8 @@
 
 #include "modules/sim_control/sim_control_client.h"
 
+#include <sys/wait.h>
+
 #include <chrono>
 #include <cstdlib>
 #include <string>
@@ -28,10 +30,8 @@ namespace sim_control {
 
 namespace {
 constexpr std::chrono::seconds kCommandTimeout(15);
-constexpr char kStartCommand[] =
-    "bash /apollo/scripts/sim_control.sh start >/dev/null 2>&1";
-constexpr char kStopCommand[] =
-    "bash /apollo/scripts/sim_control.sh stop >/dev/null 2>&1";
+constexpr char kStartCommand[] = "bash /apollo/scripts/sim_control.sh start";
+constexpr char kStopCommand[] = "bash /apollo/scripts/sim_control.sh stop";
 }  // namespace
 
 SimControlClient::SimControlClient() {
@@ -46,14 +46,22 @@ std::shared_ptr<SimControlCommandResult> SimControlClient::Call(
     AERROR << "sim_control client was not created.";
     return nullptr;
   }
+  // SendRequest waits the full timeout when no server is registered. Fail
+  // fast instead, as the in-process manager did when sim control was off.
+  if (!client_->WaitForService(std::chrono::milliseconds(200))) {
+    AWARN << "sim_control is not running; skipped command "
+          << SimControlCommandType_Name(command.command());
+    return nullptr;
+  }
   auto request = std::make_shared<SimControlCommand>(command);
   if (!request->has_map_dir() && !FLAGS_map_dir.empty()) {
     request->set_map_dir(FLAGS_map_dir);
   }
   auto response = client_->SendRequest(request, kCommandTimeout);
   if (response == nullptr) {
-    AERROR << "sim_control is not running. Start it with "
-              "`cyber_launch start modules/sim_control/launch/sim_control.launch`.";
+    AERROR << "sim_control did not answer "
+           << SimControlCommandType_Name(command.command()) << " within "
+           << kCommandTimeout.count() << "s.";
   }
   return response;
 }
@@ -151,10 +159,20 @@ void SimControlClient::Start() {
     return;
   }
   AINFO << "Starting sim_control with: " << kStartCommand;
-  std::system(kStartCommand);
+  const int status = std::system(kStartCommand);
+  if (status == -1 || !WIFEXITED(status)) {
+    AERROR << "Failed to run sim_control start command, status=" << status;
+  } else {
+    const int exit_code = WEXITSTATUS(status);
+    // 0: launched. 2: already running.
+    if (exit_code != 0 && exit_code != 2) {
+      AERROR << "sim_control start command exited with " << exit_code;
+    }
+  }
   if (client_ == nullptr ||
       !client_->WaitForService(std::chrono::seconds(30))) {
-    AERROR << "sim_control did not register " << kSimControlCommandService;
+    AERROR << "sim_control did not register " << kSimControlCommandService
+           << ". Check the sim_control launch log above.";
   }
 }
 

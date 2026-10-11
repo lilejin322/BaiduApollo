@@ -40,6 +40,9 @@ py_library(
     data = [
         "//cyber/python/internal:_cyber_wrapper.so",
     ],
+    deps = [
+        "@com_google_protobuf//:protobuf_python",
+    ],
 )
 
 py_library(

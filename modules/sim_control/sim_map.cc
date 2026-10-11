@@ -18,6 +18,9 @@
 
 #include <vector>
 
+#include <boost/thread/locks.hpp>
+#include <boost/thread/shared_mutex.hpp>
+
 #include "cyber/common/log.h"
 #include "modules/map/hdmap/hdmap_util.h"
 
@@ -25,26 +28,92 @@ namespace apollo {
 namespace dreamview {
 
 using apollo::common::PointENU;
+using apollo::hdmap::ClearAreaInfoConstPtr;
+using apollo::hdmap::CrosswalkInfoConstPtr;
 using apollo::hdmap::HDMapUtil;
+using apollo::hdmap::JunctionInfoConstPtr;
 using apollo::hdmap::LaneInfoConstPtr;
+using apollo::hdmap::ParkingSpaceInfoConstPtr;
+using apollo::hdmap::PNCJunctionInfoConstPtr;
+using apollo::hdmap::SignalInfoConstPtr;
+using apollo::hdmap::SpeedBumpInfoConstPtr;
+using apollo::hdmap::StopSignInfoConstPtr;
+using apollo::hdmap::YieldSignInfoConstPtr;
+
+namespace {
+
+// Same element set as MapService::CollectMapElementIds. A query failure is
+// logged and does not by itself make the point invalid.
+template <typename InfoPtr>
+bool HasSimMapElements(const apollo::hdmap::HDMap* map, const PointENU& point,
+                       double radius, const char* element_name,
+                       int (apollo::hdmap::HDMap::*query)(
+                           const PointENU&, double, std::vector<InfoPtr>*)
+                           const) {
+  std::vector<InfoPtr> elements;
+  if ((map->*query)(point, radius, &elements) != 0) {
+    AERROR << "Fail to get " << element_name << " from sim_map.";
+  }
+  return !elements.empty();
+}
+
+boost::shared_mutex& MapMutex() {
+  static boost::shared_mutex mutex;
+  return mutex;
+}
+
+}  // namespace
+
+bool SimMap::ReloadMaps() {
+  boost::unique_lock<boost::shared_mutex> lock(MapMutex());
+  return HDMapUtil::ReloadMaps();
+}
 
 bool SimMap::PointIsValid(const double x, const double y) const {
-  const auto* map = HDMapUtil::BaseMapPtr();
-  if (map == nullptr) {
+  boost::shared_lock<boost::shared_mutex> lock(MapMutex());
+  // MapService::MapReady requires both the base map and the sim map.
+  if (HDMapUtil::BaseMapPtr() == nullptr || HDMapUtil::SimMapPtr() == nullptr) {
     return false;
   }
+  const auto* map = HDMapUtil::SimMapPtr();
   PointENU point;
   point.set_x(x);
   point.set_y(y);
-  std::vector<LaneInfoConstPtr> lanes;
-  if (map->GetLanes(point, 20.0, &lanes) != 0) {
-    return false;
-  }
-  return !lanes.empty();
+  constexpr double kRadius = 20.0;
+  return HasSimMapElements<LaneInfoConstPtr>(map, point, kRadius, "lanes",
+                                             &apollo::hdmap::HDMap::GetLanes) ||
+         HasSimMapElements<ClearAreaInfoConstPtr>(
+             map, point, kRadius, "clear areas",
+             &apollo::hdmap::HDMap::GetClearAreas) ||
+         HasSimMapElements<CrosswalkInfoConstPtr>(
+             map, point, kRadius, "crosswalks",
+             &apollo::hdmap::HDMap::GetCrosswalks) ||
+         HasSimMapElements<JunctionInfoConstPtr>(
+             map, point, kRadius, "junctions",
+             &apollo::hdmap::HDMap::GetJunctions) ||
+         HasSimMapElements<PNCJunctionInfoConstPtr>(
+             map, point, kRadius, "pnc junctions",
+             &apollo::hdmap::HDMap::GetPNCJunctions) ||
+         HasSimMapElements<ParkingSpaceInfoConstPtr>(
+             map, point, kRadius, "parking spaces",
+             &apollo::hdmap::HDMap::GetParkingSpaces) ||
+         HasSimMapElements<SpeedBumpInfoConstPtr>(
+             map, point, kRadius, "speed bumps",
+             &apollo::hdmap::HDMap::GetSpeedBumps) ||
+         HasSimMapElements<SignalInfoConstPtr>(
+             map, point, kRadius, "signals",
+             &apollo::hdmap::HDMap::GetSignals) ||
+         HasSimMapElements<StopSignInfoConstPtr>(
+             map, point, kRadius, "stop signs",
+             &apollo::hdmap::HDMap::GetStopSigns) ||
+         HasSimMapElements<YieldSignInfoConstPtr>(
+             map, point, kRadius, "yield signs",
+             &apollo::hdmap::HDMap::GetYieldSigns);
 }
 
 bool SimMap::GetPoseWithRegardToLane(const double x, const double y,
                                      double* theta, double* s) const {
+  boost::shared_lock<boost::shared_mutex> lock(MapMutex());
   const auto* map = HDMapUtil::BaseMapPtr();
   if (map == nullptr) {
     return false;
@@ -64,6 +133,7 @@ bool SimMap::GetPoseWithRegardToLane(const double x, const double y,
 }
 
 bool SimMap::GetStartPoint(apollo::common::PointENU* start_point) const {
+  boost::shared_lock<boost::shared_mutex> lock(MapMutex());
   const auto* map = HDMapUtil::BaseMapPtr();
   if (map == nullptr) {
     return false;

@@ -17,7 +17,6 @@
 #pragma once
 
 #include <memory>
-#include <mutex>
 #include <string>
 
 #include "nlohmann/json.hpp"
@@ -46,12 +45,9 @@ class SimControlClient {
   void Stop();
 
  private:
-  std::shared_ptr<SimControlCommandResult> Call(const SimControlCommand& command);
-  // Starts the sim_control process when a command needs it and the service
-  // is not registered yet. Status checks and Stop do not start the process.
-  bool EnsureRunning();
+  std::shared_ptr<SimControlCommandResult> Call(
+      const SimControlCommand& command);
 
-  std::mutex start_mutex_;
   std::shared_ptr<apollo::cyber::Node> node_;
   std::shared_ptr<
       apollo::cyber::Client<SimControlCommand, SimControlCommandResult>>

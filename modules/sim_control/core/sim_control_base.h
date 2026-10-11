@@ -116,6 +116,13 @@ class SimControlBase {
 
 /**
  * @brief Get SimControl class
+ *
+ * Entry point of a dynamic model library. A model must be built against the
+ * headers under modules/sim_control. Libraries built against the former
+ * modules/dreamview/backend/common/sim_control_manager headers are not
+ * compatible: SimControlWithModelBase now holds a SimMap instead of
+ * Dreamview's MapService, and these classes no longer live in the Dreamview
+ * libraries. Rebuild such models before loading them.
  */
 typedef SimControlBase* create_t(std::string dynamic_name,
                                  std::string home_path);

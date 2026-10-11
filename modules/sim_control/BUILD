@@ -1,4 +1,4 @@
-load("//tools:apollo_package.bzl", "apollo_cc_library", "apollo_cc_test", "apollo_component", "apollo_package")
+load("//tools:apollo_package.bzl", "apollo_cc_binary", "apollo_cc_library", "apollo_cc_test", "apollo_component", "apollo_package")
 load("//tools:cpplint.bzl", "cpplint")
 
 package(default_visibility = ["//visibility:public"])
@@ -76,6 +76,7 @@ apollo_cc_library(
         "//modules/common_msgs/routing_msgs:routing_cc_proto",
         "//modules/map:apollo_map",
         "//modules/sim_control/proto:dynamic_model_conf_cc_proto",
+        "@boost",
         "//modules/sim_control/proto:sim_control_internal_cc_proto",
         "@com_github_nlohmann_json//:json",
         "@eigen",
@@ -100,12 +101,27 @@ apollo_component(
     ],
 )
 
+apollo_cc_binary(
+    name = "sim_control_command",
+    srcs = [
+        "sim_control_command.cc",
+        "sim_control_channel.h",
+    ],
+    copts = SIM_CONTROL_COPTS,
+    deps = [
+        ":sim_control_gflags",
+        "//cyber",
+        "//modules/common/configs:config_gflags",
+        "//modules/sim_control/proto:sim_control_command_cc_proto",
+    ],
+)
+
 apollo_cc_test(
     name = "sim_control_test",
     size = "small",
     srcs = ["dynamic_model/perfect_control/sim_control_test.cc"],
     data = [
-        "//modules/dreamview/backend/testdata",
+        "testdata/garage.bin",
     ],
     deps = [
         ":sim_control",
@@ -117,6 +133,7 @@ apollo_cc_test(
 filegroup(
     name = "runtime_data",
     srcs = glob([
+        "conf/*.conf",
         "dag/*.dag",
         "launch/*.launch",
     ]),

@@ -33,6 +33,13 @@ using ::std::string;
 using ::std::unordered_map;
 using SharedLibraryPtr = std::shared_ptr<SharedLibrary>;
 
+namespace {
+// See create_t in sim_control_base.h.
+constexpr char kRebuildHint[] =
+    " (a dynamic model built against the old Dreamview sim_control_manager "
+    "headers must be rebuilt against modules/sim_control)";
+}  // namespace
+
 struct DynamicModelInfo {
   std::string dynamic_model_name;
   std::string library_name;
@@ -102,14 +109,16 @@ bool DynamicModelFactory::RegisterDynamicModel(const std::string &dm_dir_name) {
   }
   std::string dm_library_name = dynamic_model_conf.library_name();
   std::string depend_model_package = dynamic_model_conf.depend_model_package();
-  std::replace(depend_model_package.begin(), depend_model_package.end(), '-', '_');
+  std::replace(depend_model_package.begin(), depend_model_package.end(), '-',
+               '_');
 
   std::string dynamic_model_package_library_path =
       FLAGS_dynamic_model_package_library_path +
       depend_model_package + "/" + dm_library_name;
   SharedLibraryPtr shared_library = nullptr;
   AINFO << "dm_library_name: " << dm_library_name;
-  AINFO << "dynamic_model_package_library_path: " << dynamic_model_package_library_path;
+  AINFO << "dynamic_model_package_library_path: "
+        << dynamic_model_package_library_path;
 
   try {
     // todo(@lijin):when to unload
@@ -137,13 +146,13 @@ bool DynamicModelFactory::RegisterDynamicModel(const std::string &dm_dir_name) {
       s_dm_lib_count_[dm_library_name]++;
     }
   } catch (const LibraryLoadException &e) {
-    AERROR << "LibraryLoadException: " << e.what();
+    AERROR << "LibraryLoadException: " << e.what() << kRebuildHint;
     return false;
   } catch (const LibraryAlreadyLoadedException &e) {
     AERROR << "LibraryAlreadyLoadedException: " << e.what();
     return false;
   } catch (const SymbolNotFoundException &e) {
-    AERROR << "SymbolNotFoundException: " << e.what();
+    AERROR << "SymbolNotFoundException: " << e.what() << kRebuildHint;
     return false;
   }
   return true;
@@ -222,7 +231,10 @@ bool DynamicModelFactory::UnregisterDynamicModel(
     return true;
   }
   std::string library_name = iter->second.library_name;
-  s_dynamic_model_map_.erase(dynamic_model_name);
+  std::string depend_model_package = iter->second.depend_model_package;
+  SimControlBase* dynamic_model_ptr = iter->second.dynamic_model_ptr;
+  s_dynamic_model_map_.erase(iter);
+  (void)depend_model_package;
   std::string dynamic_model_dir;
   GetDynamicModelPath(dynamic_model_name, &dynamic_model_dir, false);
   std::string command = "rm -fr " + dynamic_model_dir;
@@ -235,7 +247,6 @@ bool DynamicModelFactory::UnregisterDynamicModel(
   }
   // delete related library if library is only used by this dynamic model
   auto count_iter = s_dm_lib_count_.find(library_name);
-  std::string depend_model_package = iter->second.depend_model_package;
   if (count_iter->second == 1) {
     std::string lib_path =
         home_path_ + FLAGS_dynamic_model_library_path + library_name;
@@ -243,7 +254,7 @@ bool DynamicModelFactory::UnregisterDynamicModel(
     // todo(chenhuanguang): confirm delete package command
     // std::string remove_package_command = "";
     // if (std::system(command.data()) != 0) {
-    //   AERROR << "Failed to remove package: " << depend_model_package 
+    //   AERROR << "Failed to remove package: " << depend_model_package
     //         << " error: " << std::strerror(errno);
     //   return false;
     // }
@@ -251,7 +262,6 @@ bool DynamicModelFactory::UnregisterDynamicModel(
   } else {
     s_dm_lib_count_[library_name]--;
   }
-  auto dynamic_model_ptr = iter->second.dynamic_model_ptr;
   delete dynamic_model_ptr;
 
   return true;

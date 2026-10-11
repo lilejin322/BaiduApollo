@@ -4,6 +4,7 @@ module_config {
         class_name : "SimControlComponent"
         config {
             name : "sim_control"
+            flag_file_path: "/apollo/modules/sim_control/conf/sim_control.conf"
         }
     }
 }

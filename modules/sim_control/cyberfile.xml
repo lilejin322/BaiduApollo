@@ -20,6 +20,13 @@
   <depend type="binary" repo_name="common-msgs" lib_names="common-msgs">common-msgs</depend>
   <depend type="binary" repo_name="map" lib_names="map">map</depend>
 
+  <depend repo_name="boost">3rd-boost</depend>
+  <depend repo_name="com_github_gflags_gflags" lib_names="gflags">3rd-gflags</depend>
+  <depend repo_name="com_github_google_glog" lib_names="glog">3rd-glog</depend>
+  <depend repo_name="com_github_nlohmann_json" lib_names="single_json,json">3rd-nlohmann-json</depend>
+  <depend repo_name="eigen">3rd-eigen3</depend>
+  <depend lib_names="protobuf" repo_name="com_google_protobuf">3rd-protobuf</depend>
+
   <depend>bazel-extend-tools</depend>
   <depend expose="False">3rd-rules-python</depend>
   <depend expose="False">3rd-grpc</depend>

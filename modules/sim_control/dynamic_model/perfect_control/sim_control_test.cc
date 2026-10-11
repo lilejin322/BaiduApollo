@@ -46,7 +46,7 @@ class SimControlTest : public ::testing::Test {
   }
 
   virtual void SetUp() {
-    FLAGS_map_dir = "modules/dreamview/backend/testdata";
+    FLAGS_map_dir = "modules/sim_control/testdata";
     FLAGS_base_map_filename = "garage.bin";
     sim_control_.reset(new SimPerfectControl());
   }

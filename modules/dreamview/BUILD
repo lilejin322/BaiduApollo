@@ -17,6 +17,7 @@ apollo_cc_binary(
     copts = DREAMVIEW_COPTS + copts_if_teleop(),
     data = [
         ":frontend",
+        "//modules/sim_control:libsim_control_component.so",
     ],
     deps = [
         "//cyber",

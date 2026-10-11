@@ -20,4 +20,4 @@ cyber_modules {
 operations: Record
 operations: Scenario_Sim
 operations: Sim_Control
-default_operation: Sim_Control
+default_operation: Record

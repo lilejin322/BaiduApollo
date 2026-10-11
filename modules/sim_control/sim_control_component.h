@@ -28,6 +28,9 @@ namespace sim_control {
 class SimControlComponent final : public apollo::cyber::Component<> {
  public:
   bool Init() override;
+  // Runs on process shutdown: stops the dynamic model and sim_obstacle, as
+  // SimControlManager::Stop did when Dreamview turned sim control off.
+  void Clear() override;
 
  private:
   void OnCommand(const std::shared_ptr<SimControlCommand>& request,
