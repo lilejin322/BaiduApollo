@@ -85,3 +85,6 @@ tools/FlameGraph
 modules/studio_connector
 
 #WORKSPACE
+
+# Audits
+audits/
