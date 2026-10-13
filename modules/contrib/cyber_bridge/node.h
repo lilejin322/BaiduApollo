@@ -6,6 +6,7 @@
  */
 #pragma once
 
+#include <cstdint>
 #include <memory>
 #include <mutex>
 #include <string>
@@ -19,6 +20,8 @@ template <class T>
 class Writer;
 template <class T>
 class Reader;
+template <typename Request, typename Response>
+class Client;
 
 namespace message {
 class PyMessageWrap;
@@ -41,6 +44,12 @@ class Node {
                   std::shared_ptr<Client> client);
 
   void publish(const std::string& channel, const std::string& data);
+
+  // Answers the client through Client::service_response once the service
+  // replies or the request times out.
+  void call_service(const std::string& service, const std::string& type,
+                    const std::string& request, uint32_t request_id,
+                    std::shared_ptr<Client> client);
 
  private:
   std::unique_ptr<apollo::cyber::Node> node;
@@ -66,4 +75,10 @@ class Node {
   typedef std::unordered_map<std::string, Reader> Readers;
   Writers writers;
   Readers readers;
+
+  typedef apollo::cyber::Client<apollo::cyber::message::PyMessageWrap,
+                                apollo::cyber::message::PyMessageWrap>
+      ServiceClient;
+  std::unordered_map<std::string, std::shared_ptr<ServiceClient>>
+      service_clients;
 };
