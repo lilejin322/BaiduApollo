@@ -48,6 +48,13 @@ function set_lib_path() {
   pathprepend ${APOLLO_ROOT_DIR}/modules/tools PYTHONPATH
   pathprepend ${APOLLO_ROOT_DIR}/modules/teleop/common PYTHONPATH
   pathprepend /apollo/modules/teleop/common/scripts
+  # Source launches are also used with the apollo-env/buildtool installation.
+  # Select its complete Python launchers/runfiles after the source setup,
+  # while retaining this checkout's map, DAG and configuration paths.
+  if [[ -f /opt/apollo/neo/setup.sh ]]; then
+    source /opt/apollo/neo/setup.sh
+    export APOLLO_ENV_WORKROOT="${APOLLO_ROOT_DIR}"
+  fi
 }
 
 function site_restore() {

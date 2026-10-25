@@ -34,7 +34,9 @@ build --cxxopt="-fdiagnostics-color=always"
 # Do not show warnings from external dependencies.
 # build --output_filter="^//"
 
-build --per_file_copt=external/upb/.*@-Wno-sign-compare
+# Legacy upb calls nullz() after strncpy(); GCC 11 cannot see the explicit
+# terminator when diagnosing truncation. Keep the warning without -Werror.
+build --per_file_copt=external/upb/.*@-Wno-sign-compare,-Wno-error=stringop-truncation
 # build --copt="-Werror=sign-compare"
 build --copt="-Werror=return-type"
 # build --copt="-Werror=unused-variable"
@@ -88,8 +90,10 @@ build:c++17 --cxxopt=-std=c++1z
 build:c++1z --config=c++17
 
 # Enable C++14 (aka c++1y) by default
-build --cxxopt="-std=c++14"
-build --host_cxxopt="-std=c++14"
+# apollo-env u23's prebuilt Abseil uses C++17 std::string_view/optional.
+# Match that ABI in both target code and build-time C++ tools.
+build --cxxopt="-std=c++17"
+build --host_cxxopt="-std=c++17"
 
 # +------------------------------------------------------------+
 # | Test Configurations                                        |

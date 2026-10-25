@@ -233,8 +233,8 @@ void MlfDirectionFilter::ComputeVarianceAndAngular(
         continue;
       }
       double angle_change = algorithm::CalculateTheta2DXY<double>(
-        history_objects[i]->direction.head(2),
-        history_objects[j]->direction.head(2));
+        history_objects[i]->direction,
+        history_objects[j]->direction);
       if (angle_change >= 0.0) {
         angular_vec.push_back(1);
         agreed_dir_num += 1.0;
@@ -284,8 +284,8 @@ void MlfDirectionFilter::ComputeMeasurementConfidence(
     (new_object->sensor_to_local_pose.rotation()).cast<float>()
     * polygon_direction;
   double direction_diff = std::fabs(
-    algorithm::CalculateTheta2DXY<double>(new_object->direction.head(2),
-    polygon_direction.head(2).cast<double>()));
+    algorithm::CalculateTheta2DXY<double>(new_object->direction,
+    polygon_direction.cast<double>()));
   direction_diff = direction_diff > M_PI / 2.0 ?
       M_PI - direction_diff : direction_diff;
   direction_diff = direction_diff > M_PI / 4.0 ?
