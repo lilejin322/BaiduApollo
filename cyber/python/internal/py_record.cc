@@ -97,7 +97,8 @@ PyObject *cyber_PyRecordReader_ReadMessage(PyObject *self, PyObject *args) {
   Py_DECREF(bld_name);
 
   PyObject *bld_data =
-      Py_BuildValue("y#", result.data.c_str(), result.data.length());
+      Py_BuildValue("y#", result.data.c_str(),
+                    static_cast<Py_ssize_t>(result.data.length()));
 
   ACHECK(bld_data) << "Py_BuildValue returns NULL.";
   PyDict_SetItemString(pyobj_bag_message, "data", bld_data);

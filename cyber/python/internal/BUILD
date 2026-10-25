@@ -15,6 +15,7 @@ apollo_cc_binary(
 
 apollo_cc_library(
     name = "py_cyber",
+    defines = ["PY_SSIZE_T_CLEAN"],
     srcs = ["py_cyber.cc"],
     hdrs = ["py_cyber.h"],
     deps = [
@@ -48,6 +49,7 @@ apollo_cc_binary(
 
 apollo_cc_library(
     name = "py_record",
+    defines = ["PY_SSIZE_T_CLEAN"],
     srcs = ["py_record.cc"],
     hdrs = ["py_record.h"],
     deps = [
@@ -82,6 +84,7 @@ apollo_cc_binary(
 
 apollo_cc_library(
     name = "py_time",
+    defines = ["PY_SSIZE_T_CLEAN"],
     srcs = ["py_time.cc"],
     hdrs = ["py_time.h"],
     deps = [
@@ -104,6 +107,7 @@ apollo_cc_binary(
 
 apollo_cc_library(
     name = "py_timer",
+    defines = ["PY_SSIZE_T_CLEAN"],
     srcs = ["py_timer.cc"],
     hdrs = ["py_timer.h"],
     deps = [
@@ -125,6 +129,7 @@ apollo_cc_binary(
 
 apollo_cc_library(
     name = "py_parameter",
+    defines = ["PY_SSIZE_T_CLEAN"],
     srcs = ["py_parameter.cc"],
     hdrs = ["py_parameter.h"],
     deps = [
