@@ -65,6 +65,11 @@ function setup_user_account_if_not_exist() {
   fi
   _create_user_account "$@"
   setup_user_bashrc "${uid}" "${gid}" "${user_name}"
+  # Passwordless sudo, as aem's docker_start_user.sh grants: buildtool runs
+  # sudo to install packages/models, and the apollo-env images (unlike the old
+  # dev images) only give NOPASSWD to their built-in "apollo" user.
+  echo "${user_name} ALL=(ALL) NOPASSWD:ALL" > "/etc/sudoers.d/${user_name}"
+  chmod 0440 "/etc/sudoers.d/${user_name}"
 }
 
 function grant_device_permissions() {

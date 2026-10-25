@@ -31,6 +31,16 @@ SUPPORTED_ARCHS=(x86_64 aarch64)
 TARGET_ARCH="$(uname -m)"
 
 VERSION_X86_64="dev-x86_64-18.04-20240620_1444"
+# x86_64 NVIDIA dev image: the Apollo 10.0+ env image (Ubuntu 22.04, CUDA 11.8,
+# TensorRT 8.6) that aem uses, instead of the 18.04 / CUDA 11.1 / TensorRT 7.2
+# dev image above, which cannot target RTX 40xx (sm_89). Only on the Baidu
+# registry, so it is fully qualified. Map/audio volumes still use DOCKER_REPO.
+NVIDIA_DEV_REPO_X86_64="registry.baidubce.com/apollo/apollo-env-gpu"
+NVIDIA_DEV_VERSION_X86_64="10.0-u23"
+# Hugging Face dataset mirroring what the Baidu servers serve: docker images
+# (dev image, map and data volumes), installed packages (neo volume),
+# perception models, the Bazel repository cache
+NEO_DEPS_REPO="${APOLLO_NEO_DEPS_REPO:-lilejin322/BaiduApolloCtn}"
 TESTING_VERSION_X86_64="dev-x86_64-18.04-testing-20210112_0008"
 
 VERSION_AARCH64="dev-aarch64-20.04-20240626_1642"
@@ -239,6 +249,9 @@ function determine_dev_image() {
       elif (($USE_NVIDIA_GPU == 1)) || (($USE_GPU_HOST == 0)); then
         if [[ "${CUSTOM_DIST}" == "testing" ]]; then
           version="${TESTING_VERSION_X86_64}"
+        elif (($USE_NVIDIA_GPU == 1)); then
+          docker_repo="${NVIDIA_DEV_REPO_X86_64}"
+          version="${NVIDIA_DEV_VERSION_X86_64}"
         else
           version="${VERSION_X86_64}"
         fi
@@ -285,8 +298,10 @@ function check_timezone_cn() {
   #     return 0
   #   fi
   # done
-  # disable docker.io image source
-  GEOLOC="cn" 
+  # Upstream forces GEOLOC="cn" here, which sends every image pull (map and
+  # data volumes) to registry.baidubce.com. Images come from Hugging Face,
+  # else Docker Hub, instead; `-g cn` still selects the Baidu registry.
+  return 0
 }
 
 function setup_devices_and_mount_local_volumes() {
@@ -338,6 +353,47 @@ function setup_devices_and_mount_local_volumes() {
   eval "${__retval}='${volumes}'"
 }
 
+# Prefix GEO_REGISTRY unless the image already names a registry host
+# (a first path component with a dot, e.g. registry.baidubce.com/...).
+function with_geo_registry() {
+  local img="$1"
+  if [[ -n "${GEO_REGISTRY}" && "${img%%/*}" != *.* ]]; then
+    img="${GEO_REGISTRY}/${img}"
+  fi
+  echo "${img}"
+}
+
+# Download a (large) file into ${HF_DOWNLOAD_DIR} and print its path. An
+# interrupted download is resumed, on a retry here or on the next dev_start.sh
+# run; the result is checked against the sha256 Hugging Face reports
+# (X-Linked-Etag). Callers delete the file once they have used it.
+HF_DOWNLOAD_DIR="${APOLLO_DOWNLOAD_DIR:-/var/tmp/apollo_downloads_${USER}}"
+function hf_fetch() {
+  local url="$1"
+  local file="${HF_DOWNLOAD_DIR}/$(basename "${url%%\?*}")"
+  mkdir -p "${HF_DOWNLOAD_DIR}" || return 1
+  # parallel A/AAAA lookups stall 5s on some networks; serialize them
+  local -x RES_OPTIONS="${RES_OPTIONS:-single-request-reopen}"
+  local sha
+  sha="$(curl -fsSI --retry 5 "${url}" | tr -d '\r' \
+    | awk -F'"' 'tolower($0) ~ /^x-linked-etag:/ {print $2}')"
+  local i
+  for i in $(seq 1 20); do
+    # -C -: continue from what is already in the file
+    curl -fL -C - --retry 5 --retry-delay 3 -o "${file}" "${url}" >&2 && break
+    # 416: the file is already complete
+    [[ -n "${sha}" ]] && echo "${sha}  ${file}" | sha256sum -c --status && break
+    warning "Download of ${url} interrupted; resuming (${i}/20) ..."
+    sleep 3
+  done
+  if [[ -n "${sha}" ]] && ! echo "${sha}  ${file}" | sha256sum -c --status; then
+    error "Checksum mismatch for ${file}; removed it"
+    rm -f "${file}"
+    return 1
+  fi
+  echo "${file}"
+}
+
 function docker_pull() {
   local img="$1"
   if [[ "${USE_LOCAL_IMAGE}" -gt 0 ]]; then
@@ -347,9 +403,25 @@ function docker_pull() {
     fi
     warning "Image ${img} not found locally although local mode enabled. Trying to pull from remote registry."
   fi
-  if [[ -n "${GEO_REGISTRY}" ]]; then
-    img="${GEO_REGISTRY}/${img}"
+  img="$(with_geo_registry "${img}")"
+
+  # Use a local copy as is, else load the copy mirrored on Hugging Face (the
+  # apollo-env image lives on registry.baidubce.com only), else pull it.
+  if docker image inspect "${img}" > /dev/null 2>&1; then
+    info "Local image ${img} found and will be used."
+    return
   fi
+  local name="${img##*/}"
+  name="${name/:/-}.tar.gz" # apollo-env-gpu-10.0-u23.tar.gz
+  local url="${APOLLO_IMAGES_URL:-https://huggingface.co/datasets/${NEO_DEPS_REPO}/resolve/main}/${name}"
+  info "Loading docker image ${img} from ${url} ..."
+  local file
+  if file="$(hf_fetch "${url}")" && docker load -i "${file}" \
+      && docker image inspect "${img}" > /dev/null 2>&1; then
+    rm -f "${file}"
+    return
+  fi
+  warning "Could not load ${img} from ${url}; pulling it from the registry"
 
   info "Start pulling docker image ${img} ..."
   if ! docker pull "${img}"; then
@@ -422,7 +494,175 @@ function mount_other_volumes() {
   local audio_path="/apollo/modules/audio/data/"
   docker_restart_volume "${audio_volume}" "${audio_image}" "${audio_path}"
   volume_conf="${volume_conf} --volume ${audio_volume}:${audio_path}"
+
+  # buildtool installs the third-party packages and the built Apollo under
+  # /opt/apollo/neo at runtime. Keep that in a named volume that outlives the
+  # container (unlike the volumes above, it is never recreated), so a new
+  # container runs the existing build instead of rebuilding everything.
+  # Docker fills a new, empty volume with the image's /opt/apollo/neo.
+  # APOLLO_NEO_VOLUME_RESET=1 starts over from the image.
+  if [[ "${DEV_IMAGE}" == *apollo-env* ]]; then
+    local neo_volume="apollo_neo_volume_${USER}"
+    if [[ "${APOLLO_NEO_VOLUME_RESET:-0}" == "1" ]]; then
+      info "Removing volume ${neo_volume} (APOLLO_NEO_VOLUME_RESET=1)"
+      docker volume rm "${neo_volume}" > /dev/null 2>&1
+    fi
+    if docker volume inspect "${neo_volume}" > /dev/null 2>&1; then
+      info "Reuse volume ${neo_volume} for /opt/apollo/neo"
+    else
+      info "Create volume ${neo_volume} for /opt/apollo/neo"
+      docker volume create "${neo_volume}" > /dev/null
+    fi
+    volume_conf="${volume_conf} --volume ${neo_volume}:/opt/apollo/neo"
+  fi
   OTHER_VOLUMES_CONF="${volume_conf}"
+}
+
+# buildtool's package index (~7M) comes from the Baidu server, which can take
+# minutes per container on slow links, and the patched buildtool no longer
+# downloads it (fix_buildtool_index_cache.py). The index ships in this tree
+# instead; refresh it with docker/scripts/save_buildtool_index.sh.
+BUILDTOOL_INDEX_ARCHIVE="/apollo/docker/scripts/buildtool_index/index.tar.gz"
+function seed_buildtool_index() {
+  local container="$1"
+  docker exec -u "${USER}" "${container}" bash -c "
+      set -e
+      mkdir -p /opt/apollo/neo/share/buildtool
+      tar -xzf ${BUILDTOOL_INDEX_ARCHIVE} -C /opt/apollo/neo/share/buildtool" \
+    || { error "Could not restore buildtool's package index from ${BUILDTOOL_INDEX_ARCHIVE}"; return 1; }
+  info "Restored buildtool's package index from ${BUILDTOOL_INDEX_ARCHIVE}"
+}
+
+# The apollo_neo_volume (see mount_other_volumes) holds buildtool's installed
+# packages. A volume without them (first use, APOLLO_NEO_VOLUME_RESET=1) is
+# seeded from the archive docker/scripts/publish_neo_deps.sh puts on Hugging
+# Face (one ~GB download instead of buildtool fetching ~100 packages file by
+# file from the Baidu servers); a volume that has them is reused offline.
+# Either way the packages' dpkg records go into the new container, since
+# buildtool checks `dpkg -l` to see what is installed.
+NEO_DEPS_RESTORED=0
+function restore_neo_deps() {
+  local container="$1"
+  local marker="/opt/apollo/neo/.neo_deps/VERSION"
+  if docker exec "${container}" test -f "${marker}"; then
+    info "Reuse installed packages in the neo volume ($(docker exec "${container}" cat "${marker}"))"
+    NEO_DEPS_RESTORED=1
+  else
+    local name="neo-deps-${DEV_IMAGE##*:}.tar.gz"
+    local url="${APOLLO_NEO_DEPS_URL:-https://huggingface.co/datasets/${NEO_DEPS_REPO}/resolve/main/${name}}"
+    info "Seeding the neo volume from ${url} ..."
+    local file
+    if ! file="$(hf_fetch "${url}")" \
+        || ! docker exec -i -u root "${container}" tar -xzf - -C /opt/apollo/neo < "${file}" \
+        || ! docker exec "${container}" test -f "${marker}"; then
+      warning "Could not seed the neo volume; buildtool will install the packages itself"
+      return 0
+    fi
+    rm -f "${file}"
+    NEO_DEPS_RESTORED=1
+  fi
+  docker exec -u root "${container}" \
+    python3 /apollo/docker/scripts/neo_deps_state.py restore \
+    || { error "Could not restore the dpkg records of the installed packages"; return 1; }
+}
+
+# The perception model weights are not in git; buildtool would fetch them from
+# the Baidu servers. Restore them from Hugging Face into the source tree, once
+# (see publish_perception_models.sh).
+function restore_perception_models() {
+  source "${CURR_DIR}/perception_models.sh"
+  local f missing=0
+  for f in "${PERCEPTION_MODEL_WEIGHTS[@]}"; do
+    [[ -f "${APOLLO_ROOT_DIR}/${PERCEPTION_MODELS_DIR}/${f}" ]] || missing=1
+  done
+  [[ "${missing}" -eq 0 ]] && return 0
+  local url="${APOLLO_PERCEPTION_MODELS_URL:-https://huggingface.co/datasets/${NEO_DEPS_REPO}/resolve/main/${PERCEPTION_MODELS_ARCHIVE}}"
+  info "Restoring perception models from ${url} ..."
+  local file
+  if file="$(hf_fetch "${url}")" && tar -xzf "${file}" -C "${APOLLO_ROOT_DIR}"; then
+    rm -f "${file}"
+  else
+    warning "Could not restore the perception models; perception will not start"
+  fi
+}
+
+# Several WORKSPACE archives are hosted only on the Baidu servers. Seed an
+# empty Bazel repository cache from Hugging Face; Bazel then finds them by
+# sha256 instead of downloading (see publish_bazel_cache.sh).
+function restore_bazel_repo_cache() {
+  local cache="${APOLLO_ROOT_DIR}/.cache/bazel/cache/repos/v1/content_addressable/sha256"
+  [[ -n "$(ls -A "${cache}" 2> /dev/null)" ]] && return 0
+  local url="${APOLLO_BAZEL_CACHE_URL:-https://huggingface.co/datasets/${NEO_DEPS_REPO}/resolve/main/bazel-repo-cache.tar.gz}"
+  info "Restoring the Bazel repository cache from ${url} ..."
+  mkdir -p "${APOLLO_ROOT_DIR}/.cache"
+  local file
+  if file="$(hf_fetch "${url}")" && tar -xzf "${file}" -C "${APOLLO_ROOT_DIR}"; then
+    rm -f "${file}"
+  else
+    warning "Could not restore the Bazel repository cache; Bazel will download it"
+  fi
+}
+
+# The apollo-env images are meant for aem, which prepares them after creating
+# the container (aem funcs.sh apollo_container_created_post_action); do the
+# same here, or buildtool cannot write /opt/apollo/neo/setup.sh (owned by the
+# image's "apollo" user).
+function postrun_apollo_env_image() {
+  local container="$1"
+  [[ "${DEV_IMAGE}" == *apollo-env* ]] || return 0
+  # parallel A/AAAA lookups can stall 5s on some networks, which trips
+  # buildtool's 5s network check; ask glibc to send them one after another
+  local res_opts="RES_OPTIONS=single-request-reopen"
+  info "Preparing apollo-env image (buildtool, permissions) ..."
+  restore_neo_deps "${container}" || return 1
+  # The neo volume carries the buildtool the packages were installed with;
+  # only without it (or with APOLLO_UPGRADE_BUILDTOOL=1) ask the Baidu apt
+  # repo for the latest buildtool.
+  if [[ "${NEO_DEPS_RESTORED}" -eq 0 || "${APOLLO_UPGRADE_BUILDTOOL:-0}" -eq 1 ]]; then
+    docker exec -u root -e "${res_opts}" "${container}" bash -c \
+      "apt-get update -qq && apt-get install --only-upgrade -y -qq apollo-neo-buildtool" \
+      || warning "Could not upgrade apollo-neo-buildtool; keeping the image's version"
+  fi
+  # buildtool's network check is one curl with a 5s timeout and no retry, so a
+  # slow lookup flips the whole run to offline mode. The upgrade above
+  # reinstalls that version, so re-apply the retry patch (15s x 7) every time.
+  docker exec -u root "${container}" \
+    python3 /apollo/docker/scripts/patches/fix_buildtool_network_check.py \
+    || warning "Could not patch buildtool's network check"
+  # buildtool assumes package-workspace tools/external paths. Full Apollo
+  # source trees keep OpenSSL's build rule under third_party/openssl instead.
+  # Also preserve source-mode proto deps during whole-workspace builds.
+  docker exec -u root "${container}" \
+    python3 /apollo/docker/scripts/patches/fix_buildtool_workspace_paths.py \
+    || { error "Could not patch buildtool's workspace paths"; return 1; }
+  # buildtool re-downloads the whole package index on every online run; use
+  # the local copy once it exists (BUILDTOOL_REFRESH_INDEX=1 forces a refresh).
+  docker exec -u root "${container}" \
+    python3 /apollo/docker/scripts/patches/fix_buildtool_index_cache.py \
+    || warning "Could not patch buildtool's package index cache"
+  # Offline, buildtool stops on a third-party package whose installed version
+  # differs from the requested one, although it would download nothing.
+  docker exec -u root "${container}" \
+    python3 /apollo/docker/scripts/patches/fix_buildtool_offline_reinstall.py \
+    || { error "Could not patch buildtool's offline reinstall check"; return 1; }
+  docker exec -u root "${container}" bash -c \
+    "chmod 777 /opt/apollo/neo/packages/buildtool/latest/setup.sh && \
+     mkdir -p /opt/apollo/neo/etc && chmod -R 777 /opt/apollo/neo/etc"
+  # buildtool installs packages with sudo but reads and writes its own
+  # metadata (/opt/apollo/neo/share/buildtool/installed_package, the index
+  # under share/buildtool/namespaces, python/, ...) as the user. The root
+  # upgrade above leaves those directories root-owned 755, so the user's
+  # first build fails with "Permission denied". Hand /opt/apollo/neo to the
+  # container user now, while it holds little more than the image's ~175M.
+  local group
+  group="$(id -gn)"
+  docker exec -u root "${container}" \
+    chown -R "${USER}:${group}" /opt/apollo/neo \
+    || { error "Could not hand /opt/apollo/neo to ${USER}"; return 1; }
+  seed_buildtool_index "${container}" || return 1
+  docker exec -u "${USER}" "${container}" bash -c \
+    "grep -qs 'source /opt/apollo/neo/setup.sh' ~/.bashrc || \
+     echo '[[ -e /opt/apollo/neo/setup.sh ]] && source /opt/apollo/neo/setup.sh' >> ~/.bashrc"
 }
 
 function main() {
@@ -455,6 +695,9 @@ function main() {
     exit 1
   fi
 
+  restore_perception_models
+  restore_bazel_repo_cache
+
   info "Remove existing Apollo Development container ..."
   remove_container_if_exists ${DEV_CONTAINER}
 
@@ -477,10 +720,7 @@ function main() {
   local group="${CUSTOM_GROUP-$(id -g -n)}"
   local gid="${CUSTOM_GID-$(id -g)}"
 
-  local start_img="${DEV_IMAGE}"
-  if [[ -n "${GEO_REGISTRY}" ]]; then
-    start_img="${GEO_REGISTRY}/${DEV_IMAGE}"
-  fi
+  local start_img="$(with_geo_registry "${DEV_IMAGE}")"
 
   set -x
 
@@ -510,8 +750,8 @@ function main() {
     --shm-size "${SHM_SIZE}" \
     --pid=host \
     -v /dev/null:/dev/raw1394 \
-    "${start_img}" \
-    /bin/bash
+    --entrypoint /bin/bash \
+    "${start_img}"
 
   if [ $? -ne 0 ]; then
     error "Failed to start docker container \"${DEV_CONTAINER}\" based on image: ${start_img}"
@@ -519,7 +759,14 @@ function main() {
   fi
   set +x
 
+  if [[ "$(docker inspect -f '{{.State.Running}}' "${DEV_CONTAINER}" 2>/dev/null)" != "true" ]]; then
+    error "Container \"${DEV_CONTAINER}\" exited right after start:"
+    docker logs --tail 5 "${DEV_CONTAINER}" >&2
+    exit 1
+  fi
+
   postrun_start_user "${DEV_CONTAINER}"
+  postrun_apollo_env_image "${DEV_CONTAINER}" || exit 1
   postrun_cross_platfrom_download "${DEV_CONTAINER}" "${CROSS_PLATFORM_FLAG}"
 
   ok "Congratulations! You have successfully finished setting up Apollo Dev Environment."
