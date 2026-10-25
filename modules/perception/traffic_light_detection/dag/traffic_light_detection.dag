@@ -8,7 +8,7 @@ module_config {
       config_file_path: "/apollo/modules/perception/traffic_light_detection/conf/traffic_light_detection_config.pb.txt"
       flag_file_path: "/apollo/modules/perception/data/flag/perception_common.flag"
       readers {
-        channel: "/perception/inner/Detection"
+        channel: "/perception/inner/TrafficLightProposal"
       }
     }
   }

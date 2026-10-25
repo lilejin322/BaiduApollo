@@ -13,7 +13,7 @@ camera_params {
 }
 
 lidar_params {
-  name: "velodyne64"
+  name: "velodyne128"
   reliability: 0.5
   reliability_for_unknown: 0.5
 }

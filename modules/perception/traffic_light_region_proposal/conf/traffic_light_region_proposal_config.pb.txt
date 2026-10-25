@@ -14,4 +14,5 @@ plugin_param {
   name: "TLPreprocessor"
 }
 gpu_id : 0
-proposal_output_channel_name:"/perception/inner/Detection"
+# own channel: /perception/inner/Detection is the camera obstacle chain's
+proposal_output_channel_name:"/perception/inner/TrafficLightProposal"
