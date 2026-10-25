@@ -75,6 +75,11 @@ void SpeedCommandProcessor::OnCommand(
               << command->header().timestamp_sec();
         if (timestamp - command->header().timestamp_sec() > 2.0) {
             AINFO << "request for " << command->header().module_name() << " has been timeouted";
+            // Answer with an error: returning without a status makes the
+            // service serialize a CommandStatus missing its required field.
+            status->set_command_id(command->command_id());
+            status->set_status(apollo::external_command::CommandStatusType::ERROR);
+            status->set_message("Command timed out: header is older than 2s.");
             return;
         }
     }
