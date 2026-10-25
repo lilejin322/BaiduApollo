@@ -23,6 +23,8 @@ enum {
   OP_ADD_READER = 2,
   OP_ADD_WRITER = 3,
   OP_PUBLISH = 4,
+  OP_CALL_SERVICE = 5,
+  OP_SERVICE_RESPONSE = 6,
 };
 
 Client::Client(Node* node, Clients* clients, boost::asio::ip::tcp::socket s)
@@ -61,6 +63,8 @@ void Client::handle_read(const boost::system::error_code& ec,
         handle_add_writer();
       } else if (buffer[0] == OP_PUBLISH) {
         handle_publish();
+      } else if (buffer[0] == OP_CALL_SERVICE) {
+        handle_call_service();
       } else {
         AERROR << "Unknown operation received from client ("
                << uint32_t(buffer[0]) << "), disconnecting client";
@@ -268,46 +272,111 @@ void Client::handle_publish() {
   buffer.erase(buffer.begin(), buffer.begin() + offset);
 }
 
+// [5] [request id] [service] [type] [request]
+void Client::handle_call_service() {
+  size_t offset = sizeof(uint8_t);
+  if (offset + sizeof(uint32_t) > buffer.size()) {
+    return;
+  }
+  uint32_t request_id = get32le(offset);
+  offset += sizeof(uint32_t);
+
+  std::string service;
+  std::string type;
+  std::string request;
+  if (!get_string(&offset, &service) || !get_string(&offset, &type) ||
+      !get_string(&offset, &request)) {
+    return;
+  }
+
+  ADEBUG << "OP_CALL_SERVICE, service = " << service << ", type = " << type
+         << ", request id = " << request_id;
+
+  node.call_service(service, type, request, request_id, shared_from_this());
+
+  buffer.erase(buffer.begin(), buffer.begin() + offset);
+}
+
+void put32le(std::vector<uint8_t>* data, uint32_t value) {
+  data->push_back(uint8_t(value >> 0));
+  data->push_back(uint8_t(value >> 8));
+  data->push_back(uint8_t(value >> 16));
+  data->push_back(uint8_t(value >> 24));
+}
+
+void put_string(std::vector<uint8_t>* data, const std::string& str) {
+  put32le(data, str.size());
+  const uint8_t* str_data = reinterpret_cast<const uint8_t*>(str.data());
+  data->insert(data->end(), str_data, str_data + str.size());
+}
+
+// [4] [channel] [message]
 void fill_data(std::vector<uint8_t>* data, const std::string& channel,
                const std::string& msg) {
   data->reserve(data->size() + sizeof(uint8_t) + sizeof(uint32_t) +
                 channel.size() + sizeof(uint32_t) + msg.size());
-
   data->push_back(OP_PUBLISH);
-
-  data->push_back(uint8_t(channel.size() >> 0));
-  data->push_back(uint8_t(channel.size() >> 8));
-  data->push_back(uint8_t(channel.size() >> 16));
-  data->push_back(uint8_t(channel.size() >> 24));
-  const uint8_t* channel_data =
-      reinterpret_cast<const uint8_t*>(channel.data());
-  data->insert(data->end(), channel_data, channel_data + channel.size());
-
-  data->push_back(uint8_t(msg.size() >> 0));
-  data->push_back(uint8_t(msg.size() >> 8));
-  data->push_back(uint8_t(msg.size() >> 16));
-  data->push_back(uint8_t(msg.size() >> 24));
-  const uint8_t* msg_data = reinterpret_cast<const uint8_t*>(msg.data());
-  data->insert(data->end(), msg_data, msg_data + msg.size());
+  put_string(data, channel);
+  put_string(data, msg);
 }
 
-void Client::publish(const std::string& channel, const std::string& msg) {
+// [6] [request id] [ok] [response]
+void fill_service_response(std::vector<uint8_t>* data, uint32_t request_id,
+                           bool ok, const std::string& response) {
+  data->reserve(data->size() + sizeof(uint8_t) + sizeof(uint32_t) +
+                sizeof(uint8_t) + sizeof(uint32_t) + response.size());
+  data->push_back(OP_SERVICE_RESPONSE);
+  put32le(data, request_id);
+  data->push_back(ok ? 1 : 0);
+  put_string(data, response);
+}
+
+// Called from Cyber threads as well as the server thread.
+template <typename Fill>
+void Client::enqueue(Fill fill) {
   std::lock_guard<std::mutex> lock(publish_mutex);
   if (writing.empty()) {
-    fill_data(&writing, channel, msg);
+    fill(&writing);
     boost::asio::async_write(
         socket, boost::asio::buffer(writing.data(), writing.size()),
         boost::bind(&Client::handle_write, shared_from_this(),
                     boost::asio::placeholders::error));
   } else if (pending.size() < MAX_PENDING_SIZE) {
-    fill_data(&pending, channel, msg);
+    fill(&pending);
   } else {
     // If pending size is larger than MAX_PENDING_SIZE, discard the message.
     AERROR << "Pending size too large. Discard message.";
   }
 }
 
+void Client::publish(const std::string& channel, const std::string& msg) {
+  enqueue([&](std::vector<uint8_t>* data) { fill_data(data, channel, msg); });
+}
+
+void Client::service_response(uint32_t request_id, bool ok,
+                              const std::string& response) {
+  enqueue([&](std::vector<uint8_t>* data) {
+    fill_service_response(data, request_id, ok, response);
+  });
+}
+
 uint32_t Client::get32le(size_t offset) const {
   return buffer[offset + 0] | (buffer[offset + 1] << 8) |
          (buffer[offset + 2] << 16) | (buffer[offset + 3] << 24);
+}
+
+// Reads [length] [bytes] at offset. Returns false if the buffer does not hold
+// all of it yet.
+bool Client::get_string(size_t* offset, std::string* str) const {
+  if (*offset + sizeof(uint32_t) > buffer.size()) {
+    return false;
+  }
+  uint32_t length = get32le(*offset);
+  if (*offset + sizeof(uint32_t) + length > buffer.size()) {
+    return false;
+  }
+  *offset += sizeof(uint32_t);
+  str->assign(reinterpret_cast<const char*>(&buffer[*offset]), length);
+  *offset += length;
+  return true;
 }

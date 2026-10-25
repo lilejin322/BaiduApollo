@@ -7,6 +7,7 @@
 
 #include "modules/contrib/cyber_bridge/node.h"
 
+#include <thread>
 #include <utility>
 
 #include "cyber/common/log.h"
@@ -14,6 +15,7 @@
 #include "cyber/message/py_message.h"
 #include "cyber/node/node.h"
 #include "cyber/node/reader.h"
+#include "cyber/service/client.h"
 #include "cyber/node/writer.h"
 #include "modules/contrib/cyber_bridge/client.h"
 
@@ -130,4 +132,33 @@ void Node::publish(const std::string& channel, const std::string& data) {
 
   auto message = std::make_shared<PyMessageWrap>(data, writer->second.type);
   writer->second.writer->Write(message);
+}
+
+void Node::call_service(const std::string& service, const std::string& type,
+                        const std::string& request, uint32_t request_id,
+                        std::shared_ptr<Client> client) {
+  auto it = service_clients.find(service);
+  if (it == service_clients.end()) {
+    auto service_client =
+        node->CreateClient<PyMessageWrap, PyMessageWrap>(service);
+    if (service_client == nullptr) {
+      AERROR << "Cannot create client for service " << service;
+      client->service_response(request_id, false, "");
+      return;
+    }
+    it = service_clients.emplace(service, service_client).first;
+  }
+
+  auto service_client = it->second;
+  auto message = std::make_shared<PyMessageWrap>(request, type);
+  // SendRequest blocks until the response or its timeout, and the server
+  // thread handles every bridge client, so wait on a separate thread.
+  std::thread([service_client, message, request_id, client]() {
+    auto response = service_client->SendRequest(message);
+    if (response == nullptr) {
+      client->service_response(request_id, false, "");
+    } else {
+      client->service_response(request_id, true, response->data());
+    }
+  }).detach();
 }

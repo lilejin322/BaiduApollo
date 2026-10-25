@@ -24,6 +24,8 @@ class Client : public std::enable_shared_from_this<Client> {
   void stop();
 
   void publish(const std::string& channel, const std::string& msg);
+  void service_response(uint32_t request_id, bool ok,
+                        const std::string& response);
 
  private:
   Node& node;
@@ -45,6 +47,11 @@ class Client : public std::enable_shared_from_this<Client> {
   void handle_add_writer();
   void handle_add_reader();
   void handle_publish();
+  void handle_call_service();
+
+  template <typename Fill>
+  void enqueue(Fill fill);
 
   uint32_t get32le(size_t offset) const;
+  bool get_string(size_t* offset, std::string* str) const;
 };
