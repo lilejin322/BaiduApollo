@@ -20,3 +20,4 @@
 
 DECLARE_string(bridge_module_name);
 DECLARE_double(timeout);
+DECLARE_int32(bridge_udp_rcvbuf_mb);

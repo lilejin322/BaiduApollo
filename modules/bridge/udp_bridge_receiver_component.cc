@@ -32,6 +32,7 @@ UDPBridgeReceiverComponent<T>::UDPBridgeReceiverComponent()
 
 template <typename T>
 UDPBridgeReceiverComponent<T>::~UDPBridgeReceiverComponent() {
+  listener_->Stop();
   for (auto proto : proto_list_) {
     FREE_POINTER(proto);
   }
@@ -98,11 +99,17 @@ BridgeProtoDiserializedBuf<T>
     }
   }
   BridgeProtoDiserializedBuf<T> *proto_buf = new BridgeProtoDiserializedBuf<T>;
-  if (!proto_buf) {
+  if (!proto_buf->Initialize(header)) {
+    FREE_POINTER(proto_buf);
     return nullptr;
   }
-  proto_buf->Initialize(header);
   proto_list_.push_back(proto_buf);
+  // a message that lost a frame never completes: keep only the newest ones
+  while (proto_list_.size() > MAX_PENDING_MSGS) {
+    BridgeProtoDiserializedBuf<T> *oldest = proto_list_.front();
+    FREE_POINTER(oldest);
+    proto_list_.erase(proto_list_.begin());
+  }
   return proto_buf;
 }
 
@@ -135,31 +142,27 @@ template <typename T>
 bool UDPBridgeReceiverComponent<T>::MsgHandle(int fd) {
   struct sockaddr_in client_addr;
   socklen_t sock_len = static_cast<socklen_t>(sizeof(client_addr));
-  int bytes = 0;
-  int total_recv = 2 * FRAME_SIZE;
-  char total_buf[2 * FRAME_SIZE] = {0};
-  bytes =
-      static_cast<int>(recvfrom(fd, total_buf, total_recv, 0,
+  char *total_buf = recv_buf_.data();
+  int bytes =
+      static_cast<int>(recvfrom(fd, total_buf, recv_buf_.size(), 0,
                                 (struct sockaddr *)&client_addr, &sock_len));
   ADEBUG << "total recv " << bytes;
-  if (bytes <= 0 || bytes > total_recv) {
-    return false;
+  if (bytes <= 0) {
+    return false;  // receive timeout or error
   }
-  char header_flag[sizeof(BRIDGE_HEADER_FLAG) + 1] = {0};
-  size_t offset = 0;
-  memcpy(header_flag, total_buf, HEADER_FLAG_SIZE);
-  if (strcmp(header_flag, BRIDGE_HEADER_FLAG) != 0) {
+  size_t offset = HEADER_FLAG_SIZE + 1;
+  if (static_cast<size_t>(bytes) < offset + sizeof(hsize) + 1 ||
+      memcmp(total_buf, BRIDGE_HEADER_FLAG, HEADER_FLAG_SIZE) != 0) {
     AINFO << "header flag not match!";
     return false;
   }
-  offset += sizeof(BRIDGE_HEADER_FLAG) + 1;
 
-  char header_size_buf[sizeof(hsize) + 1] = {0};
+  hsize header_size = 0;
   const char *cursor = total_buf + offset;
-  memcpy(header_size_buf, cursor, sizeof(hsize));
-  hsize header_size = *(reinterpret_cast<hsize *>(header_size_buf));
+  memcpy(&header_size, cursor, sizeof(hsize));
   offset += sizeof(hsize) + 1;
-  if (header_size > FRAME_SIZE || header_size < offset) {
+  if (header_size > FRAME_SIZE || header_size < offset ||
+      header_size > static_cast<hsize>(bytes)) {
     AINFO << "header size is more than FRAME_SIZE or less than offset!";
     return false;
   }
@@ -177,6 +180,11 @@ bool UDPBridgeReceiverComponent<T>::MsgHandle(int fd) {
   ADEBUG << "proto total frames: " << header.GetTotalFrames();
   ADEBUG << "proto frame index: " << header.GetIndex();
 
+  if (header.GetMsgName() != proto_name_) {
+    ADEBUG << "drop " << header.GetMsgName() << ", expect " << proto_name_;
+    return false;
+  }
+
   std::lock_guard<std::mutex> lock(mutex_);
   BridgeProtoDiserializedBuf<T> *proto_buf = CreateBridgeProtoBuf(header);
   if (!proto_buf) {
@@ -184,13 +192,17 @@ bool UDPBridgeReceiverComponent<T>::MsgHandle(int fd) {
   }
 
   cursor = total_buf + header_size;
+  // every frame of a message must describe the buffer its first frame made
+  if (header.GetMsgSize() != proto_buf->GetMsgSize() ||
+      header.GetTotalFrames() != proto_buf->GetTotalFrames()) {
+    return false;
+  }
   if (header.GetFramePos() > header.GetMsgSize()) {
     return false;
   }
   char *buf = proto_buf->GetBuf(header.GetFramePos());
   // check cursor size
-  if (header.GetFrameSize() < 0 ||
-    header.GetFrameSize() > (total_recv - header_size)) {
+  if (header.GetFrameSize() > static_cast<hsize>(bytes) - header_size) {
     return false;
   }
   // check buf size
@@ -229,5 +241,7 @@ bool UDPBridgeReceiverComponent<T>::RemoveInvalidBuf(uint32_t msg_id) {
 }
 
 BRIDGE_RECV_IMPL(canbus::Chassis);
+BRIDGE_RECV_IMPL(drivers::PointCloud);
+BRIDGE_RECV_IMPL(drivers::Image);
 }  // namespace bridge
 }  // namespace apollo

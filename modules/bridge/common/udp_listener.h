@@ -17,21 +17,28 @@
 #pragma once
 
 #include <arpa/inet.h>
-#include <fcntl.h>
 #include <netinet/in.h>
-#include <pthread.h>
-#include <sys/epoll.h>
-#include <sys/resource.h>
 #include <sys/socket.h>
-#include <sys/types.h>
-#include <sys/wait.h>
+#include <sys/time.h>
 #include <unistd.h>
+
+#include <atomic>
+#include <thread>
+
+#include "cyber/common/log.h"
+#include "modules/bridge/common/bridge_gflags.h"
 
 namespace apollo {
 namespace bridge {
 
+// epoll size of the standalone test tools (test/bridge_receiver_test.cc)
 constexpr int MAXEPOLLSIZE = 100;
 
+// Receives one UDP port on a thread of its own: the thread calls the
+// receiver's handler, which reads one datagram (blocking recvfrom), over and
+// over, so every datagram is read in arrival order. The socket has a large
+// receive buffer, as a multi-MB message arrives as a burst of frames, and a
+// receive timeout so Stop() can end the thread.
 template <typename T>
 class UDPListener {
  public:
@@ -42,34 +49,22 @@ class UDPListener {
     listened_port_ = port;
     msg_handle_ = msg_handle;
   }
-  ~UDPListener() {
-    if (listener_sock_ != -1) {
-      close(listener_sock_);
-    }
-  }
+  ~UDPListener() { Stop(); }
 
   void SetMsgHandle(func msg_handle) { msg_handle_ = msg_handle; }
   bool Initialize(T *receiver, func msg_handle, uint16_t port);
+  // Starts the receive thread and returns.
   bool Listen();
-
-  static void *pthread_handle_message(void *param);
-
- public:
-  struct Param {
-    int fd_ = 0;
-    UDPListener<T> *listener_ = nullptr;
-  };
-
- private:
-  bool setnonblocking(int sockfd);
-  void MessageHandle(int fd);
+  // Stops the receive thread; call it before the receiver goes away.
+  void Stop();
 
  private:
   T *receiver_ = nullptr;
   uint16_t listened_port_ = 0;
   int listener_sock_ = -1;
   func msg_handle_ = nullptr;
-  int kdpfd_ = 0;
+  std::atomic<bool> running_{false};
+  std::thread thread_;
 };
 
 template <typename T>
@@ -78,25 +73,27 @@ bool UDPListener<T>::Initialize(T *receiver, func msg_handle, uint16_t port) {
   if (!msg_handle_) {
     return false;
   }
-
   receiver_ = receiver;
   if (!receiver_) {
     return false;
   }
   listened_port_ = port;
-  struct rlimit rt;
-  rt.rlim_max = rt.rlim_cur = MAXEPOLLSIZE;
-  if (setrlimit(RLIMIT_NOFILE, &rt) == -1) {
-    return false;
-  }
-
   listener_sock_ = socket(AF_INET, SOCK_DGRAM, 0);
   if (listener_sock_ == -1) {
     return false;
   }
-  int opt = SO_REUSEADDR;
+  int opt = 1;
   setsockopt(listener_sock_, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
-  setnonblocking(listener_sock_);
+  int rcvbuf = FLAGS_bridge_udp_rcvbuf_mb * 1024 * 1024;
+  setsockopt(listener_sock_, SOL_SOCKET, SO_RCVBUF, &rcvbuf, sizeof(rcvbuf));
+  int actual = 0;
+  socklen_t len = sizeof(actual);
+  getsockopt(listener_sock_, SOL_SOCKET, SO_RCVBUF, &actual, &len);
+  AINFO << "UDP bridge port " << listened_port_ << " receive buffer "
+        << actual / 1024 << " KB";
+  struct timeval timeout = {0, 200 * 1000};
+  setsockopt(listener_sock_, SOL_SOCKET, SO_RCVTIMEO, &timeout,
+             sizeof(timeout));
 
   struct sockaddr_in serv_addr;
   serv_addr.sin_family = PF_INET;
@@ -104,15 +101,9 @@ bool UDPListener<T>::Initialize(T *receiver, func msg_handle, uint16_t port) {
   serv_addr.sin_addr.s_addr = INADDR_ANY;
   if (bind(listener_sock_, (struct sockaddr *)&serv_addr,
            sizeof(struct sockaddr)) == -1) {
+    AERROR << "UDP bridge cannot bind port " << listened_port_;
     close(listener_sock_);
-    return false;
-  }
-  kdpfd_ = epoll_create(MAXEPOLLSIZE);
-  struct epoll_event ev;
-  ev.events = EPOLLIN | EPOLLET;
-  ev.data.fd = listener_sock_;
-  if (epoll_ctl(kdpfd_, EPOLL_CTL_ADD, listener_sock_, &ev) < 0) {
-    close(listener_sock_);
+    listener_sock_ = -1;
     return false;
   }
   return true;
@@ -120,69 +111,28 @@ bool UDPListener<T>::Initialize(T *receiver, func msg_handle, uint16_t port) {
 
 template <typename T>
 bool UDPListener<T>::Listen() {
-  int nfds = -1;
-  bool res = true;
-  struct epoll_event events[MAXEPOLLSIZE];
-  while (true) {
-    nfds = epoll_wait(kdpfd_, events, 10000, -1);
-    if (nfds == -1) {
-      res = false;
-      break;
-    }
-
-    for (int i = 0; i < nfds; ++i) {
-      if (events[i].data.fd == listener_sock_) {
-        pthread_t thread;
-        pthread_attr_t attr;
-        pthread_attr_init(&attr);
-        pthread_attr_setscope(&attr, PTHREAD_SCOPE_SYSTEM);
-        pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-        Param *par = new Param;
-        par->fd_ = events[i].data.fd;
-        par->listener_ = this;
-        if (pthread_create(&thread, &attr,
-                           &UDPListener<T>::pthread_handle_message,
-                           reinterpret_cast<void *>(par))) {
-          res = false;
-          return res;
-        }
-      }
-    }
+  if (listener_sock_ == -1 || running_.exchange(true)) {
+    return listener_sock_ != -1;
   }
-  close(listener_sock_);
-  return res;
-}
-
-template <typename T>
-bool UDPListener<T>::setnonblocking(int sockfd) {
-  if (fcntl(sockfd, F_SETFL, fcntl(sockfd, F_GETFD, 0) | O_NONBLOCK) == -1) {
-    return false;
-  }
+  thread_ = std::thread([this]() {
+    while (running_) {
+      // false on a receive timeout, a bad datagram or an incomplete message
+      (receiver_->*msg_handle_)(listener_sock_);
+    }
+  });
   return true;
 }
 
 template <typename T>
-void *UDPListener<T>::pthread_handle_message(void *param) {
-  Param *par = static_cast<Param *>(param);
-  int fd = par->fd_;
-  UDPListener<T> *listener = par->listener_;
-  if (par) {
-    delete par;
+void UDPListener<T>::Stop() {
+  running_ = false;
+  if (thread_.joinable()) {
+    thread_.join();
   }
-  par = nullptr;
-  if (!listener) {
-    pthread_exit(nullptr);
+  if (listener_sock_ != -1) {
+    close(listener_sock_);
+    listener_sock_ = -1;
   }
-  listener->MessageHandle(fd);
-  pthread_exit(nullptr);
-}
-
-template <typename T>
-void UDPListener<T>::MessageHandle(int fd) {
-  if (!receiver_ || !msg_handle_) {
-    return;
-  }
-  (receiver_->*msg_handle_)(fd);
 }
 
 }  // namespace bridge

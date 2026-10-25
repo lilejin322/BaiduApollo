@@ -93,5 +93,29 @@ TEST(BridgeProtoBufTest, Simple) {
   }
 }
 
+// A message whose frame count is a multiple of 32 completes, and a frame
+// that arrives twice is counted once.
+TEST(BridgeProtoBufTest, CompletesOnEveryFrameOnce) {
+  for (uint32_t total_frames : {1u, 31u, 32u, 33u, 64u, 100u}) {
+    BridgeHeader header;
+    header.SetHeaderVer(0);
+    header.SetMsgName("planning::ADCTrajectory");
+    header.SetMsgID(1);
+    header.SetMsgSize(total_frames * 10);
+    header.SetTotalFrames(total_frames);
+    BridgeProtoDiserializedBuf<planning::ADCTrajectory> buf;
+    ASSERT_TRUE(buf.Initialize(header));
+    for (uint32_t i = 0; i + 1 < total_frames; ++i) {
+      buf.UpdateStatus(i);
+      buf.UpdateStatus(i);
+      EXPECT_FALSE(buf.IsReadyDiserialize()) << total_frames << " " << i;
+    }
+    buf.UpdateStatus(total_frames);  // out of range: ignored
+    EXPECT_FALSE(buf.IsReadyDiserialize()) << total_frames;
+    buf.UpdateStatus(total_frames - 1);
+    EXPECT_TRUE(buf.IsReadyDiserialize()) << total_frames;
+  }
+}
+
 }  // namespace bridge
 }  // namespace apollo

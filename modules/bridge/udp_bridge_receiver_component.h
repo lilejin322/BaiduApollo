@@ -26,6 +26,8 @@
 
 #include "modules/bridge/proto/udp_bridge_remote_info.pb.h"
 #include "modules/common_msgs/chassis_msgs/chassis.pb.h"
+#include "modules/common_msgs/sensor_msgs/pointcloud.pb.h"
+#include "modules/common_msgs/sensor_msgs/sensor_image.pb.h"
 
 #include "cyber/class_loader/class_loader.h"
 #include "cyber/component/component.h"
@@ -35,6 +37,7 @@
 #include "modules/bridge/common/bridge_gflags.h"
 #include "modules/bridge/common/bridge_header.h"
 #include "modules/bridge/common/bridge_proto_diserialized_buf.h"
+#include "modules/bridge/common/macro.h"
 #include "modules/bridge/common/udp_listener.h"
 #include "modules/common/monitor_log/monitor_log_buffer.h"
 
@@ -77,8 +80,12 @@ class UDPBridgeReceiverComponent final : public cyber::Component<> {
       std::make_shared<UDPListener<UDPBridgeReceiverComponent<T>>>();
 
   std::vector<BridgeProtoDiserializedBuf<T> *> proto_list_;
+  // only the listener thread touches it
+  std::vector<char> recv_buf_ = std::vector<char>(MAX_DATAGRAM_SIZE);
 };
 
 RECEIVER_BRIDGE_COMPONENT_REGISTER(canbus::Chassis)
+RECEIVER_BRIDGE_COMPONENT_REGISTER(drivers::PointCloud)
+RECEIVER_BRIDGE_COMPONENT_REGISTER(drivers::Image)
 }  // namespace bridge
 }  // namespace apollo

@@ -18,3 +18,6 @@
 
 DEFINE_string(bridge_module_name, "Bridge", "Bridge module name");
 DEFINE_double(timeout, 1.0, "receive/send proto msg time out");
+DEFINE_int32(bridge_udp_rcvbuf_mb, 64,
+             "UDP receive buffer of a bridge receiver in MB (capped by "
+             "net.core.rmem_max): a large message arrives as a burst");

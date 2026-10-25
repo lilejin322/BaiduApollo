@@ -16,6 +16,9 @@
 
 #pragma once
 
+#include <cstddef>
+#include <cstdint>
+
 namespace apollo {
 namespace bridge {
 
@@ -33,6 +36,16 @@ namespace bridge {
   }                     \
   p = nullptr
 
+// Frame size Apollo's own sender uses.
 constexpr uint32_t FRAME_SIZE = 1024;
+// Largest datagram a receiver takes. The frame size is in each frame's header,
+// so a sender may use larger frames (up to ~64KB): a multi-MB message (point
+// cloud, image) then needs ~100 datagrams instead of thousands.
+constexpr uint32_t MAX_DATAGRAM_SIZE = 65536;
+// Largest message a receiver reassembles.
+constexpr uint32_t MAX_MSG_SIZE = 64 * 1024 * 1024;
+// Incomplete messages a receiver keeps; one that lost a frame never completes
+// and is dropped once newer ones push it out.
+constexpr size_t MAX_PENDING_MSGS = 4;
 }  // namespace bridge
 }  // namespace apollo

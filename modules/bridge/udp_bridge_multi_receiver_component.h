@@ -35,6 +35,7 @@
 #include "modules/bridge/common/bridge_gflags.h"
 #include "modules/bridge/common/bridge_header.h"
 #include "modules/bridge/common/bridge_proto_diserialized_buf.h"
+#include "modules/bridge/common/macro.h"
 #include "modules/bridge/common/udp_listener.h"
 #include "modules/common/monitor_log/monitor_log_buffer.h"
 
@@ -43,7 +44,7 @@ namespace bridge {
 class UDPBridgeMultiReceiverComponent final : public cyber::Component<> {
  public:
   UDPBridgeMultiReceiverComponent();
-  ~UDPBridgeMultiReceiverComponent() = default;
+  ~UDPBridgeMultiReceiverComponent() { listener_->Stop(); }
 
   bool Init() override;
   std::string Name() const { return FLAGS_bridge_module_name; }
@@ -66,6 +67,8 @@ class UDPBridgeMultiReceiverComponent final : public cyber::Component<> {
   bool enable_timeout_ = true;
   std::mutex mutex_;
   std::vector<std::shared_ptr<ProtoDiserializedBufBase>> proto_list_;
+  // only the listener thread touches it
+  std::vector<char> recv_buf_ = std::vector<char>(MAX_DATAGRAM_SIZE);
 };
 
 CYBER_REGISTER_COMPONENT(UDPBridgeMultiReceiverComponent)

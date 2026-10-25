@@ -43,6 +43,8 @@ class ProtoDiserializedBufBase {
   virtual void UpdateStatus(uint32_t frame_index) = 0;
   virtual uint32_t GetMsgID() const = 0;
   virtual std::string GetMsgName() const = 0;
+  virtual size_t GetMsgSize() const = 0;
+  virtual size_t GetTotalFrames() const = 0;
   virtual char *GetBuf(size_t offset) = 0;
 };
 
@@ -67,9 +69,12 @@ class BridgeProtoDiserializedBuf : public ProtoDiserializedBufBase {
   virtual char *GetBuf(size_t offset) { return proto_buf_ + offset; }
   virtual uint32_t GetMsgID() const { return sequence_num_; }
   virtual std::string GetMsgName() const { return proto_name_; }
+  virtual size_t GetMsgSize() const { return total_size_; }
+  virtual size_t GetTotalFrames() const { return total_frames_; }
 
  private:
   size_t total_frames_ = 0;
+  size_t received_frames_ = 0;
   size_t total_size_ = 0;
   std::string proto_name_ = "";
   std::vector<uint32_t> status_list_;
@@ -96,33 +101,19 @@ bool BridgeProtoDiserializedBuf<T>::Diserialized(std::shared_ptr<T> proto) {
 
 template <typename T>
 void BridgeProtoDiserializedBuf<T>::UpdateStatus(uint32_t frame_index) {
-  size_t status_size = status_list_.size();
-  uint32_t status_index = frame_index / INT_BITS;
-  if (status_size == 0 ||
-    static_cast<std::size_t>(status_index) >= status_size) {
-    is_ready_diser = false;
+  // Count the distinct frames received; the message is complete once all
+  // have arrived (a repeated frame counts once).
+  if (frame_index >= total_frames_ ||
+      frame_index / INT_BITS >= status_list_.size()) {
     return;
   }
-
-  status_list_[status_index] |= (1 << (frame_index % INT_BITS));
-  for (size_t i = 0; i < status_size; i++) {
-    if (i == status_size - 1) {
-      if (static_cast<int>(status_list_[i]) ==
-          (1 << total_frames_ % INT_BITS) - 1) {
-        AINFO << "diserialized is ready";
-        is_ready_diser = true;
-      } else {
-        is_ready_diser = false;
-        break;
-      }
-    } else {
-      if (status_list_[i] != 0xffffffff) {
-        is_ready_diser = false;
-        break;
-      }
-      is_ready_diser = true;
-    }
+  uint32_t &status = status_list_[frame_index / INT_BITS];
+  const uint32_t bit = 1u << (frame_index % INT_BITS);
+  if (!(status & bit)) {
+    status |= bit;
+    ++received_frames_;
   }
+  is_ready_diser = received_frames_ == total_frames_;
 }
 
 template <typename T>
@@ -140,7 +131,8 @@ bool BridgeProtoDiserializedBuf<T>::Initialize(const BridgeHeader &header) {
   total_frames_ = header.GetTotalFrames();
   proto_name_ = header.GetMsgName();
   sequence_num_ = header.GetMsgID();
-  if (total_frames_ == 0) {
+  if (total_frames_ == 0 || total_size_ == 0 || total_size_ > MAX_MSG_SIZE ||
+      total_frames_ > total_size_) {
     return false;
   }
   int status_size = static_cast<int>(total_frames_ / INT_BITS +

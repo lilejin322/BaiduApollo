@@ -71,6 +71,8 @@ apollo_cc_library(
         "//modules/common/util:common_util",
         "//modules/common_msgs/chassis_msgs:chassis_cc_proto",
         "//modules/common_msgs/planning_msgs:planning_cc_proto",
+        "//modules/common_msgs/sensor_msgs:pointcloud_cc_proto",
+        "//modules/common_msgs/sensor_msgs:sensor_image_cc_proto",
     ],
 )
 

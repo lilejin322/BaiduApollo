@@ -82,8 +82,14 @@ UDPBridgeMultiReceiverComponent::CreateBridgeProtoBuf(
   if (!proto_buf) {
     return proto_buf;
   }
-  proto_buf->Initialize(header, node_);
+  if (!proto_buf->Initialize(header, node_)) {
+    return nullptr;
+  }
   proto_list_.push_back(proto_buf);
+  // a message that lost a frame never completes: keep only the newest ones
+  while (proto_list_.size() > MAX_PENDING_MSGS) {
+    proto_list_.erase(proto_list_.begin());
+  }
   return proto_buf;
 }
 
@@ -113,26 +119,28 @@ bool UDPBridgeMultiReceiverComponent::IsTimeout(double time_stamp) {
 bool UDPBridgeMultiReceiverComponent::MsgHandle(int fd) {
   struct sockaddr_in client_addr;
   socklen_t sock_len = static_cast<socklen_t>(sizeof(client_addr));
-  int total_recv = 2 * FRAME_SIZE;
-  char total_buf[2 * FRAME_SIZE] = {0};
+  char *total_buf = recv_buf_.data();
   int bytes =
-      static_cast<int>(recvfrom(fd, total_buf, total_recv, 0,
+      static_cast<int>(recvfrom(fd, total_buf, recv_buf_.size(), 0,
                                 (struct sockaddr *)&client_addr, &sock_len));
-  if (bytes <= 0 || bytes > total_recv) {
-    return false;
+  if (bytes <= 0) {
+    return false;  // receive timeout or error
   }
 
-  if (strncmp(total_buf, BRIDGE_HEADER_FLAG, HEADER_FLAG_SIZE) != 0) {
+  size_t offset = HEADER_FLAG_SIZE + 1;
+  if (static_cast<size_t>(bytes) < offset + sizeof(hsize) + 1 ||
+      memcmp(total_buf, BRIDGE_HEADER_FLAG, HEADER_FLAG_SIZE) != 0) {
     AERROR << "Header flag didn't match!";
     return false;
   }
-  size_t offset = HEADER_FLAG_SIZE + 1;
 
   const char *cursor = total_buf + offset;
-  hsize header_size = *(reinterpret_cast<const hsize *>(cursor));
+  hsize header_size = 0;
+  memcpy(&header_size, cursor, sizeof(hsize));
   offset += sizeof(hsize) + 1;
 
-  if (header_size < offset || header_size > FRAME_SIZE) {
+  if (header_size < offset || header_size > FRAME_SIZE ||
+      header_size > static_cast<hsize>(bytes)) {
     AERROR << "header size is more than FRAME_SIZE!";
     return false;
   }
@@ -158,13 +166,17 @@ bool UDPBridgeMultiReceiverComponent::MsgHandle(int fd) {
   }
 
   cursor = total_buf + header_size;
+  // every frame of a message must describe the buffer its first frame made
+  if (header.GetMsgSize() != proto_buf->GetMsgSize() ||
+      header.GetTotalFrames() != proto_buf->GetTotalFrames()) {
+    return false;
+  }
   if (header.GetFramePos() > header.GetMsgSize()) {
     return false;
   }
   char *buf = proto_buf->GetBuf(header.GetFramePos());
   // check cursor size
-  if (header.GetFrameSize() < 0 ||
-    header.GetFrameSize() > (total_recv - header_size)) {
+  if (header.GetFrameSize() > static_cast<hsize>(bytes) - header_size) {
     return false;
   }
   // check buf size
