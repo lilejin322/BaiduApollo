@@ -3459,7 +3459,7 @@ lane {
   length: 36.359999999999985
   speed_limit: 11.176
   overlap_id {
-    id: "road_0_lane_0_-1_signal_0_362"
+    id: "road_0_lane_0_-1_signal_362"
   }
   predecessor_id {
     id: "road_11_lane_0_1"
@@ -4295,9 +4295,6 @@ lane {
   }
   length: 36.359999999999985
   speed_limit: 11.176
-  overlap_id {
-    id: "road_0_lane_0_-2_signal_0_362"
-  }
   predecessor_id {
     id: "road_11_lane_0_2"
   }
@@ -5129,9 +5126,6 @@ lane {
   }
   length: 36.359999999999985
   speed_limit: 11.176
-  overlap_id {
-    id: "road_0_lane_0_-3_signal_0_362"
-  }
   predecessor_id {
     id: "road_11_lane_0_3"
   }
@@ -14119,6 +14113,9 @@ lane {
   }
   length: 157.5491485273282
   speed_limit: 11.176
+  overlap_id {
+    id: "road_1_lane_0_1_signal_360"
+  }
   predecessor_id {
     id: "road_61_lane_0_1"
   }
@@ -17457,7 +17454,7 @@ lane {
   length: 157.55084655698514
   speed_limit: 11.176
   overlap_id {
-    id: "road_1_lane_0_-1_signal_1_360"
+    id: "road_1_lane_0_-1_signal_365"
   }
   predecessor_id {
     id: "road_33_lane_0_1"
@@ -20796,9 +20793,6 @@ lane {
   }
   length: 157.55175924792573
   speed_limit: 11.176
-  overlap_id {
-    id: "road_1_lane_0_-2_signal_1_360"
-  }
   predecessor_id {
     id: "road_40_lane_0_-2"
   }
@@ -24130,9 +24124,6 @@ lane {
   }
   length: 157.55267193886633
   speed_limit: 11.176
-  overlap_id {
-    id: "road_1_lane_0_-3_signal_1_360"
-  }
   predecessor_id {
     id: "road_40_lane_0_-3"
   }
@@ -28088,6 +28079,9 @@ lane {
   }
   length: 42.269134720166555
   speed_limit: 11.176
+  overlap_id {
+    id: "road_2_lane_0_1_signal_364"
+  }
   predecessor_id {
     id: "road_117_lane_0_1"
   }
@@ -29106,7 +29100,7 @@ lane {
   length: 42.270865276459986
   speed_limit: 11.176
   overlap_id {
-    id: "road_2_lane_0_-1_signal_2_364"
+    id: "road_2_lane_0_-1_signal_369"
   }
   predecessor_id {
     id: "road_62_lane_0_-1"
@@ -30125,9 +30119,6 @@ lane {
   }
   length: 42.27179545046802
   speed_limit: 11.176
-  overlap_id {
-    id: "road_2_lane_0_-2_signal_2_364"
-  }
   predecessor_id {
     id: "road_62_lane_0_-2"
   }
@@ -31139,9 +31130,6 @@ lane {
   }
   length: 42.27272562447607
   speed_limit: 11.176
-  overlap_id {
-    id: "road_2_lane_0_-3_signal_2_364"
-  }
   predecessor_id {
     id: "road_62_lane_0_-3"
   }
@@ -35365,6 +35353,9 @@ lane {
   }
   length: 68.35001583193342
   speed_limit: 11.176
+  overlap_id {
+    id: "road_3_lane_0_1_signal_371"
+  }
   predecessor_id {
     id: "road_13_lane_0_-1"
   }
@@ -36839,9 +36830,6 @@ lane {
   }
   length: 68.35001583193342
   speed_limit: 11.176
-  overlap_id {
-    id: "road_3_lane_0_-1_signal_3_371"
-  }
   predecessor_id {
     id: "road_118_lane_0_-1"
   }
@@ -38316,9 +38304,6 @@ lane {
   }
   length: 68.35001583193342
   speed_limit: 11.176
-  overlap_id {
-    id: "road_3_lane_0_-2_signal_3_371"
-  }
   predecessor_id {
     id: "road_118_lane_0_-2"
   }
@@ -39790,9 +39775,6 @@ lane {
   }
   length: 68.3500158319334
   speed_limit: 11.176
-  overlap_id {
-    id: "road_3_lane_0_-3_signal_3_371"
-  }
   predecessor_id {
     id: "road_118_lane_0_-3"
   }
@@ -52306,6 +52288,9 @@ lane {
   }
   length: 224.22
   speed_limit: 11.176
+  overlap_id {
+    id: "road_4_lane_0_1_signal_392"
+  }
   predecessor_id {
     id: "road_279_lane_0_-1"
   }
@@ -56904,10 +56889,7 @@ lane {
   length: 224.22
   speed_limit: 11.176
   overlap_id {
-    id: "road_4_lane_0_-1_signal_4_392"
-  }
-  overlap_id {
-    id: "road_4_lane_0_-1_signal_4_387"
+    id: "road_4_lane_0_-1_signal_387"
   }
   predecessor_id {
     id: "road_313_lane_0_-1"
@@ -61506,12 +61488,6 @@ lane {
   }
   length: 224.22
   speed_limit: 11.176
-  overlap_id {
-    id: "road_4_lane_0_-2_signal_4_392"
-  }
-  overlap_id {
-    id: "road_4_lane_0_-2_signal_4_387"
-  }
   successor_id {
     id: "road_314_lane_0_-2"
   }
@@ -66103,12 +66079,6 @@ lane {
   }
   length: 224.22
   speed_limit: 11.176
-  overlap_id {
-    id: "road_4_lane_0_-3_signal_4_392"
-  }
-  overlap_id {
-    id: "road_4_lane_0_-3_signal_4_387"
-  }
   successor_id {
     id: "road_314_lane_0_-1"
   }
@@ -73311,7 +73281,7 @@ lane {
   length: 69.63
   speed_limit: 11.176
   overlap_id {
-    id: "road_5_lane_0_-1_signal_5_366"
+    id: "road_5_lane_0_-1_signal_366"
   }
   predecessor_id {
     id: "road_20_lane_0_1"
@@ -74807,9 +74777,6 @@ lane {
   }
   length: 69.63000000000001
   speed_limit: 11.176
-  overlap_id {
-    id: "road_5_lane_0_-2_signal_5_366"
-  }
   predecessor_id {
     id: "road_20_lane_0_2"
   }
@@ -76301,9 +76268,6 @@ lane {
   }
   length: 69.63000000000001
   speed_limit: 11.176
-  overlap_id {
-    id: "road_5_lane_0_-3_signal_5_366"
-  }
   predecessor_id {
     id: "road_20_lane_0_3"
   }
@@ -89189,6 +89153,9 @@ lane {
   }
   length: 224.098928261107
   speed_limit: 11.176
+  overlap_id {
+    id: "road_6_lane_0_1_signal_367"
+  }
   predecessor_id {
     id: "road_158_lane_0_1"
   }
@@ -93927,10 +93894,7 @@ lane {
   length: 224.10107106097837
   speed_limit: 11.176
   overlap_id {
-    id: "road_6_lane_0_-1_signal_6_367"
-  }
-  overlap_id {
-    id: "road_6_lane_0_-1_signal_6_373"
+    id: "road_6_lane_0_-1_signal_373"
   }
   predecessor_id {
     id: "road_94_lane_0_-1"
@@ -98669,12 +98633,6 @@ lane {
   }
   length: 224.1022228159092
   speed_limit: 11.176
-  overlap_id {
-    id: "road_6_lane_0_-2_signal_6_367"
-  }
-  overlap_id {
-    id: "road_6_lane_0_-2_signal_6_373"
-  }
   predecessor_id {
     id: "road_94_lane_0_-2"
   }
@@ -103406,12 +103364,6 @@ lane {
   }
   length: 224.10337457084006
   speed_limit: 11.176
-  overlap_id {
-    id: "road_6_lane_0_-3_signal_6_367"
-  }
-  overlap_id {
-    id: "road_6_lane_0_-3_signal_6_373"
-  }
   predecessor_id {
     id: "road_94_lane_0_-3"
   }
@@ -107459,6 +107411,9 @@ lane {
   }
   length: 36.350000803097146
   speed_limit: 11.176
+  overlap_id {
+    id: "road_7_lane_0_1_signal_374"
+  }
   predecessor_id {
     id: "road_14_lane_0_-1"
   }
@@ -108293,9 +108248,6 @@ lane {
   }
   length: 36.350000803097146
   speed_limit: 11.176
-  overlap_id {
-    id: "road_7_lane_0_-1_signal_7_374"
-  }
   predecessor_id {
     id: "road_150_lane_0_-1"
   }
@@ -109130,9 +109082,6 @@ lane {
   }
   length: 36.350000803097146
   speed_limit: 11.176
-  overlap_id {
-    id: "road_7_lane_0_-2_signal_7_374"
-  }
   predecessor_id {
     id: "road_157_lane_0_-2"
   }
@@ -109964,9 +109913,6 @@ lane {
   }
   length: 36.350000803097146
   speed_limit: 11.176
-  overlap_id {
-    id: "road_7_lane_0_-3_signal_7_374"
-  }
   predecessor_id {
     id: "road_157_lane_0_-3"
   }
@@ -151152,6 +151098,9 @@ lane {
   }
   length: 43.60000000000001
   speed_limit: 11.176
+  overlap_id {
+    id: "road_9_lane_0_1_signal_377"
+  }
   predecessor_id {
     id: "road_333_lane_0_-1"
   }
@@ -152130,10 +152079,7 @@ lane {
   length: 43.60000000000004
   speed_limit: 11.176
   overlap_id {
-    id: "road_9_lane_0_-1_signal_9_377"
-  }
-  overlap_id {
-    id: "road_9_lane_0_-1_signal_9_393"
+    id: "road_9_lane_0_-1_signal_393"
   }
   predecessor_id {
     id: "road_183_lane_0_1"
@@ -153112,12 +153058,6 @@ lane {
   }
   length: 43.60000000000001
   speed_limit: 11.176
-  overlap_id {
-    id: "road_9_lane_0_-2_signal_9_377"
-  }
-  overlap_id {
-    id: "road_9_lane_0_-2_signal_9_393"
-  }
   successor_id {
     id: "road_355_lane_0_-2"
   }
@@ -154086,12 +154026,6 @@ lane {
   }
   length: 43.60000000000004
   speed_limit: 11.176
-  overlap_id {
-    id: "road_9_lane_0_-3_signal_9_377"
-  }
-  overlap_id {
-    id: "road_9_lane_0_-3_signal_9_393"
-  }
   successor_id {
     id: "road_355_lane_0_-3"
   }
@@ -162924,6 +162858,9 @@ lane {
   }
   length: 157.99000000000004
   speed_limit: 11.176
+  overlap_id {
+    id: "road_10_lane_0_1_signal_395"
+  }
   predecessor_id {
     id: "road_232_lane_0_1"
   }
@@ -166182,10 +166119,7 @@ lane {
   length: 157.98999999999998
   speed_limit: 11.176
   overlap_id {
-    id: "road_10_lane_0_-1_signal_10_395"
-  }
-  overlap_id {
-    id: "road_10_lane_0_-1_signal_10_381"
+    id: "road_10_lane_0_-1_signal_381"
   }
   predecessor_id {
     id: "road_339_lane_0_-1"
@@ -169444,12 +169378,6 @@ lane {
   }
   length: 157.99000000000004
   speed_limit: 11.176
-  overlap_id {
-    id: "road_10_lane_0_-2_signal_10_395"
-  }
-  overlap_id {
-    id: "road_10_lane_0_-2_signal_10_381"
-  }
   predecessor_id {
     id: "road_355_lane_0_-2"
   }
@@ -172701,12 +172629,6 @@ lane {
   }
   length: 157.98999999999998
   speed_limit: 11.176
-  overlap_id {
-    id: "road_10_lane_0_-3_signal_10_395"
-  }
-  overlap_id {
-    id: "road_10_lane_0_-3_signal_10_381"
-  }
   predecessor_id {
     id: "road_355_lane_0_-3"
   }
@@ -188878,6 +188800,9 @@ lane {
   }
   length: 224.24999999999997
   speed_limit: 11.176
+  overlap_id {
+    id: "road_12_lane_0_1_signal_385"
+  }
   predecessor_id {
     id: "road_195_lane_0_1"
   }
@@ -193476,10 +193401,7 @@ lane {
   length: 224.24999999999997
   speed_limit: 11.176
   overlap_id {
-    id: "road_12_lane_0_-1_signal_12_385"
-  }
-  overlap_id {
-    id: "road_12_lane_0_-1_signal_12_378"
+    id: "road_12_lane_0_-1_signal_378"
   }
   predecessor_id {
     id: "road_256_lane_0_1"
@@ -198078,12 +198000,6 @@ lane {
   }
   length: 224.24999999999997
   speed_limit: 11.176
-  overlap_id {
-    id: "road_12_lane_0_-2_signal_12_385"
-  }
-  overlap_id {
-    id: "road_12_lane_0_-2_signal_12_378"
-  }
   successor_id {
     id: "road_197_lane_0_2"
   }
@@ -202672,12 +202588,6 @@ lane {
   }
   length: 224.24999999999997
   speed_limit: 11.176
-  overlap_id {
-    id: "road_12_lane_0_-3_signal_12_385"
-  }
-  overlap_id {
-    id: "road_12_lane_0_-3_signal_12_378"
-  }
   successor_id {
     id: "road_197_lane_0_1"
   }
@@ -251194,6 +251104,9 @@ lane {
   }
   length: 35.63
   speed_limit: 11.176
+  overlap_id {
+    id: "road_16_lane_0_1_signal_361"
+  }
   predecessor_id {
     id: "road_244_lane_0_1"
   }
@@ -252012,10 +251925,7 @@ lane {
   length: 35.62999999999999
   speed_limit: 11.176
   overlap_id {
-    id: "road_16_lane_0_-1_signal_16_361"
-  }
-  overlap_id {
-    id: "road_16_lane_0_-1_signal_16_383"
+    id: "road_16_lane_0_-1_signal_383"
   }
   predecessor_id {
     id: "road_27_lane_0_1"
@@ -252834,12 +252744,6 @@ lane {
   }
   length: 35.62999999999999
   speed_limit: 11.176
-  overlap_id {
-    id: "road_16_lane_0_-2_signal_16_361"
-  }
-  overlap_id {
-    id: "road_16_lane_0_-2_signal_16_383"
-  }
   predecessor_id {
     id: "road_248_lane_0_-2"
   }
@@ -253648,12 +253552,6 @@ lane {
   }
   length: 35.62999999999999
   speed_limit: 11.176
-  overlap_id {
-    id: "road_16_lane_0_-3_signal_16_361"
-  }
-  overlap_id {
-    id: "road_16_lane_0_-3_signal_16_383"
-  }
   predecessor_id {
     id: "road_248_lane_0_-1"
   }
@@ -256910,6 +256808,9 @@ lane {
   }
   length: 51.55000000000002
   speed_limit: 11.176
+  overlap_id {
+    id: "road_17_lane_0_1_signal_382"
+  }
   predecessor_id {
     id: "road_284_lane_0_-1"
   }
@@ -258048,10 +257949,7 @@ lane {
   length: 51.55000000000002
   speed_limit: 11.176
   overlap_id {
-    id: "road_17_lane_0_-1_signal_17_382"
-  }
-  overlap_id {
-    id: "road_17_lane_0_-1_signal_17_389"
+    id: "road_17_lane_0_-1_signal_389"
   }
   predecessor_id {
     id: "road_229_lane_0_-1"
@@ -259190,12 +259088,6 @@ lane {
   }
   length: 51.55000000000002
   speed_limit: 11.176
-  overlap_id {
-    id: "road_17_lane_0_-2_signal_17_382"
-  }
-  overlap_id {
-    id: "road_17_lane_0_-2_signal_17_389"
-  }
   successor_id {
     id: "road_223_lane_0_-2"
   }
@@ -260327,12 +260219,6 @@ lane {
   }
   length: 51.55000000000002
   speed_limit: 11.176
-  overlap_id {
-    id: "road_17_lane_0_-3_signal_17_382"
-  }
-  overlap_id {
-    id: "road_17_lane_0_-3_signal_17_389"
-  }
   successor_id {
     id: "road_223_lane_0_-1"
   }
@@ -263200,6 +263086,9 @@ lane {
   }
   length: 41.980000000000025
   speed_limit: 11.176
+  overlap_id {
+    id: "road_18_lane_0_1_signal_388"
+  }
   predecessor_id {
     id: "road_209_lane_0_-1"
   }
@@ -264138,7 +264027,7 @@ lane {
   length: 41.980000000000025
   speed_limit: 11.176
   overlap_id {
-    id: "road_18_lane_0_-1_signal_18_379"
+    id: "road_18_lane_0_-1_signal_379"
   }
   predecessor_id {
     id: "road_296_lane_0_-1"
@@ -265077,9 +264966,6 @@ lane {
   }
   length: 41.980000000000025
   speed_limit: 11.176
-  overlap_id {
-    id: "road_18_lane_0_-2_signal_18_379"
-  }
   predecessor_id {
     id: "road_203_lane_0_-2"
   }
@@ -266008,9 +265894,6 @@ lane {
   }
   length: 41.980000000000025
   speed_limit: 11.176
-  overlap_id {
-    id: "road_18_lane_0_-3_signal_18_379"
-  }
   predecessor_id {
     id: "road_203_lane_0_-1"
   }
@@ -272273,6 +272156,9 @@ lane {
   }
   length: 108.28999999999999
   speed_limit: 11.176
+  overlap_id {
+    id: "road_19_lane_0_1_signal_380"
+  }
   predecessor_id {
     id: "road_144_lane_0_1"
   }
@@ -274551,7 +274437,7 @@ lane {
   length: 108.28999999999994
   speed_limit: 11.176
   overlap_id {
-    id: "road_19_lane_0_-1_signal_19_372"
+    id: "road_19_lane_0_-1_signal_372"
   }
   predecessor_id {
     id: "road_201_lane_0_-1"
@@ -276830,9 +276716,6 @@ lane {
   }
   length: 108.28999999999994
   speed_limit: 11.176
-  overlap_id {
-    id: "road_19_lane_0_-2_signal_19_372"
-  }
   successor_id {
     id: "road_165_lane_0_2"
   }
@@ -279101,9 +278984,6 @@ lane {
   }
   length: 108.28999999999996
   speed_limit: 11.176
-  overlap_id {
-    id: "road_19_lane_0_-3_signal_19_372"
-  }
   successor_id {
     id: "road_165_lane_0_1"
   }
@@ -285120,6 +285000,9 @@ lane {
   }
   length: 34.910000000000004
   speed_limit: 11.176
+  overlap_id {
+    id: "road_21_lane_0_1_signal_370"
+  }
   predecessor_id {
     id: "road_179_lane_0_1"
   }
@@ -285918,10 +285801,7 @@ lane {
   length: 34.910000000000004
   speed_limit: 11.176
   overlap_id {
-    id: "road_21_lane_0_-1_signal_21_370"
-  }
-  overlap_id {
-    id: "road_21_lane_0_-1_signal_21_376"
+    id: "road_21_lane_0_-1_signal_376"
   }
   predecessor_id {
     id: "road_128_lane_0_-1"
@@ -286720,12 +286600,6 @@ lane {
   }
   length: 34.90999999999999
   speed_limit: 11.176
-  overlap_id {
-    id: "road_21_lane_0_-2_signal_21_370"
-  }
-  overlap_id {
-    id: "road_21_lane_0_-2_signal_21_376"
-  }
   successor_id {
     id: "road_178_lane_0_-2"
   }
@@ -287514,12 +287388,6 @@ lane {
   }
   length: 34.90999999999999
   speed_limit: 11.176
-  overlap_id {
-    id: "road_21_lane_0_-3_signal_21_370"
-  }
-  overlap_id {
-    id: "road_21_lane_0_-3_signal_21_376"
-  }
   successor_id {
     id: "road_178_lane_0_-3"
   }
@@ -290762,6 +290630,9 @@ lane {
   }
   length: 51.69000000000001
   speed_limit: 11.176
+  overlap_id {
+    id: "road_22_lane_0_1_signal_375"
+  }
   predecessor_id {
     id: "road_312_lane_0_1"
   }
@@ -291900,10 +291771,7 @@ lane {
   length: 51.69000000000001
   speed_limit: 11.176
   overlap_id {
-    id: "road_22_lane_0_-1_signal_22_375"
-  }
-  overlap_id {
-    id: "road_22_lane_0_-1_signal_22_391"
+    id: "road_22_lane_0_-1_signal_391"
   }
   predecessor_id {
     id: "road_178_lane_0_-1"
@@ -293042,12 +292910,6 @@ lane {
   }
   length: 51.69000000000001
   speed_limit: 11.176
-  overlap_id {
-    id: "road_22_lane_0_-2_signal_22_375"
-  }
-  overlap_id {
-    id: "road_22_lane_0_-2_signal_22_391"
-  }
   predecessor_id {
     id: "road_178_lane_0_-2"
   }
@@ -294179,12 +294041,6 @@ lane {
   }
   length: 51.69000000000001
   speed_limit: 11.176
-  overlap_id {
-    id: "road_22_lane_0_-3_signal_22_375"
-  }
-  overlap_id {
-    id: "road_22_lane_0_-3_signal_22_391"
-  }
   predecessor_id {
     id: "road_178_lane_0_-3"
   }
@@ -297202,6 +297058,9 @@ lane {
   }
   length: 44.49000000000003
   speed_limit: 11.176
+  overlap_id {
+    id: "road_23_lane_0_1_signal_390"
+  }
   predecessor_id {
     id: "road_272_lane_0_1"
   }
@@ -298200,10 +298059,7 @@ lane {
   length: 44.49000000000003
   speed_limit: 11.176
   overlap_id {
-    id: "road_23_lane_0_-1_signal_23_390"
-  }
-  overlap_id {
-    id: "road_23_lane_0_-1_signal_23_386"
+    id: "road_23_lane_0_-1_signal_386"
   }
   predecessor_id {
     id: "road_318_lane_0_1"
@@ -299202,12 +299058,6 @@ lane {
   }
   length: 44.49000000000003
   speed_limit: 11.176
-  overlap_id {
-    id: "road_23_lane_0_-2_signal_23_390"
-  }
-  overlap_id {
-    id: "road_23_lane_0_-2_signal_23_386"
-  }
   predecessor_id {
     id: "road_331_lane_0_-2"
   }
@@ -300199,12 +300049,6 @@ lane {
   }
   length: 44.49000000000003
   speed_limit: 11.176
-  overlap_id {
-    id: "road_23_lane_0_-3_signal_23_390"
-  }
-  overlap_id {
-    id: "road_23_lane_0_-3_signal_23_386"
-  }
   predecessor_id {
     id: "road_331_lane_0_-3"
   }
@@ -306494,6 +306338,9 @@ lane {
   }
   length: 108.97000000000007
   speed_limit: 11.176
+  overlap_id {
+    id: "road_24_lane_0_1_signal_384"
+  }
   predecessor_id {
     id: "road_102_lane_0_-1"
   }
@@ -308772,10 +308619,7 @@ lane {
   length: 108.97000000000007
   speed_limit: 11.176
   overlap_id {
-    id: "road_24_lane_0_-1_signal_24_384"
-  }
-  overlap_id {
-    id: "road_24_lane_0_-1_signal_24_368"
+    id: "road_24_lane_0_-1_signal_368"
   }
   predecessor_id {
     id: "road_257_lane_0_1"
@@ -311054,12 +310898,6 @@ lane {
   }
   length: 108.97000000000004
   speed_limit: 11.176
-  overlap_id {
-    id: "road_24_lane_0_-2_signal_24_384"
-  }
-  overlap_id {
-    id: "road_24_lane_0_-2_signal_24_368"
-  }
   predecessor_id {
     id: "road_271_lane_0_-2"
   }
@@ -313331,12 +313169,6 @@ lane {
   }
   length: 108.9700000000001
   speed_limit: 11.176
-  overlap_id {
-    id: "road_24_lane_0_-3_signal_24_384"
-  }
-  overlap_id {
-    id: "road_24_lane_0_-3_signal_24_368"
-  }
   predecessor_id {
     id: "road_271_lane_0_-3"
   }
@@ -316348,6 +316180,9 @@ lane {
   }
   length: 35.18
   speed_limit: 11.176
+  overlap_id {
+    id: "road_25_lane_0_1_signal_363"
+  }
   predecessor_id {
     id: "road_334_lane_0_-1"
   }
@@ -317166,10 +317001,7 @@ lane {
   length: 35.18
   speed_limit: 11.176
   overlap_id {
-    id: "road_25_lane_0_-1_signal_25_363"
-  }
-  overlap_id {
-    id: "road_25_lane_0_-1_signal_25_394"
+    id: "road_25_lane_0_-1_signal_394"
   }
   predecessor_id {
     id: "road_67_lane_0_-1"
@@ -317988,12 +317820,6 @@ lane {
   }
   length: 35.18
   speed_limit: 11.176
-  overlap_id {
-    id: "road_25_lane_0_-2_signal_25_363"
-  }
-  overlap_id {
-    id: "road_25_lane_0_-2_signal_25_394"
-  }
   successor_id {
     id: "road_335_lane_0_2"
   }
@@ -318802,12 +318628,6 @@ lane {
   }
   length: 35.18
   speed_limit: 11.176
-  overlap_id {
-    id: "road_25_lane_0_-3_signal_25_363"
-  }
-  overlap_id {
-    id: "road_25_lane_0_-3_signal_25_394"
-  }
   successor_id {
     id: "road_335_lane_0_1"
   }
@@ -363723,9 +363543,6 @@ lane {
   }
   length: 23.509999999999984
   speed_limit: 33.3
-  overlap_id {
-    id: "road_218_lane_0_-1_signal_218_380"
-  }
   predecessor_id {
     id: "road_18_lane_0_-1"
   }
@@ -398943,2374 +398760,3817 @@ lane {
 }
 signal {
   id {
-    id: "signal_0_362"
+    id: "signal_360"
+  }
+  boundary {
+    point {
+      x: 323.53927846278793
+      y: -4.999680919435042
+      z: 3.218838632106781
+    }
+    point {
+      x: 323.5395179239308
+      y: -4.548919277403337
+      z: 3.218838632106781
+    }
+    point {
+      x: 323.5395179239308
+      y: -4.548919277403337
+      z: 1.997465193271637
+    }
+    point {
+      x: 323.53927846278793
+      y: -4.999680919435042
+      z: 1.997465193271637
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 323.5393981933594
+      y: -4.7743000984191895
+      z: 3.015276392300924
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 323.5393981933594
+      y: -4.7743000984191895
+      z: 2.608151912689209
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 323.5393981933594
+      y: -4.7743000984191895
+      z: 2.201027433077494
+    }
   }
   overlap_id {
-    id: "road_0_lane_0_-1_signal_0_362"
+    id: "road_1_lane_0_1_signal_360"
   }
-  overlap_id {
-    id: "road_0_lane_0_-2_signal_0_362"
-  }
-  overlap_id {
-    id: "road_0_lane_0_-3_signal_0_362"
-  }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 348.2300014685122
-          y: -0.0006842346023901782
+          x: 316.4120121803677
+          y: 0.01621865013391388
         }
         point {
-          x: 348.23441073278866
-          y: 8.299314594216115
+          x: 316.40988723372845
+          y: -3.983780785441269
         }
       }
+      s: 0.0
+      start_position {
+        x: 316.4120121803677
+        y: 0.01621865013391388
+      }
+      length: 4.0
     }
   }
 }
 signal {
   id {
-    id: "signal_1_360"
+    id: "signal_361"
+  }
+  boundary {
+    point {
+      x: 341.3796831852332
+      y: -12.97075629115268
+      z: 3.2188579440116882
+    }
+    point {
+      x: 340.9289105647668
+      y: -12.970484019516265
+      z: 3.2188579440116882
+    }
+    point {
+      x: 340.9289105647668
+      y: -12.970484019516265
+      z: 1.9974845051765442
+    }
+    point {
+      x: 341.3796831852332
+      y: -12.97075629115268
+      z: 1.9974845051765442
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 341.154296875
+      y: -12.970620155334473
+      z: 3.015295704205831
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 341.154296875
+      y: -12.970620155334473
+      z: 2.608171224594116
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 341.154296875
+      y: -12.970620155334473
+      z: 2.2010467449824014
+    }
   }
   overlap_id {
-    id: "road_1_lane_0_-1_signal_1_360"
+    id: "road_16_lane_0_1_signal_361"
   }
-  overlap_id {
-    id: "road_1_lane_0_-2_signal_1_360"
-  }
-  overlap_id {
-    id: "road_1_lane_0_-3_signal_1_360"
-  }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 168.08001031270084
-          y: 0.043062593084646064
+          x: 336.8875688480024
+          y: -20.45089654376007
         }
         point {
-          x: 168.08089616559408
-          y: 8.343062545811433
+          x: 340.8875681183439
+          y: -20.453312587453826
         }
       }
+      s: 0.0
+      start_position {
+        x: 336.8875688480024
+        y: -20.45089654376007
+      }
+      length: 4.0
     }
   }
 }
 signal {
   id {
-    id: "signal_2_364"
+    id: "signal_362"
+  }
+  boundary {
+    point {
+      x: 348.6907020111471
+      y: 4.499652055884432
+      z: 3.2198027968406677
+    }
+    point {
+      x: 348.69046253963415
+      y: 4.048870893334318
+      z: 3.2198027968406677
+    }
+    point {
+      x: 348.69046253963415
+      y: 4.048870893334318
+      z: 1.9984293580055237
+    }
+    point {
+      x: 348.6907020111471
+      y: 4.499652055884432
+      z: 1.9984293580055237
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 348.6905822753906
+      y: 4.274261474609375
+      z: 3.0162405570348105
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 348.6905822753906
+      y: 4.274261474609375
+      z: 2.6091160774230957
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 348.6905822753906
+      y: 4.274261474609375
+      z: 2.201991597811381
+    }
   }
   overlap_id {
-    id: "road_2_lane_0_-1_signal_2_364"
+    id: "road_0_lane_0_-1_signal_362"
   }
-  overlap_id {
-    id: "road_2_lane_0_-2_signal_2_364"
-  }
-  overlap_id {
-    id: "road_2_lane_0_-3_signal_2_364"
-  }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 102.69001070025007
-          y: 0.04987289756558597
+          x: 357.3910578879518
+          y: -0.00555092430167492
         }
         point {
-          x: 102.68730564885719
-          y: 8.349872456764187
+          x: 357.393182834591
+          y: 3.994448511273508
         }
       }
+      s: 0.0
+      start_position {
+        x: 357.3910578879518
+        y: -0.00555092430167492
+      }
+      length: 4.0
     }
   }
 }
 signal {
   id {
-    id: "signal_3_371"
+    id: "signal_363"
+  }
+  boundary {
+    point {
+      x: 160.69967512547873
+      y: -12.820854275365347
+      z: 3.2188579440116882
+    }
+    point {
+      x: 160.24890275538064
+      y: -12.820306689600473
+      z: 3.2188579440116882
+    }
+    point {
+      x: 160.24890275538064
+      y: -12.820306689600473
+      z: 1.9974845051765442
+    }
+    point {
+      x: 160.69967512547873
+      y: -12.820854275365347
+      z: 1.9974845051765442
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 160.4742889404297
+      y: -12.82058048248291
+      z: 3.015295704205831
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 160.4742889404297
+      y: -12.82058048248291
+      z: 2.608171224594116
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 160.4742889404297
+      y: -12.82058048248291
+      z: 2.2010467449824014
+    }
   }
   overlap_id {
-    id: "road_3_lane_0_-1_signal_3_371"
+    id: "road_25_lane_0_1_signal_363"
   }
-  overlap_id {
-    id: "road_3_lane_0_-2_signal_3_371"
-  }
-  overlap_id {
-    id: "road_3_lane_0_-3_signal_3_371"
-  }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 11.029999736251966
-          y: 0.019999999553999857
+          x: 156.055700988695
+          y: -19.94444315593686
         }
         point {
-          x: 11.027294684859102
-          y: 8.3199995587526
+          x: 160.05569803735503
+          y: -19.949302241339332
         }
       }
+      s: 0.0
+      start_position {
+        x: 156.055700988695
+        y: -19.94444315593686
+      }
+      length: 4.0
     }
   }
 }
 signal {
   id {
-    id: "signal_4_392"
+    id: "signal_364"
+  }
+  boundary {
+    point {
+      x: 142.85938146180382
+      y: -4.849700628427423
+      z: 3.218838632106781
+    }
+    point {
+      x: 142.85942957335243
+      y: -4.398919404836737
+      z: 3.218838632106781
+    }
+    point {
+      x: 142.85942957335243
+      y: -4.398919404836737
+      z: 1.997465193271637
+    }
+    point {
+      x: 142.85938146180382
+      y: -4.849700628427423
+      z: 1.997465193271637
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 142.85940551757812
+      y: -4.62431001663208
+      z: 3.015276392300924
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 142.85940551757812
+      y: -4.62431001663208
+      z: 2.608151912689209
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 142.85940551757812
+      y: -4.62431001663208
+      z: 2.201027433077494
+    }
   }
   overlap_id {
-    id: "road_4_lane_0_-1_signal_4_392"
+    id: "road_2_lane_0_1_signal_364"
   }
-  overlap_id {
-    id: "road_4_lane_0_-2_signal_4_392"
-  }
-  overlap_id {
-    id: "road_4_lane_0_-3_signal_4_392"
-  }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 325.63997347338847
-          y: -131.51508506457492
+          x: 135.56149275540935
+          y: 0.046533270557723716
         }
         point {
-          x: 325.636265085955
-          y: -139.81508423613286
+          x: 135.56106583835236
+          y: -3.953466706660005
         }
       }
+      s: 0.0
+      start_position {
+        x: 135.56149275540935
+        y: 0.046533270557723716
+      }
+      length: 4.0
     }
   }
 }
 signal {
   id {
-    id: "signal_4_387"
+    id: "signal_365"
+  }
+  boundary {
+    point {
+      x: 168.01061365434197
+      y: 4.4496716993131376
+      z: 3.2198027968406677
+    }
+    point {
+      x: 168.01056554487678
+      y: 3.998909996243503
+      z: 3.2198027968406677
+    }
+    point {
+      x: 168.01056554487678
+      y: 3.998909996243503
+      z: 1.9984293580055237
+    }
+    point {
+      x: 168.01061365434197
+      y: 4.4496716993131376
+      z: 1.9984293580055237
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 168.01058959960938
+      y: 4.22429084777832
+      z: 3.0162405570348105
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 168.01058959960938
+      y: 4.22429084777832
+      z: 2.6091160774230957
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 168.01058959960938
+      y: 4.22429084777832
+      z: 2.201991597811381
+    }
   }
   overlap_id {
-    id: "road_4_lane_0_-1_signal_4_387"
+    id: "road_1_lane_0_-1_signal_365"
   }
-  overlap_id {
-    id: "road_4_lane_0_-2_signal_4_387"
-  }
-  overlap_id {
-    id: "road_4_lane_0_-3_signal_4_387"
-  }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 325.63997347338847
-          y: -131.51508506457492
+          x: 175.04052750825943
+          y: 0.042319702201354614
         }
         point {
-          x: 325.636265085955
-          y: -139.81508423613286
+          x: 175.04095442531641
+          y: 4.042319679419083
         }
       }
+      s: 0.0
+      start_position {
+        x: 175.04052750825943
+        y: 0.042319702201354614
+      }
+      length: 4.0
     }
   }
 }
 signal {
   id {
-    id: "signal_5_366"
+    id: "signal_366"
+  }
+  boundary {
+    point {
+      x: 75.44931926461915
+      y: -333.3596606080193
+      z: 3.2198027968406677
+    }
+    point {
+      x: 75.44956074026366
+      y: -332.9088940794807
+      z: 3.2198027968406677
+    }
+    point {
+      x: 75.44956074026366
+      y: -332.9088940794807
+      z: 1.9984293580055237
+    }
+    point {
+      x: 75.44931926461915
+      y: -333.3596606080193
+      z: 1.9984293580055237
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 75.4494400024414
+      y: -333.13427734375
+      z: 3.0162405570348105
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 75.4494400024414
+      y: -333.13427734375
+      z: 2.6091160774230957
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 75.4494400024414
+      y: -333.13427734375
+      z: 2.201991597811381
+    }
   }
   overlap_id {
-    id: "road_5_lane_0_-1_signal_5_366"
+    id: "road_5_lane_0_-1_signal_366"
   }
-  overlap_id {
-    id: "road_5_lane_0_-2_signal_5_366"
-  }
-  overlap_id {
-    id: "road_5_lane_0_-3_signal_5_366"
-  }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 79.63999023786586
-          y: -328.57727881533384
+          x: 66.56410546192673
+          y: -328.5702740634195
         }
         point {
-          x: 79.63554392822466
-          y: -336.8772776243899
+          x: 66.56196266209953
+          y: -332.5702734894706
         }
       }
+      s: 0.0
+      start_position {
+        x: 66.56410546192673
+        y: -328.5702740634195
+      }
+      length: 4.0
     }
   }
 }
 signal {
   id {
-    id: "signal_6_367"
+    id: "signal_367"
+  }
+  boundary {
+    point {
+      x: 106.38058589815068
+      y: -324.0603454721905
+      z: 3.218838632106781
+    }
+    point {
+      x: 106.38053775907588
+      y: -324.5111266957783
+      z: 3.218838632106781
+    }
+    point {
+      x: 106.38053775907588
+      y: -324.5111266957783
+      z: 1.997465193271637
+    }
+    point {
+      x: 106.38058589815068
+      y: -324.0603454721905
+      z: 1.997465193271637
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 106.38056182861328
+      y: -324.2857360839844
+      z: 3.015276392300924
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 106.38056182861328
+      y: -324.2857360839844
+      z: 2.608151912689209
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 106.38056182861328
+      y: -324.2857360839844
+      z: 2.201027433077494
+    }
   }
   overlap_id {
-    id: "road_6_lane_0_-1_signal_6_367"
+    id: "road_6_lane_0_1_signal_367"
   }
-  overlap_id {
-    id: "road_6_lane_0_-2_signal_6_367"
-  }
-  overlap_id {
-    id: "road_6_lane_0_-3_signal_6_367"
-  }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 325.71998576749917
+          x: 114.16879276454486
+          y: -328.59114847690455
+        }
+        point {
+          x: 114.16921992585529
+          y: -324.59114849971286
+        }
+      }
+      s: 0.0
+      start_position {
+        x: 114.16879276454486
+        y: -328.59114847690455
+      }
+      length: 4.0
+    }
+  }
+}
+signal {
+  id {
+    id: "signal_368"
+  }
+  boundary {
+    point {
+      x: 85.61025910339883
+      y: -316.08951179981176
+      z: 3.2188579440116882
+    }
+    point {
+      x: 86.06102080382773
+      y: -316.08944327831324
+      z: 3.2188579440116882
+    }
+    point {
+      x: 86.06102080382773
+      y: -316.08944327831324
+      z: 1.9974845051765442
+    }
+    point {
+      x: 85.61025910339883
+      y: -316.08951179981176
+      z: 1.9974845051765442
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 85.83563995361328
+      y: -316.0894775390625
+      z: 3.015295704205831
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 85.83563995361328
+      y: -316.0894775390625
+      z: 2.608171224594116
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 85.83563995361328
+      y: -316.0894775390625
+      z: 2.2010467449824014
+    }
+  }
+  overlap_id {
+    id: "road_24_lane_0_-1_signal_368"
+  }
+  type: MIX_3_VERTICAL
+  stop_line {
+    segment {
+      line_segment {
+        point {
+          x: 90.41697671743148
+          y: -309.01367302543383
+        }
+        point {
+          x: 86.4169767636472
+          y: -309.01428107618585
+        }
+      }
+      s: 0.0
+      start_position {
+        x: 90.41697671743148
+        y: -309.01367302543383
+      }
+      length: 4.0
+    }
+  }
+}
+signal {
+  id {
+    id: "signal_369"
+  }
+  boundary {
+    point {
+      x: 102.37060663634071
+      y: 4.449681459573664
+      z: 3.2198027968406677
+    }
+    point {
+      x: 102.3705585247921
+      y: 3.9989002359829766
+      z: 3.2198027968406677
+    }
+    point {
+      x: 102.3705585247921
+      y: 3.9989002359829766
+      z: 1.9984293580055237
+    }
+    point {
+      x: 102.37060663634071
+      y: 4.449681459573664
+      z: 1.9984293580055237
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 102.3705825805664
+      y: 4.22429084777832
+      z: 3.0162405570348105
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 102.3705825805664
+      y: 4.22429084777832
+      z: 2.6091160774230957
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 102.3705825805664
+      y: 4.22429084777832
+      z: 2.201991597811381
+    }
+  }
+  overlap_id {
+    id: "road_2_lane_0_-1_signal_369"
+  }
+  type: MIX_3_VERTICAL
+  stop_line {
+    segment {
+      line_segment {
+        point {
+          x: 109.92881791354766
+          y: 0.049269027099858365
+        }
+        point {
+          x: 109.92924483060465
+          y: 4.049269004317587
+        }
+      }
+      s: 0.0
+      start_position {
+        x: 109.92881791354766
+        y: 0.049269027099858365
+      }
+      length: 4.0
+    }
+  }
+}
+signal {
+  id {
+    id: "signal_370"
+  }
+  boundary {
+    point {
+      x: 95.05968352891865
+      y: -12.82055671131528
+      z: 3.2188579440116882
+    }
+    point {
+      x: 94.60891083143291
+      y: -12.820625234485501
+      z: 3.2188579440116882
+    }
+    point {
+      x: 94.60891083143291
+      y: -12.820625234485501
+      z: 1.9974845051765442
+    }
+    point {
+      x: 95.05968352891865
+      y: -12.82055671131528
+      z: 1.9974845051765442
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 94.83429718017578
+      y: -12.82059097290039
+      z: 3.015295704205831
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 94.83429718017578
+      y: -12.82059097290039
+      z: 2.608171224594116
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 94.83429718017578
+      y: -12.82059097290039
+      z: 2.2010467449824014
+    }
+  }
+  overlap_id {
+    id: "road_21_lane_0_1_signal_370"
+  }
+  type: MIX_3_VERTICAL
+  stop_line {
+    segment {
+      line_segment {
+        point {
+          x: 90.37297463404174
+          y: -19.55044822147985
+        }
+        point {
+          x: 94.37297458782602
+          y: -19.549840170727773
+        }
+      }
+      s: 0.0
+      start_position {
+        x: 90.37297463404174
+        y: -19.55044822147985
+      }
+      length: 4.0
+    }
+  }
+}
+signal {
+  id {
+    id: "signal_371"
+  }
+  boundary {
+    point {
+      x: 77.21949484134531
+      y: -4.84968328769089
+      z: 3.218838632106781
+    }
+    point {
+      x: 77.21934793209219
+      y: -4.398916718412625
+      z: 3.218838632106781
+    }
+    point {
+      x: 77.21934793209219
+      y: -4.398916718412625
+      z: 1.997465193271637
+    }
+    point {
+      x: 77.21949484134531
+      y: -4.84968328769089
+      z: 1.997465193271637
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 77.21942138671875
+      y: -4.624300003051758
+      z: 3.015276392300924
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 77.21942138671875
+      y: -4.624300003051758
+      z: 2.608151912689209
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 77.21942138671875
+      y: -4.624300003051758
+      z: 2.201027433077494
+    }
+  }
+  overlap_id {
+    id: "road_3_lane_0_1_signal_371"
+  }
+  type: MIX_3_VERTICAL
+  stop_line {
+    segment {
+      line_segment {
+        point {
+          x: 70.13177158126074
+          y: 0.0392618475950548
+        }
+        point {
+          x: 70.13307522048622
+          y: -3.9607379399705356
+        }
+      }
+      s: 0.0
+      start_position {
+        x: 70.13177158126074
+        y: 0.0392618475950548
+      }
+      length: 4.0
+    }
+  }
+}
+signal {
+  id {
+    id: "signal_372"
+  }
+  boundary {
+    point {
+      x: 332.0202856922005
+      y: -316.08940244172175
+      z: 3.2188579440116882
+    }
+    point {
+      x: 332.471047315612
+      y: -316.08967470671575
+      z: 3.2188579440116882
+    }
+    point {
+      x: 332.471047315612
+      y: -316.08967470671575
+      z: 1.9974845051765442
+    }
+    point {
+      x: 332.0202856922005
+      y: -316.08940244172175
+      z: 1.9974845051765442
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 332.24566650390625
+      y: -316.08953857421875
+      z: 3.015295704205831
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 332.24566650390625
+      y: -316.08953857421875
+      z: 2.608171224594116
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 332.24566650390625
+      y: -316.08953857421875
+      z: 2.2010467449824014
+    }
+  }
+  overlap_id {
+    id: "road_19_lane_0_-1_signal_372"
+  }
+  type: MIX_3_VERTICAL
+  stop_line {
+    segment {
+      line_segment {
+        point {
+          x: 336.7134427856597
+          y: -308.7338130042538
+        }
+        point {
+          x: 332.7134435153182
+          y: -308.7313969605603
+        }
+      }
+      s: 0.0
+      start_position {
+        x: 336.7134427856597
+        y: -308.7338130042538
+      }
+      length: 4.0
+    }
+  }
+}
+signal {
+  id {
+    id: "signal_373"
+  }
+  boundary {
+    point {
+      x: 324.7094421386719
+      y: -333.35962767899036
+      z: 3.2198027968406677
+    }
+    point {
+      x: 324.7094421386719
+      y: -332.9088659733534
+      z: 3.2198027968406677
+    }
+    point {
+      x: 324.7094421386719
+      y: -332.9088659733534
+      z: 1.9984293580055237
+    }
+    point {
+      x: 324.7094421386719
+      y: -333.35962767899036
+      z: 1.9984293580055237
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 324.7094421386719
+      y: -333.1342468261719
+      z: 3.0162405570348105
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 324.7094421386719
+      y: -333.1342468261719
+      z: 2.6091160774230957
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 324.7094421386719
+      y: -333.1342468261719
+      z: 2.201991597811381
+    }
+  }
+  overlap_id {
+    id: "road_6_lane_0_-1_signal_373"
+  }
+  type: MIX_3_VERTICAL
+  stop_line {
+    segment {
+      line_segment {
+        point {
+          x: 316.99786376953125
           y: -328.6099853515625
         }
         point {
-          x: 325.71998576749917
-          y: -336.9099853515625
+          x: 316.99786376953125
+          y: -332.6099853515625
         }
       }
+      s: 0.0
+      start_position {
+        x: 316.99786376953125
+        y: -328.6099853515625
+      }
+      length: 4.0
     }
   }
 }
 signal {
   id {
-    id: "signal_6_373"
+    id: "signal_374"
+  }
+  boundary {
+    point {
+      x: 349.8605651855469
+      y: -324.06037598848343
+      z: 3.218838632106781
+    }
+    point {
+      x: 349.8605651855469
+      y: -324.51115721464157
+      z: 3.218838632106781
+    }
+    point {
+      x: 349.8605651855469
+      y: -324.51115721464157
+      z: 1.997465193271637
+    }
+    point {
+      x: 349.8605651855469
+      y: -324.06037598848343
+      z: 1.997465193271637
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 349.8605651855469
+      y: -324.2857666015625
+      z: 3.015276392300924
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 349.8605651855469
+      y: -324.2857666015625
+      z: 2.608151912689209
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 349.8605651855469
+      y: -324.2857666015625
+      z: 2.201027433077494
+    }
   }
   overlap_id {
-    id: "road_6_lane_0_-1_signal_6_373"
+    id: "road_7_lane_0_1_signal_374"
   }
-  overlap_id {
-    id: "road_6_lane_0_-2_signal_6_373"
-  }
-  overlap_id {
-    id: "road_6_lane_0_-3_signal_6_373"
-  }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 325.71998576749917
+          x: 358.3963623046875
           y: -328.6099853515625
         }
         point {
-          x: 325.71998576749917
-          y: -336.9099853515625
+          x: 358.3963623046875
+          y: -324.6099853515625
         }
       }
+      s: 0.0
+      start_position {
+        x: 358.3963623046875
+        y: -328.6099853515625
+      }
+      length: 4.0
     }
   }
 }
 signal {
   id {
-    id: "signal_7_374"
+    id: "signal_375"
+  }
+  boundary {
+    point {
+      x: 95.00966216363376
+      y: -70.67054374180894
+      z: 3.218838632106781
+    }
+    point {
+      x: 94.55889557562405
+      y: -70.67061226405043
+      z: 3.218838632106781
+    }
+    point {
+      x: 94.55889557562405
+      y: -70.67061226405043
+      z: 1.997465193271637
+    }
+    point {
+      x: 95.00966216363376
+      y: -70.67054374180894
+      z: 1.997465193271637
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 94.7842788696289
+      y: -70.67057800292969
+      z: 3.015276392300924
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 94.7842788696289
+      y: -70.67057800292969
+      z: 2.608151912689209
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 94.7842788696289
+      y: -70.67057800292969
+      z: 2.201027433077494
+    }
   }
   overlap_id {
-    id: "road_7_lane_0_-1_signal_7_374"
+    id: "road_22_lane_0_1_signal_375"
   }
-  overlap_id {
-    id: "road_7_lane_0_-2_signal_7_374"
-  }
-  overlap_id {
-    id: "road_7_lane_0_-3_signal_7_374"
-  }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 384.07998657059636
-          y: -328.6099853515625
+          x: 90.38184122543659
+          y: -77.87841681870421
         }
         point {
-          x: 384.07998657059636
-          y: -336.9099853515625
+          x: 94.38184117922087
+          y: -77.87780876795219
         }
       }
+      s: 0.0
+      start_position {
+        x: 90.38184122543659
+        y: -77.87841681870421
+      }
+      length: 4.0
     }
   }
 }
 signal {
   id {
-    id: "signal_9_377"
+    id: "signal_376"
+  }
+  boundary {
+    point {
+      x: 85.71031616888577
+      y: -45.51945869959731
+      z: 3.2198027968406677
+    }
+    point {
+      x: 86.16108275689548
+      y: -45.51939017735582
+      z: 3.2198027968406677
+    }
+    point {
+      x: 86.16108275689548
+      y: -45.51939017735582
+      z: 1.9984293580055237
+    }
+    point {
+      x: 85.71031616888577
+      y: -45.51945869959731
+      z: 1.9984293580055237
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 85.93569946289062
+      y: -45.51942443847656
+      z: 3.0162405570348105
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 85.93569946289062
+      y: -45.51942443847656
+      z: 2.6091160774230957
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 85.93569946289062
+      y: -45.51942443847656
+      z: 2.201991597811381
+    }
   }
   overlap_id {
-    id: "road_9_lane_0_-1_signal_9_377"
+    id: "road_21_lane_0_-1_signal_376"
   }
-  overlap_id {
-    id: "road_9_lane_0_-2_signal_9_377"
-  }
-  overlap_id {
-    id: "road_9_lane_0_-3_signal_9_377"
-  }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 144.98999562751018
-          y: -57.493349275001286
+          x: 90.37582241478292
+          y: -38.28428383496501
         }
         point {
-          x: 144.99100700562468
-          y: -65.79334921338167
+          x: 86.37582246099863
+          y: -38.28489188571703
         }
       }
+      s: 0.0
+      start_position {
+        x: 90.37582241478292
+        y: -38.28428383496501
+      }
+      length: 4.0
     }
   }
 }
 signal {
   id {
-    id: "signal_9_393"
+    id: "signal_377"
+  }
+  boundary {
+    point {
+      x: 102.98055572644408
+      y: -52.83032685685596
+      z: 3.2188579440116882
+    }
+    point {
+      x: 102.98061065539186
+      y: -53.281108079667476
+      z: 3.2188579440116882
+    }
+    point {
+      x: 102.98061065539186
+      y: -53.281108079667476
+      z: 1.9974845051765442
+    }
+    point {
+      x: 102.98055572644408
+      y: -52.83032685685596
+      z: 1.9974845051765442
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 102.98058319091797
+      y: -53.05571746826172
+      z: 3.015295704205831
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 102.98058319091797
+      y: -53.05571746826172
+      z: 2.608171224594116
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 102.98058319091797
+      y: -53.05571746826172
+      z: 2.2010467449824014
+    }
   }
   overlap_id {
-    id: "road_9_lane_0_-1_signal_9_393"
+    id: "road_9_lane_0_1_signal_377"
   }
-  overlap_id {
-    id: "road_9_lane_0_-2_signal_9_393"
-  }
-  overlap_id {
-    id: "road_9_lane_0_-3_signal_9_393"
-  }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 144.98999562751018
-          y: -57.493349275001286
+          x: 109.9748225630126
+          y: -57.49761597138391
         }
         point {
-          x: 144.99100700562468
-          y: -65.79334921338167
+          x: 109.97433515187308
+          y: -53.497616001080104
         }
       }
+      s: 0.0
+      start_position {
+        x: 109.9748225630126
+        y: -57.49761597138391
+      }
+      length: 4.0
     }
   }
 }
 signal {
   id {
-    id: "signal_10_395"
+    id: "signal_378"
+  }
+  boundary {
+    point {
+      x: 323.14951781848623
+      y: -202.049752189965
+      z: 3.2188579440116882
+    }
+    point {
+      x: 323.14955444713877
+      y: -201.59899048581624
+      z: 3.2188579440116882
+    }
+    point {
+      x: 323.14955444713877
+      y: -201.59899048581624
+      z: 1.9974845051765442
+    }
+    point {
+      x: 323.14951781848623
+      y: -202.049752189965
+      z: 1.9974845051765442
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 323.1495361328125
+      y: -201.82437133789062
+      z: 3.015295704205831
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 323.1495361328125
+      y: -201.82437133789062
+      z: 2.608171224594116
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 323.1495361328125
+      y: -201.82437133789062
+      z: 2.2010467449824014
+    }
   }
   overlap_id {
-    id: "road_10_lane_0_-1_signal_10_395"
+    id: "road_12_lane_0_-1_signal_378"
   }
-  overlap_id {
-    id: "road_10_lane_0_-2_signal_10_395"
-  }
-  overlap_id {
-    id: "road_10_lane_0_-3_signal_10_395"
-  }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 325.159994289919
-          y: -57.47139505874956
+          x: 315.3205360535503
+          y: -197.15827062259825
         }
         point {
-          x: 325.1610056680335
-          y: -65.77139499712995
+          x: 315.32021101571297
+          y: -201.15827060939205
         }
       }
+      s: 0.0
+      start_position {
+        x: 315.3205360535503
+        y: -197.15827062259825
+      }
+      length: 4.0
     }
   }
 }
 signal {
   id {
-    id: "signal_10_381"
+    id: "signal_379"
+  }
+  boundary {
+    point {
+      x: 331.970358934388
+      y: -184.20930600617484
+      z: 3.218838632106781
+    }
+    point {
+      x: 332.4211205577995
+      y: -184.2095782711689
+      z: 3.218838632106781
+    }
+    point {
+      x: 332.4211205577995
+      y: -184.2095782711689
+      z: 1.997465193271637
+    }
+    point {
+      x: 331.970358934388
+      y: -184.20930600617484
+      z: 1.997465193271637
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 332.19573974609375
+      y: -184.20944213867188
+      z: 3.015276392300924
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 332.19573974609375
+      y: -184.20944213867188
+      z: 2.608151912689209
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 332.19573974609375
+      y: -184.20944213867188
+      z: 2.201027433077494
+    }
   }
   overlap_id {
-    id: "road_10_lane_0_-1_signal_10_381"
+    id: "road_18_lane_0_-1_signal_379"
   }
-  overlap_id {
-    id: "road_10_lane_0_-2_signal_10_381"
-  }
-  overlap_id {
-    id: "road_10_lane_0_-3_signal_10_381"
-  }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 325.159994289919
-          y: -57.47139505874956
+          x: 336.79324554073736
+          y: -176.61245985441
         }
         point {
-          x: 325.1610056680335
-          y: -65.77139499712995
+          x: 332.79324627039585
+          y: -176.61004381071623
         }
       }
+      s: 0.0
+      start_position {
+        x: 336.79324554073736
+        y: -176.61245985441
+      }
+      length: 4.0
     }
   }
 }
 signal {
   id {
-    id: "signal_12_385"
+    id: "signal_380"
+  }
+  boundary {
+    point {
+      x: 341.2697228527214
+      y: -209.36067080046578
+      z: 3.2198027968406677
+    }
+    point {
+      x: 340.8189612293099
+      y: -209.36039853547172
+      z: 3.2198027968406677
+    }
+    point {
+      x: 340.8189612293099
+      y: -209.36039853547172
+      z: 1.9984293580055237
+    }
+    point {
+      x: 341.2697228527214
+      y: -209.36067080046578
+      z: 1.9984293580055237
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 341.0443420410156
+      y: -209.36053466796875
+      z: 3.0162405570348105
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 341.0443420410156
+      y: -209.36053466796875
+      z: 2.6091160774230957
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 341.0443420410156
+      y: -209.36053466796875
+      z: 2.201991597811381
+    }
   }
   overlap_id {
-    id: "road_12_lane_0_-1_signal_12_385"
+    id: "road_19_lane_0_1_signal_380"
   }
-  overlap_id {
-    id: "road_12_lane_0_-2_signal_12_385"
-  }
-  overlap_id {
-    id: "road_12_lane_0_-3_signal_12_385"
-  }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 325.6700004441786
-          y: -197.1591116144817
+          x: 336.76890064393433
+          y: -216.9178441081552
         }
         point {
-          x: 325.6693259906662
-          y: -205.45911158707884
+          x: 340.76889991427583
+          y: -216.92026015184896
         }
       }
+      s: 0.0
+      start_position {
+        x: 336.76890064393433
+        y: -216.9178441081552
+      }
+      length: 4.0
     }
   }
 }
 signal {
   id {
-    id: "signal_12_378"
+    id: "signal_381"
+  }
+  boundary {
+    point {
+      x: 321.4995391820346
+      y: -62.45975966584252
+      z: 3.2188579440116882
+    }
+    point {
+      x: 321.4994842554654
+      y: -62.00899796355201
+      z: 3.2188579440116882
+    }
+    point {
+      x: 321.4994842554654
+      y: -62.00899796355201
+      z: 1.9974845051765442
+    }
+    point {
+      x: 321.4995391820346
+      y: -62.45975966584252
+      z: 1.9974845051765442
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 321.49951171875
+      y: -62.234378814697266
+      z: 3.015295704205831
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 321.49951171875
+      y: -62.234378814697266
+      z: 2.608171224594116
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 321.49951171875
+      y: -62.234378814697266
+      z: 2.2010467449824014
+    }
   }
   overlap_id {
-    id: "road_12_lane_0_-1_signal_12_378"
+    id: "road_10_lane_0_-1_signal_381"
   }
-  overlap_id {
-    id: "road_12_lane_0_-2_signal_12_378"
-  }
-  overlap_id {
-    id: "road_12_lane_0_-3_signal_12_378"
-  }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 325.6700004441786
-          y: -197.1591116144817
+          x: 314.37808271034766
+          y: -57.47270886471162
         }
         point {
-          x: 325.6693259906662
-          y: -205.45911158707884
+          x: 314.37857012148714
+          y: -61.47270883501541
         }
       }
+      s: 0.0
+      start_position {
+        x: 314.37808271034766
+        y: -57.47270886471162
+      }
+      length: 4.0
     }
   }
 }
 signal {
   id {
-    id: "signal_16_361"
+    id: "signal_382"
+  }
+  boundary {
+    point {
+      x: 341.26972529651135
+      y: -69.77067446405124
+      z: 3.2198027968406677
+    }
+    point {
+      x: 340.8189587855199
+      y: -69.77040219610501
+      z: 3.2198027968406677
+    }
+    point {
+      x: 340.8189587855199
+      y: -69.77040219610501
+      z: 1.9984293580055237
+    }
+    point {
+      x: 341.26972529651135
+      y: -69.77067446405124
+      z: 1.9984293580055237
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 341.0443420410156
+      y: -69.77053833007812
+      z: 3.0162405570348105
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 341.0443420410156
+      y: -69.77053833007812
+      z: 2.6091160774230957
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 341.0443420410156
+      y: -69.77053833007812
+      z: 2.201991597811381
+    }
   }
   overlap_id {
-    id: "road_16_lane_0_-1_signal_16_361"
+    id: "road_17_lane_0_1_signal_382"
   }
-  overlap_id {
-    id: "road_16_lane_0_-2_signal_16_361"
-  }
-  overlap_id {
-    id: "road_16_lane_0_-3_signal_16_361"
-  }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 336.8718832281081
-          y: -46.41999151310605
+          x: 336.853478879674
+          y: -76.89021044963533
         }
         point {
-          x: 328.5718847421494
-          y: -46.414978222441604
+          x: 340.8534781500155
+          y: -76.89262649332909
         }
       }
+      s: 0.0
+      start_position {
+        x: 336.853478879674
+        y: -76.89021044963533
+      }
+      length: 4.0
     }
   }
 }
 signal {
   id {
-    id: "signal_16_383"
+    id: "signal_383"
+  }
+  boundary {
+    point {
+      x: 331.970356490598
+      y: -44.6193249255972
+      z: 3.218838632106781
+    }
+    point {
+      x: 332.4211230015895
+      y: -44.61959719354343
+      z: 3.218838632106781
+    }
+    point {
+      x: 332.4211230015895
+      y: -44.61959719354343
+      z: 1.997465193271637
+    }
+    point {
+      x: 331.970356490598
+      y: -44.6193249255972
+      z: 1.997465193271637
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 332.19573974609375
+      y: -44.61946105957031
+      z: 3.015276392300924
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 332.19573974609375
+      y: -44.61946105957031
+      z: 2.608151912689209
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 332.19573974609375
+      y: -44.61946105957031
+      z: 2.201027433077494
+    }
   }
   overlap_id {
-    id: "road_16_lane_0_-1_signal_16_383"
+    id: "road_16_lane_0_-1_signal_383"
   }
-  overlap_id {
-    id: "road_16_lane_0_-2_signal_16_383"
-  }
-  overlap_id {
-    id: "road_16_lane_0_-3_signal_16_383"
-  }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 336.8718832281081
-          y: -46.41999151310605
+          x: 336.87727153439556
+          y: -37.49911757595893
         }
         point {
-          x: 328.5718847421494
-          y: -46.414978222441604
+          x: 332.87727226405406
+          y: -37.49670153226517
         }
       }
+      s: 0.0
+      start_position {
+        x: 336.87727153439556
+        y: -37.49911757595893
+      }
+      length: 4.0
     }
   }
 }
 signal {
   id {
-    id: "signal_17_382"
+    id: "signal_384"
+  }
+  boundary {
+    point {
+      x: 95.0096444610543
+      y: -210.18055350780543
+      z: 3.218838632106781
+    }
+    point {
+      x: 94.5588827606254
+      y: -210.18062202930395
+      z: 3.218838632106781
+    }
+    point {
+      x: 94.5588827606254
+      y: -210.18062202930395
+      z: 1.997465193271637
+    }
+    point {
+      x: 95.0096444610543
+      y: -210.18055350780543
+      z: 1.997465193271637
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 94.78426361083984
+      y: -210.1805877685547
+      z: 3.015276392300924
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 94.78426361083984
+      y: -210.1805877685547
+      z: 2.608151912689209
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 94.78426361083984
+      y: -210.1805877685547
+      z: 2.201027433077494
+    }
   }
   overlap_id {
-    id: "road_17_lane_0_-1_signal_17_382"
+    id: "road_24_lane_0_1_signal_384"
   }
-  overlap_id {
-    id: "road_17_lane_0_-2_signal_17_382"
-  }
-  overlap_id {
-    id: "road_17_lane_0_-3_signal_17_382"
-  }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 336.82708977802673
-          y: -120.57997798523826
+          x: 90.40301848400104
+          y: -217.19085578384298
         }
         point {
-          x: 328.527091292068
-          y: -120.57496469457381
+          x: 94.40301843778532
+          y: -217.1902477330909
         }
       }
+      s: 0.0
+      start_position {
+        x: 90.40301848400104
+        y: -217.19085578384298
+      }
+      length: 4.0
     }
   }
 }
 signal {
   id {
-    id: "signal_17_389"
+    id: "signal_385"
+  }
+  boundary {
+    point {
+      x: 102.98059387664279
+      y: -192.53030091598538
+      z: 3.2188579440116882
+    }
+    point {
+      x: 102.98055724640409
+      y: -192.98108214065525
+      z: 3.2188579440116882
+    }
+    point {
+      x: 102.98055724640409
+      y: -192.98108214065525
+      z: 1.9974845051765442
+    }
+    point {
+      x: 102.98059387664279
+      y: -192.53030091598538
+      z: 1.9974845051765442
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 102.98057556152344
+      y: -192.7556915283203
+      z: 3.015295704205831
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 102.98057556152344
+      y: -192.7556915283203
+      z: 2.608171224594116
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 102.98057556152344
+      y: -192.7556915283203
+      z: 2.2010467449824014
+    }
   }
   overlap_id {
-    id: "road_17_lane_0_-1_signal_17_389"
+    id: "road_12_lane_0_1_signal_385"
   }
-  overlap_id {
-    id: "road_17_lane_0_-2_signal_17_389"
-  }
-  overlap_id {
-    id: "road_17_lane_0_-3_signal_17_389"
-  }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 336.82708977802673
-          y: -120.57997798523826
+          x: 111.06292494363402
+          y: -197.1416727595016
         }
         point {
-          x: 328.527091292068
-          y: -120.57496469457381
+          x: 111.06324998147124
+          y: -193.1416727727078
         }
       }
+      s: 0.0
+      start_position {
+        x: 111.06292494363402
+        y: -197.1416727595016
+      }
+      length: 4.0
     }
   }
 }
 signal {
   id {
-    id: "signal_18_379"
+    id: "signal_386"
+  }
+  boundary {
+    point {
+      x: 85.71031098328164
+      y: -185.0294379472727
+      z: 3.2198027968406677
+    }
+    point {
+      x: 86.16107268371054
+      y: -185.02936942577418
+      z: 3.2198027968406677
+    }
+    point {
+      x: 86.16107268371054
+      y: -185.02936942577418
+      z: 1.9984293580055237
+    }
+    point {
+      x: 85.71031098328164
+      y: -185.0294379472727
+      z: 1.9984293580055237
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 85.9356918334961
+      y: -185.02940368652344
+      z: 3.0162405570348105
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 85.9356918334961
+      y: -185.02940368652344
+      z: 2.6091160774230957
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 85.9356918334961
+      y: -185.02940368652344
+      z: 2.201991597811381
+    }
   }
   overlap_id {
-    id: "road_18_lane_0_-1_signal_18_379"
+    id: "road_23_lane_0_-1_signal_386"
   }
-  overlap_id {
-    id: "road_18_lane_0_-2_signal_18_379"
-  }
-  overlap_id {
-    id: "road_18_lane_0_-3_signal_18_379"
-  }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 336.7877867872394
-          y: -185.6499661155193
+          x: 90.39702384806438
+          y: -177.75575371421485
         }
         point {
-          x: 328.48778830128066
-          y: -185.64495282485487
+          x: 86.3970238942801
+          y: -177.75636176496687
         }
       }
+      s: 0.0
+      start_position {
+        x: 90.39702384806438
+        y: -177.75575371421485
+      }
+      length: 4.0
     }
   }
 }
 signal {
   id {
-    id: "signal_19_372"
+    id: "signal_387"
+  }
+  boundary {
+    point {
+      x: 321.41942444774674
+      y: -136.15183346704146
+      z: 3.2188579440116882
+    }
+    point {
+      x: 321.419625845222
+      y: -135.70107180639604
+      z: 3.2188579440116882
+    }
+    point {
+      x: 321.419625845222
+      y: -135.70107180639604
+      z: 1.9974845051765442
+    }
+    point {
+      x: 321.41942444774674
+      y: -136.15183346704146
+      z: 1.9974845051765442
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 321.4195251464844
+      y: -135.92645263671875
+      z: 3.015295704205831
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 321.4195251464844
+      y: -135.92645263671875
+      z: 2.608171224594116
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 321.4195251464844
+      y: -135.92645263671875
+      z: 2.2010467449824014
+    }
   }
   overlap_id {
-    id: "road_19_lane_0_-1_signal_19_372"
+    id: "road_4_lane_0_-1_signal_387"
   }
-  overlap_id {
-    id: "road_19_lane_0_-2_signal_19_372"
-  }
-  overlap_id {
-    id: "road_19_lane_0_-3_signal_19_372"
-  }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 336.70817814753167
-          y: -317.44994207327306
+          x: 313.38922976974584
+          y: -131.50961150932974
         }
         point {
-          x: 328.40817966157294
-          y: -317.44492878260866
+          x: 313.38744259507905
+          y: -135.50961111008056
         }
       }
+      s: 0.0
+      start_position {
+        x: 313.38922976974584
+        y: -131.50961150932974
+      }
+      length: 4.0
     }
   }
 }
 signal {
   id {
-    id: "signal_21_370"
+    id: "signal_388"
+  }
+  boundary {
+    point {
+      x: 341.26973261298014
+      y: -143.8206775202283
+      z: 3.2198027968406677
+    }
+    point {
+      x: 340.8189514690511
+      y: -143.8204052434436
+      z: 3.2198027968406677
+    }
+    point {
+      x: 340.8189514690511
+      y: -143.8204052434436
+      z: 1.9984293580055237
+    }
+    point {
+      x: 341.26973261298014
+      y: -143.8206775202283
+      z: 1.9984293580055237
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 341.0443420410156
+      y: -143.82054138183594
+      z: 3.0162405570348105
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 341.0443420410156
+      y: -143.82054138183594
+      z: 2.6091160774230957
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 341.0443420410156
+      y: -143.82054138183594
+      z: 2.201991597811381
+    }
   }
   overlap_id {
-    id: "road_21_lane_0_-1_signal_21_370"
+    id: "road_18_lane_0_1_signal_388"
   }
-  overlap_id {
-    id: "road_21_lane_0_-2_signal_21_370"
-  }
-  overlap_id {
-    id: "road_21_lane_0_-3_signal_21_370"
-  }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 90.37701810337337
-          y: -46.149999469188735
+          x: 336.8083425386291
+          y: -151.61788682229476
         }
         point {
-          x: 82.07701819927098
-          y: -46.151261174499176
+          x: 340.8083418089706
+          y: -151.62030286598852
         }
       }
+      s: 0.0
+      start_position {
+        x: 336.8083425386291
+        y: -151.61788682229476
+      }
+      length: 4.0
     }
   }
 }
 signal {
   id {
-    id: "signal_21_376"
+    id: "signal_389"
+  }
+  boundary {
+    point {
+      x: 331.97034917412924
+      y: -118.66931271414673
+      z: 3.218838632106781
+    }
+    point {
+      x: 332.42113031805826
+      y: -118.6695849909314
+      z: 3.218838632106781
+    }
+    point {
+      x: 332.42113031805826
+      y: -118.6695849909314
+      z: 1.997465193271637
+    }
+    point {
+      x: 331.97034917412924
+      y: -118.66931271414673
+      z: 1.997465193271637
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 332.19573974609375
+      y: -118.66944885253906
+      z: 3.015276392300924
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 332.19573974609375
+      y: -118.66944885253906
+      z: 2.608151912689209
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 332.19573974609375
+      y: -118.66944885253906
+      z: 2.201027433077494
+    }
   }
   overlap_id {
-    id: "road_21_lane_0_-1_signal_21_376"
+    id: "road_17_lane_0_-1_signal_389"
   }
-  overlap_id {
-    id: "road_21_lane_0_-2_signal_21_376"
-  }
-  overlap_id {
-    id: "road_21_lane_0_-3_signal_21_376"
-  }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 90.37701810337337
-          y: -46.149999469188735
+          x: 336.83284021695937
+          y: -111.05955764081041
         }
         point {
-          x: 82.07701819927098
-          y: -46.151261174499176
+          x: 332.83284094661786
+          y: -111.05714159711665
         }
       }
+      s: 0.0
+      start_position {
+        x: 336.83284021695937
+        y: -111.05955764081041
+      }
+      length: 4.0
     }
   }
 }
 signal {
   id {
-    id: "signal_22_375"
+    id: "signal_390"
+  }
+  boundary {
+    point {
+      x: 95.00965422131476
+      y: -144.64057547897798
+      z: 3.218838632106781
+    }
+    point {
+      x: 94.55887300036493
+      y: -144.6406440034439
+      z: 3.218838632106781
+    }
+    point {
+      x: 94.55887300036493
+      y: -144.6406440034439
+      z: 1.997465193271637
+    }
+    point {
+      x: 95.00965422131476
+      y: -144.64057547897798
+      z: 1.997465193271637
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 94.78426361083984
+      y: -144.64060974121094
+      z: 3.015276392300924
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 94.78426361083984
+      y: -144.64060974121094
+      z: 2.608151912689209
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 94.78426361083984
+      y: -144.64060974121094
+      z: 2.201027433077494
+    }
   }
   overlap_id {
-    id: "road_22_lane_0_-1_signal_22_375"
+    id: "road_23_lane_0_1_signal_390"
   }
-  overlap_id {
-    id: "road_22_lane_0_-2_signal_22_375"
-  }
-  overlap_id {
-    id: "road_22_lane_0_-3_signal_22_375"
-  }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 90.38821991835255
-          y: -119.83999861777974
+          x: 90.393188658663
+          y: -152.52635077828154
         }
         point {
-          x: 82.08822001425015
-          y: -119.84126032309018
+          x: 94.39318861244728
+          y: -152.52574272752952
         }
       }
+      s: 0.0
+      start_position {
+        x: 90.393188658663
+        y: -152.52635077828154
+      }
+      length: 4.0
     }
   }
 }
 signal {
   id {
-    id: "signal_22_391"
+    id: "signal_391"
+  }
+  boundary {
+    point {
+      x: 85.71030122302118
+      y: -119.48944466262357
+      z: 3.2198027968406677
+    }
+    point {
+      x: 86.16108244397101
+      y: -119.48937613815768
+      z: 3.2198027968406677
+    }
+    point {
+      x: 86.16108244397101
+      y: -119.48937613815768
+      z: 1.9984293580055237
+    }
+    point {
+      x: 85.71030122302118
+      y: -119.48944466262357
+      z: 1.9984293580055237
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 85.9356918334961
+      y: -119.48941040039062
+      z: 3.0162405570348105
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 85.9356918334961
+      y: -119.48941040039062
+      z: 2.6091160774230957
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 85.9356918334961
+      y: -119.48941040039062
+      z: 2.201991597811381
+    }
   }
   overlap_id {
-    id: "road_22_lane_0_-1_signal_22_391"
+    id: "road_22_lane_0_-1_signal_391"
   }
-  overlap_id {
-    id: "road_22_lane_0_-2_signal_22_391"
-  }
-  overlap_id {
-    id: "road_22_lane_0_-3_signal_22_391"
-  }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 90.38821991835255
-          y: -119.83999861777974
+          x: 90.38706853037797
+          y: -112.26571007391969
         }
         point {
-          x: 82.08822001425015
-          y: -119.84126032309018
+          x: 86.38706857659369
+          y: -112.26631812467171
         }
       }
+      s: 0.0
+      start_position {
+        x: 90.38706853037797
+        y: -112.26571007391969
+      }
+      length: 4.0
     }
   }
 }
 signal {
   id {
-    id: "signal_23_390"
+    id: "signal_392"
+  }
+  boundary {
+    point {
+      x: 102.98067626462189
+      y: -126.80032809838252
+      z: 3.2188579440116882
+    }
+    point {
+      x: 102.98047485842498
+      y: -127.25110927954717
+      z: 3.2188579440116882
+    }
+    point {
+      x: 102.98047485842498
+      y: -127.25110927954717
+      z: 1.9974845051765442
+    }
+    point {
+      x: 102.98067626462189
+      y: -126.80032809838252
+      z: 1.9974845051765442
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 102.98057556152344
+      y: -127.02571868896484
+      z: 3.015295704205831
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 102.98057556152344
+      y: -127.02571868896484
+      z: 2.608171224594116
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 102.98057556152344
+      y: -127.02571868896484
+      z: 2.2010467449824014
+    }
   }
   overlap_id {
-    id: "road_23_lane_0_-1_signal_23_390"
+    id: "road_4_lane_0_1_signal_392"
   }
-  overlap_id {
-    id: "road_23_lane_0_-2_signal_23_390"
-  }
-  overlap_id {
-    id: "road_23_lane_0_-3_signal_23_390"
-  }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 90.39832724197807
-          y: -186.32999784955902
+          x: 111.32307339128936
+          y: -131.41932962139902
         }
         point {
-          x: 82.09832733787567
-          y: -186.33125955486946
+          x: 111.32486056595614
+          y: -127.4193300206482
         }
       }
+      s: 0.0
+      start_position {
+        x: 111.32307339128936
+        y: -131.41932962139902
+      }
+      length: 4.0
     }
   }
 }
 signal {
   id {
-    id: "signal_23_386"
+    id: "signal_393"
+  }
+  boundary {
+    point {
+      x: 143.97947387560671
+      y: -62.309691606278804
+      z: 3.2198027968406677
+    }
+    point {
+      x: 143.9794189466589
+      y: -61.85891038346729
+      z: 3.2198027968406677
+    }
+    point {
+      x: 143.9794189466589
+      y: -61.85891038346729
+      z: 1.9984293580055237
+    }
+    point {
+      x: 143.97947387560671
+      y: -62.309691606278804
+      z: 1.9984293580055237
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 143.9794464111328
+      y: -62.08430099487305
+      z: 3.0162405570348105
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 143.9794464111328
+      y: -62.08430099487305
+      z: 2.6091160774230957
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 143.9794464111328
+      y: -62.08430099487305
+      z: 2.201991597811381
+    }
   }
   overlap_id {
-    id: "road_23_lane_0_-1_signal_23_386"
+    id: "road_9_lane_0_-1_signal_393"
   }
-  overlap_id {
-    id: "road_23_lane_0_-2_signal_23_386"
-  }
-  overlap_id {
-    id: "road_23_lane_0_-3_signal_23_386"
-  }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 90.39832724197807
-          y: -186.32999784955902
+          x: 136.33873029340518
+          y: -57.4944034557828
         }
         point {
-          x: 82.09832733787567
-          y: -186.33125955486946
+          x: 136.33921770454467
+          y: -61.494403426086606
         }
       }
+      s: 0.0
+      start_position {
+        x: 136.33873029340518
+        y: -57.4944034557828
+      }
+      length: 4.0
     }
   }
 }
 signal {
   id {
-    id: "signal_24_384"
+    id: "signal_394"
+  }
+  boundary {
+    point {
+      x: 151.29027238726488
+      y: -45.03922740101391
+      z: 3.2188579440116882
+    }
+    point {
+      x: 151.74103864789137
+      y: -45.03977497935718
+      z: 3.2188579440116882
+    }
+    point {
+      x: 151.74103864789137
+      y: -45.03977497935718
+      z: 1.9974845051765442
+    }
+    point {
+      x: 151.29027238726488
+      y: -45.03922740101391
+      z: 1.9974845051765442
+    }
+  }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 151.51565551757812
+      y: -45.03950119018555
+      z: 3.015295704205831
+    }
+  }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 151.51565551757812
+      y: -45.03950119018555
+      z: 2.608171224594116
+    }
+  }
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 151.51565551757812
+      y: -45.03950119018555
+      z: 2.2010467449824014
+    }
   }
   overlap_id {
-    id: "road_24_lane_0_-1_signal_24_384"
+    id: "road_25_lane_0_-1_signal_394"
   }
-  overlap_id {
-    id: "road_24_lane_0_-2_signal_24_384"
-  }
-  overlap_id {
-    id: "road_24_lane_0_-3_signal_24_384"
-  }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 90.41823634372622
-          y: -317.299996336341
+          x: 156.0343132658831
+          y: -37.550807530660286
         }
         point {
-          x: 82.11823643962383
-          y: -317.30125804165147
+          x: 152.03431621722308
+          y: -37.5459484452577
         }
       }
+      s: 0.0
+      start_position {
+        x: 156.0343132658831
+        y: -37.550807530660286
+      }
+      length: 4.0
     }
   }
 }
 signal {
   id {
-    id: "signal_24_368"
+    id: "signal_395"
   }
-  overlap_id {
-    id: "road_24_lane_0_-1_signal_24_368"
-  }
-  overlap_id {
-    id: "road_24_lane_0_-2_signal_24_368"
-  }
-  overlap_id {
-    id: "road_24_lane_0_-3_signal_24_368"
-  }
-  stop_line {
-    segment {
-      line_segment {
-        point {
-          x: 90.41823634372622
-          y: -317.299996336341
-        }
-        point {
-          x: 82.11823643962383
-          y: -317.30125804165147
-        }
-      }
+  boundary {
+    point {
+      x: 169.1305572535123
+      y: -53.010355995778575
+      z: 3.218838632106781
+    }
+    point {
+      x: 169.13061218008144
+      y: -53.46111769806908
+      z: 3.218838632106781
+    }
+    point {
+      x: 169.13061218008144
+      y: -53.46111769806908
+      z: 1.997465193271637
+    }
+    point {
+      x: 169.1305572535123
+      y: -53.010355995778575
+      z: 1.997465193271637
     }
   }
-}
-signal {
-  id {
-    id: "signal_25_363"
-  }
-  overlap_id {
-    id: "road_25_lane_0_-1_signal_25_363"
-  }
-  overlap_id {
-    id: "road_25_lane_0_-2_signal_25_363"
-  }
-  overlap_id {
-    id: "road_25_lane_0_-3_signal_25_363"
-  }
-  stop_line {
-    segment {
-      line_segment {
-        point {
-          x: 156.02380650837418
-          y: -46.1999658690945
-        }
-        point {
-          x: 147.7238126324046
-          y: -46.18988326688421
-        }
-      }
+  subsignal {
+    id {
+      id: "0"
+    }
+    type: CIRCLE
+    location {
+      x: 169.13058471679688
+      y: -53.23573684692383
+      z: 3.015276392300924
     }
   }
-}
-signal {
-  id {
-    id: "signal_25_394"
-  }
-  overlap_id {
-    id: "road_25_lane_0_-1_signal_25_394"
-  }
-  overlap_id {
-    id: "road_25_lane_0_-2_signal_25_394"
-  }
-  overlap_id {
-    id: "road_25_lane_0_-3_signal_25_394"
-  }
-  stop_line {
-    segment {
-      line_segment {
-        point {
-          x: 156.02380650837418
-          y: -46.1999658690945
-        }
-        point {
-          x: 147.7238126324046
-          y: -46.18988326688421
-        }
-      }
+  subsignal {
+    id {
+      id: "1"
+    }
+    type: CIRCLE
+    location {
+      x: 169.13058471679688
+      y: -53.23573684692383
+      z: 2.608151912689209
     }
   }
-}
-signal {
-  id {
-    id: "signal_218_380"
+  subsignal {
+    id {
+      id: "2"
+    }
+    type: CIRCLE
+    location {
+      x: 169.13058471679688
+      y: -53.23573684692383
+      z: 2.201027433077494
+    }
   }
   overlap_id {
-    id: "road_218_lane_0_-1_signal_218_380"
+    id: "road_10_lane_0_1_signal_395"
   }
+  type: MIX_3_VERTICAL
   stop_line {
     segment {
       line_segment {
         point {
-          x: 336.7735864904296
-          y: -209.1599618269517
+          x: 177.0791774216375
+          y: -57.48943911880614
         }
         point {
-          x: 332.773587220088
-          y: -209.157545783258
+          x: 177.07869001049795
+          y: -53.489439148502335
         }
       }
+      s: 0.0
+      start_position {
+        x: 177.0791774216375
+        y: -57.48943911880614
+      }
+      length: 4.0
     }
   }
 }
 overlap {
   id {
-    id: "road_0_lane_0_-1_signal_0_362"
+    id: "road_1_lane_0_1_signal_360"
+  }
+  object {
+    id {
+      id: "road_1_lane_0_1"
+    }
+    lane_overlap_info {
+      start_s: 148.33115720571143
+      end_s: 148.43115720571143
+      is_merge: false
+    }
+  }
+  object {
+    id {
+      id: "signal_360"
+    }
+    signal_overlap_info {
+    }
+  }
+}
+overlap {
+  id {
+    id: "road_16_lane_0_1_signal_361"
+  }
+  object {
+    id {
+      id: "road_16_lane_0_1"
+    }
+    lane_overlap_info {
+      start_s: 25.969099706489256
+      end_s: 26.069099706489258
+      is_merge: false
+    }
+  }
+  object {
+    id {
+      id: "signal_361"
+    }
+    signal_overlap_info {
+    }
+  }
+}
+overlap {
+  id {
+    id: "road_0_lane_0_-1_signal_362"
   }
   object {
     id {
       id: "road_0_lane_0_-1"
     }
+    lane_overlap_info {
+      start_s: 27.198942287878342
+      end_s: 27.298942287878344
+      is_merge: false
+    }
   }
   object {
     id {
-      id: "signal_0_362"
+      id: "signal_362"
+    }
+    signal_overlap_info {
     }
   }
 }
 overlap {
   id {
-    id: "road_0_lane_0_-2_signal_0_362"
+    id: "road_25_lane_0_1_signal_363"
   }
   object {
     id {
-      id: "road_0_lane_0_-2"
+      id: "road_25_lane_0_1"
+    }
+    lane_overlap_info {
+      start_s: 26.255542085415282
+      end_s: 26.355542085415284
+      is_merge: false
     }
   }
   object {
     id {
-      id: "signal_0_362"
+      id: "signal_363"
     }
-  }
-}
-overlap {
-  id {
-    id: "road_0_lane_0_-3_signal_0_362"
-  }
-  object {
-    id {
-      id: "road_0_lane_0_-3"
-    }
-  }
-  object {
-    id {
-      id: "signal_0_362"
+    signal_overlap_info {
     }
   }
 }
 overlap {
   id {
-    id: "road_1_lane_0_-1_signal_1_360"
+    id: "road_2_lane_0_1_signal_364"
+  }
+  object {
+    id {
+      id: "road_2_lane_0_1"
+    }
+    lane_overlap_info {
+      start_s: 32.870616977663374
+      end_s: 32.970616977663376
+      is_merge: false
+    }
+  }
+  object {
+    id {
+      id: "signal_364"
+    }
+    signal_overlap_info {
+    }
+  }
+}
+overlap {
+  id {
+    id: "road_1_lane_0_-1_signal_365"
   }
   object {
     id {
       id: "road_1_lane_0_-1"
     }
+    lane_overlap_info {
+      start_s: 150.59033177803747
+      end_s: 150.69033177803746
+      is_merge: false
+    }
   }
   object {
     id {
-      id: "signal_1_360"
+      id: "signal_365"
+    }
+    signal_overlap_info {
     }
   }
 }
 overlap {
   id {
-    id: "road_1_lane_0_-2_signal_1_360"
-  }
-  object {
-    id {
-      id: "road_1_lane_0_-2"
-    }
-  }
-  object {
-    id {
-      id: "signal_1_360"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_1_lane_0_-3_signal_1_360"
-  }
-  object {
-    id {
-      id: "road_1_lane_0_-3"
-    }
-  }
-  object {
-    id {
-      id: "signal_1_360"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_2_lane_0_-1_signal_2_364"
-  }
-  object {
-    id {
-      id: "road_2_lane_0_-1"
-    }
-  }
-  object {
-    id {
-      id: "signal_2_364"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_2_lane_0_-2_signal_2_364"
-  }
-  object {
-    id {
-      id: "road_2_lane_0_-2"
-    }
-  }
-  object {
-    id {
-      id: "signal_2_364"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_2_lane_0_-3_signal_2_364"
-  }
-  object {
-    id {
-      id: "road_2_lane_0_-3"
-    }
-  }
-  object {
-    id {
-      id: "signal_2_364"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_3_lane_0_-1_signal_3_371"
-  }
-  object {
-    id {
-      id: "road_3_lane_0_-1"
-    }
-  }
-  object {
-    id {
-      id: "signal_3_371"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_3_lane_0_-2_signal_3_371"
-  }
-  object {
-    id {
-      id: "road_3_lane_0_-2"
-    }
-  }
-  object {
-    id {
-      id: "signal_3_371"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_3_lane_0_-3_signal_3_371"
-  }
-  object {
-    id {
-      id: "road_3_lane_0_-3"
-    }
-  }
-  object {
-    id {
-      id: "signal_3_371"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_4_lane_0_-1_signal_4_392"
-  }
-  object {
-    id {
-      id: "road_4_lane_0_-1"
-    }
-  }
-  object {
-    id {
-      id: "signal_4_392"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_4_lane_0_-2_signal_4_392"
-  }
-  object {
-    id {
-      id: "road_4_lane_0_-2"
-    }
-  }
-  object {
-    id {
-      id: "signal_4_392"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_4_lane_0_-3_signal_4_392"
-  }
-  object {
-    id {
-      id: "road_4_lane_0_-3"
-    }
-  }
-  object {
-    id {
-      id: "signal_4_392"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_4_lane_0_-1_signal_4_387"
-  }
-  object {
-    id {
-      id: "road_4_lane_0_-1"
-    }
-  }
-  object {
-    id {
-      id: "signal_4_387"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_4_lane_0_-2_signal_4_387"
-  }
-  object {
-    id {
-      id: "road_4_lane_0_-2"
-    }
-  }
-  object {
-    id {
-      id: "signal_4_387"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_4_lane_0_-3_signal_4_387"
-  }
-  object {
-    id {
-      id: "road_4_lane_0_-3"
-    }
-  }
-  object {
-    id {
-      id: "signal_4_387"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_5_lane_0_-1_signal_5_366"
+    id: "road_5_lane_0_-1_signal_366"
   }
   object {
     id {
       id: "road_5_lane_0_-1"
     }
+    lane_overlap_info {
+      start_s: 56.55411334783807
+      end_s: 56.65411334783807
+      is_merge: false
+    }
   }
   object {
     id {
-      id: "signal_5_366"
+      id: "signal_366"
+    }
+    signal_overlap_info {
     }
   }
 }
 overlap {
   id {
-    id: "road_5_lane_0_-2_signal_5_366"
+    id: "road_6_lane_0_1_signal_367"
   }
   object {
     id {
-      id: "road_5_lane_0_-2"
+      id: "road_6_lane_0_1"
+    }
+    lane_overlap_info {
+      start_s: 211.55098042802075
+      end_s: 211.65098042802074
+      is_merge: false
     }
   }
   object {
     id {
-      id: "signal_5_366"
+      id: "signal_367"
     }
-  }
-}
-overlap {
-  id {
-    id: "road_5_lane_0_-3_signal_5_366"
-  }
-  object {
-    id {
-      id: "road_5_lane_0_-3"
-    }
-  }
-  object {
-    id {
-      id: "signal_5_366"
+    signal_overlap_info {
     }
   }
 }
 overlap {
   id {
-    id: "road_6_lane_0_-1_signal_6_367"
+    id: "road_24_lane_0_-1_signal_368"
   }
   object {
     id {
-      id: "road_6_lane_0_-1"
+      id: "road_24_lane_0_-1"
+    }
+    lane_overlap_info {
+      start_s: 100.68367659335313
+      end_s: 100.78367659335312
+      is_merge: false
     }
   }
   object {
     id {
-      id: "signal_6_367"
+      id: "signal_368"
     }
-  }
-}
-overlap {
-  id {
-    id: "road_6_lane_0_-2_signal_6_367"
-  }
-  object {
-    id {
-      id: "road_6_lane_0_-2"
-    }
-  }
-  object {
-    id {
-      id: "signal_6_367"
+    signal_overlap_info {
     }
   }
 }
 overlap {
   id {
-    id: "road_6_lane_0_-3_signal_6_367"
+    id: "road_2_lane_0_-1_signal_369"
   }
   object {
     id {
-      id: "road_6_lane_0_-3"
+      id: "road_2_lane_0_-1"
+    }
+    lane_overlap_info {
+      start_s: 35.03119273035719
+      end_s: 35.13119273035719
+      is_merge: false
     }
   }
   object {
     id {
-      id: "signal_6_367"
+      id: "signal_369"
     }
-  }
-}
-overlap {
-  id {
-    id: "road_6_lane_0_-1_signal_6_373"
-  }
-  object {
-    id {
-      id: "road_6_lane_0_-1"
-    }
-  }
-  object {
-    id {
-      id: "signal_6_373"
+    signal_overlap_info {
     }
   }
 }
 overlap {
   id {
-    id: "road_6_lane_0_-2_signal_6_373"
+    id: "road_21_lane_0_1_signal_370"
   }
   object {
     id {
-      id: "road_6_lane_0_-2"
+      id: "road_21_lane_0_1"
+    }
+    lane_overlap_info {
+      start_s: 26.599551555038243
+      end_s: 26.699551555038244
+      is_merge: false
     }
   }
   object {
     id {
-      id: "signal_6_373"
+      id: "signal_370"
     }
-  }
-}
-overlap {
-  id {
-    id: "road_6_lane_0_-3_signal_6_373"
-  }
-  object {
-    id {
-      id: "road_6_lane_0_-3"
-    }
-  }
-  object {
-    id {
-      id: "signal_6_373"
+    signal_overlap_info {
     }
   }
 }
 overlap {
   id {
-    id: "road_7_lane_0_-1_signal_7_374"
+    id: "road_3_lane_0_1_signal_371"
   }
   object {
     id {
-      id: "road_7_lane_0_-1"
+      id: "road_3_lane_0_1"
+    }
+    lane_overlap_info {
+      start_s: 59.10177498382139
+      end_s: 59.201774983821394
+      is_merge: false
     }
   }
   object {
     id {
-      id: "signal_7_374"
+      id: "signal_371"
     }
-  }
-}
-overlap {
-  id {
-    id: "road_7_lane_0_-2_signal_7_374"
-  }
-  object {
-    id {
-      id: "road_7_lane_0_-2"
-    }
-  }
-  object {
-    id {
-      id: "signal_7_374"
+    signal_overlap_info {
     }
   }
 }
 overlap {
   id {
-    id: "road_7_lane_0_-3_signal_7_374"
-  }
-  object {
-    id {
-      id: "road_7_lane_0_-3"
-    }
-  }
-  object {
-    id {
-      id: "signal_7_374"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_9_lane_0_-1_signal_9_377"
-  }
-  object {
-    id {
-      id: "road_9_lane_0_-1"
-    }
-  }
-  object {
-    id {
-      id: "signal_9_377"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_9_lane_0_-2_signal_9_377"
-  }
-  object {
-    id {
-      id: "road_9_lane_0_-2"
-    }
-  }
-  object {
-    id {
-      id: "signal_9_377"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_9_lane_0_-3_signal_9_377"
-  }
-  object {
-    id {
-      id: "road_9_lane_0_-3"
-    }
-  }
-  object {
-    id {
-      id: "signal_9_377"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_9_lane_0_-1_signal_9_393"
-  }
-  object {
-    id {
-      id: "road_9_lane_0_-1"
-    }
-  }
-  object {
-    id {
-      id: "signal_9_393"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_9_lane_0_-2_signal_9_393"
-  }
-  object {
-    id {
-      id: "road_9_lane_0_-2"
-    }
-  }
-  object {
-    id {
-      id: "signal_9_393"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_9_lane_0_-3_signal_9_393"
-  }
-  object {
-    id {
-      id: "road_9_lane_0_-3"
-    }
-  }
-  object {
-    id {
-      id: "signal_9_393"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_10_lane_0_-1_signal_10_395"
-  }
-  object {
-    id {
-      id: "road_10_lane_0_-1"
-    }
-  }
-  object {
-    id {
-      id: "signal_10_395"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_10_lane_0_-2_signal_10_395"
-  }
-  object {
-    id {
-      id: "road_10_lane_0_-2"
-    }
-  }
-  object {
-    id {
-      id: "signal_10_395"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_10_lane_0_-3_signal_10_395"
-  }
-  object {
-    id {
-      id: "road_10_lane_0_-3"
-    }
-  }
-  object {
-    id {
-      id: "signal_10_395"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_10_lane_0_-1_signal_10_381"
-  }
-  object {
-    id {
-      id: "road_10_lane_0_-1"
-    }
-  }
-  object {
-    id {
-      id: "signal_10_381"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_10_lane_0_-2_signal_10_381"
-  }
-  object {
-    id {
-      id: "road_10_lane_0_-2"
-    }
-  }
-  object {
-    id {
-      id: "signal_10_381"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_10_lane_0_-3_signal_10_381"
-  }
-  object {
-    id {
-      id: "road_10_lane_0_-3"
-    }
-  }
-  object {
-    id {
-      id: "signal_10_381"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_12_lane_0_-1_signal_12_385"
-  }
-  object {
-    id {
-      id: "road_12_lane_0_-1"
-    }
-  }
-  object {
-    id {
-      id: "signal_12_385"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_12_lane_0_-2_signal_12_385"
-  }
-  object {
-    id {
-      id: "road_12_lane_0_-2"
-    }
-  }
-  object {
-    id {
-      id: "signal_12_385"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_12_lane_0_-3_signal_12_385"
-  }
-  object {
-    id {
-      id: "road_12_lane_0_-3"
-    }
-  }
-  object {
-    id {
-      id: "signal_12_385"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_12_lane_0_-1_signal_12_378"
-  }
-  object {
-    id {
-      id: "road_12_lane_0_-1"
-    }
-  }
-  object {
-    id {
-      id: "signal_12_378"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_12_lane_0_-2_signal_12_378"
-  }
-  object {
-    id {
-      id: "road_12_lane_0_-2"
-    }
-  }
-  object {
-    id {
-      id: "signal_12_378"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_12_lane_0_-3_signal_12_378"
-  }
-  object {
-    id {
-      id: "road_12_lane_0_-3"
-    }
-  }
-  object {
-    id {
-      id: "signal_12_378"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_16_lane_0_-1_signal_16_361"
-  }
-  object {
-    id {
-      id: "road_16_lane_0_-1"
-    }
-  }
-  object {
-    id {
-      id: "signal_16_361"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_16_lane_0_-2_signal_16_361"
-  }
-  object {
-    id {
-      id: "road_16_lane_0_-2"
-    }
-  }
-  object {
-    id {
-      id: "signal_16_361"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_16_lane_0_-3_signal_16_361"
-  }
-  object {
-    id {
-      id: "road_16_lane_0_-3"
-    }
-  }
-  object {
-    id {
-      id: "signal_16_361"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_16_lane_0_-1_signal_16_383"
-  }
-  object {
-    id {
-      id: "road_16_lane_0_-1"
-    }
-  }
-  object {
-    id {
-      id: "signal_16_383"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_16_lane_0_-2_signal_16_383"
-  }
-  object {
-    id {
-      id: "road_16_lane_0_-2"
-    }
-  }
-  object {
-    id {
-      id: "signal_16_383"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_16_lane_0_-3_signal_16_383"
-  }
-  object {
-    id {
-      id: "road_16_lane_0_-3"
-    }
-  }
-  object {
-    id {
-      id: "signal_16_383"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_17_lane_0_-1_signal_17_382"
-  }
-  object {
-    id {
-      id: "road_17_lane_0_-1"
-    }
-  }
-  object {
-    id {
-      id: "signal_17_382"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_17_lane_0_-2_signal_17_382"
-  }
-  object {
-    id {
-      id: "road_17_lane_0_-2"
-    }
-  }
-  object {
-    id {
-      id: "signal_17_382"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_17_lane_0_-3_signal_17_382"
-  }
-  object {
-    id {
-      id: "road_17_lane_0_-3"
-    }
-  }
-  object {
-    id {
-      id: "signal_17_382"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_17_lane_0_-1_signal_17_389"
-  }
-  object {
-    id {
-      id: "road_17_lane_0_-1"
-    }
-  }
-  object {
-    id {
-      id: "signal_17_389"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_17_lane_0_-2_signal_17_389"
-  }
-  object {
-    id {
-      id: "road_17_lane_0_-2"
-    }
-  }
-  object {
-    id {
-      id: "signal_17_389"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_17_lane_0_-3_signal_17_389"
-  }
-  object {
-    id {
-      id: "road_17_lane_0_-3"
-    }
-  }
-  object {
-    id {
-      id: "signal_17_389"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_18_lane_0_-1_signal_18_379"
-  }
-  object {
-    id {
-      id: "road_18_lane_0_-1"
-    }
-  }
-  object {
-    id {
-      id: "signal_18_379"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_18_lane_0_-2_signal_18_379"
-  }
-  object {
-    id {
-      id: "road_18_lane_0_-2"
-    }
-  }
-  object {
-    id {
-      id: "signal_18_379"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_18_lane_0_-3_signal_18_379"
-  }
-  object {
-    id {
-      id: "road_18_lane_0_-3"
-    }
-  }
-  object {
-    id {
-      id: "signal_18_379"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_19_lane_0_-1_signal_19_372"
+    id: "road_19_lane_0_-1_signal_372"
   }
   object {
     id {
       id: "road_19_lane_0_-1"
     }
+    lane_overlap_info {
+      start_s: 99.57386934103108
+      end_s: 99.67386934103108
+      is_merge: false
+    }
   }
   object {
     id {
-      id: "signal_19_372"
+      id: "signal_372"
+    }
+    signal_overlap_info {
     }
   }
 }
 overlap {
   id {
-    id: "road_19_lane_0_-2_signal_19_372"
+    id: "road_6_lane_0_-1_signal_373"
   }
   object {
     id {
-      id: "road_19_lane_0_-2"
+      id: "road_6_lane_0_-1"
+    }
+    lane_overlap_info {
+      start_s: 215.37894940032032
+      end_s: 215.47894940032032
+      is_merge: false
     }
   }
   object {
     id {
-      id: "signal_19_372"
+      id: "signal_373"
     }
-  }
-}
-overlap {
-  id {
-    id: "road_19_lane_0_-3_signal_19_372"
-  }
-  object {
-    id {
-      id: "road_19_lane_0_-3"
-    }
-  }
-  object {
-    id {
-      id: "signal_19_372"
+    signal_overlap_info {
     }
   }
 }
 overlap {
   id {
-    id: "road_21_lane_0_-1_signal_21_370"
+    id: "road_7_lane_0_1_signal_374"
+  }
+  object {
+    id {
+      id: "road_7_lane_0_1"
+    }
+    lane_overlap_info {
+      start_s: 25.68362426590886
+      end_s: 25.783624265908863
+      is_merge: false
+    }
+  }
+  object {
+    id {
+      id: "signal_374"
+    }
+    signal_overlap_info {
+    }
+  }
+}
+overlap {
+  id {
+    id: "road_22_lane_0_1_signal_375"
+  }
+  object {
+    id {
+      id: "road_22_lane_0_1"
+    }
+    lane_overlap_info {
+      start_s: 41.96158228389669
+      end_s: 42.06158228389669
+      is_merge: false
+    }
+  }
+  object {
+    id {
+      id: "signal_375"
+    }
+    signal_overlap_info {
+    }
+  }
+}
+overlap {
+  id {
+    id: "road_21_lane_0_-1_signal_376"
   }
   object {
     id {
       id: "road_21_lane_0_-1"
     }
+    lane_overlap_info {
+      start_s: 27.044284274896366
+      end_s: 27.144284274896368
+      is_merge: false
+    }
   }
   object {
     id {
-      id: "signal_21_370"
+      id: "signal_376"
+    }
+    signal_overlap_info {
     }
   }
 }
 overlap {
   id {
-    id: "road_21_lane_0_-2_signal_21_370"
+    id: "road_9_lane_0_1_signal_377"
   }
   object {
     id {
-      id: "road_21_lane_0_-2"
+      id: "road_9_lane_0_1"
+    }
+    lane_overlap_info {
+      start_s: 35.01517332445197
+      end_s: 35.11517332445197
+      is_merge: false
     }
   }
   object {
     id {
-      id: "signal_21_370"
+      id: "signal_377"
     }
-  }
-}
-overlap {
-  id {
-    id: "road_21_lane_0_-3_signal_21_370"
-  }
-  object {
-    id {
-      id: "road_21_lane_0_-3"
-    }
-  }
-  object {
-    id {
-      id: "signal_21_370"
+    signal_overlap_info {
     }
   }
 }
 overlap {
   id {
-    id: "road_21_lane_0_-1_signal_21_376"
+    id: "road_12_lane_0_-1_signal_378"
   }
   object {
     id {
-      id: "road_21_lane_0_-1"
+      id: "road_12_lane_0_-1"
+    }
+    lane_overlap_info {
+      start_s: 213.90053557520264
+      end_s: 214.00053557520263
+      is_merge: false
     }
   }
   object {
     id {
-      id: "signal_21_376"
+      id: "signal_378"
     }
-  }
-}
-overlap {
-  id {
-    id: "road_21_lane_0_-2_signal_21_376"
-  }
-  object {
-    id {
-      id: "road_21_lane_0_-2"
-    }
-  }
-  object {
-    id {
-      id: "signal_21_376"
+    signal_overlap_info {
     }
   }
 }
 overlap {
   id {
-    id: "road_21_lane_0_-3_signal_21_376"
+    id: "road_18_lane_0_-1_signal_379"
   }
   object {
     id {
-      id: "road_21_lane_0_-3"
+      id: "road_18_lane_0_-1"
+    }
+    lane_overlap_info {
+      start_s: 32.94249209031715
+      end_s: 33.042492090317154
+      is_merge: false
     }
   }
   object {
     id {
-      id: "signal_21_376"
+      id: "signal_379"
     }
-  }
-}
-overlap {
-  id {
-    id: "road_22_lane_0_-1_signal_22_375"
-  }
-  object {
-    id {
-      id: "road_22_lane_0_-1"
-    }
-  }
-  object {
-    id {
-      id: "signal_22_375"
+    signal_overlap_info {
     }
   }
 }
 overlap {
   id {
-    id: "road_22_lane_0_-2_signal_22_375"
+    id: "road_19_lane_0_1_signal_380"
   }
   object {
     id {
-      id: "road_22_lane_0_-2"
+      id: "road_19_lane_0_1"
+    }
+    lane_overlap_info {
+      start_s: 100.53211630364497
+      end_s: 100.63211630364496
+      is_merge: false
     }
   }
   object {
     id {
-      id: "signal_22_375"
+      id: "signal_380"
     }
-  }
-}
-overlap {
-  id {
-    id: "road_22_lane_0_-3_signal_22_375"
-  }
-  object {
-    id {
-      id: "road_22_lane_0_-3"
-    }
-  }
-  object {
-    id {
-      id: "signal_22_375"
+    signal_overlap_info {
     }
   }
 }
 overlap {
   id {
-    id: "road_22_lane_0_-1_signal_22_391"
+    id: "road_10_lane_0_-1_signal_381"
   }
   object {
     id {
-      id: "road_22_lane_0_-1"
+      id: "road_10_lane_0_-1"
+    }
+    lane_overlap_info {
+      start_s: 147.20808834038328
+      end_s: 147.30808834038328
+      is_merge: false
     }
   }
   object {
     id {
-      id: "signal_22_391"
+      id: "signal_381"
     }
-  }
-}
-overlap {
-  id {
-    id: "road_22_lane_0_-2_signal_22_391"
-  }
-  object {
-    id {
-      id: "road_22_lane_0_-2"
-    }
-  }
-  object {
-    id {
-      id: "signal_22_391"
+    signal_overlap_info {
     }
   }
 }
 overlap {
   id {
-    id: "road_22_lane_0_-3_signal_22_391"
+    id: "road_17_lane_0_1_signal_382"
   }
   object {
     id {
-      id: "road_22_lane_0_-3"
+      id: "road_17_lane_0_1"
+    }
+    lane_overlap_info {
+      start_s: 43.68977550525646
+      end_s: 43.789775505256465
+      is_merge: false
     }
   }
   object {
     id {
-      id: "signal_22_391"
+      id: "signal_382"
+    }
+    signal_overlap_info {
     }
   }
 }
 overlap {
   id {
-    id: "road_23_lane_0_-1_signal_23_390"
+    id: "road_16_lane_0_-1_signal_383"
+  }
+  object {
+    id {
+      id: "road_16_lane_0_-1"
+    }
+    lane_overlap_info {
+      start_s: 26.709124435554763
+      end_s: 26.809124435554764
+      is_merge: false
+    }
+  }
+  object {
+    id {
+      id: "signal_383"
+    }
+    signal_overlap_info {
+    }
+  }
+}
+overlap {
+  id {
+    id: "road_24_lane_0_1_signal_384"
+  }
+  object {
+    id {
+      id: "road_24_lane_0_1"
+    }
+    lane_overlap_info {
+      start_s: 100.10914170915173
+      end_s: 100.20914170915172
+      is_merge: false
+    }
+  }
+  object {
+    id {
+      id: "signal_384"
+    }
+    signal_overlap_info {
+    }
+  }
+}
+overlap {
+  id {
+    id: "road_12_lane_0_1_signal_385"
+  }
+  object {
+    id {
+      id: "road_12_lane_0_1"
+    }
+    lane_overlap_info {
+      start_s: 214.6070762090808
+      end_s: 214.70707620908078
+      is_merge: false
+    }
+  }
+  object {
+    id {
+      id: "signal_385"
+    }
+    signal_overlap_info {
+    }
+  }
+}
+overlap {
+  id {
+    id: "road_23_lane_0_-1_signal_386"
   }
   object {
     id {
       id: "road_23_lane_0_-1"
     }
+    lane_overlap_info {
+      start_s: 35.91575576558965
+      end_s: 36.01575576558965
+      is_merge: false
+    }
   }
   object {
     id {
-      id: "signal_23_390"
+      id: "signal_386"
+    }
+    signal_overlap_info {
     }
   }
 }
 overlap {
   id {
-    id: "road_23_lane_0_-2_signal_23_390"
+    id: "road_4_lane_0_-1_signal_387"
   }
   object {
     id {
-      id: "road_23_lane_0_-2"
+      id: "road_4_lane_0_-1"
+    }
+    lane_overlap_info {
+      start_s: 211.96925507358267
+      end_s: 212.06925507358267
+      is_merge: false
     }
   }
   object {
     id {
-      id: "signal_23_390"
+      id: "signal_387"
     }
-  }
-}
-overlap {
-  id {
-    id: "road_23_lane_0_-3_signal_23_390"
-  }
-  object {
-    id {
-      id: "road_23_lane_0_-3"
-    }
-  }
-  object {
-    id {
-      id: "signal_23_390"
+    signal_overlap_info {
     }
   }
 }
 overlap {
   id {
-    id: "road_23_lane_0_-1_signal_23_386"
+    id: "road_18_lane_0_1_signal_388"
   }
   object {
     id {
-      id: "road_23_lane_0_-1"
+      id: "road_18_lane_0_1"
+    }
+    lane_overlap_info {
+      start_s: 34.03208550117426
+      end_s: 34.13208550117426
+      is_merge: false
     }
   }
   object {
     id {
-      id: "signal_23_386"
+      id: "signal_388"
     }
-  }
-}
-overlap {
-  id {
-    id: "road_23_lane_0_-2_signal_23_386"
-  }
-  object {
-    id {
-      id: "road_23_lane_0_-2"
-    }
-  }
-  object {
-    id {
-      id: "signal_23_386"
+    signal_overlap_info {
     }
   }
 }
 overlap {
   id {
-    id: "road_23_lane_0_-3_signal_23_386"
+    id: "road_17_lane_0_-1_signal_389"
   }
   object {
     id {
-      id: "road_23_lane_0_-3"
+      id: "road_17_lane_0_-1"
+    }
+    lane_overlap_info {
+      start_s: 42.02957791890802
+      end_s: 42.12957791890802
+      is_merge: false
     }
   }
   object {
     id {
-      id: "signal_23_386"
+      id: "signal_389"
     }
-  }
-}
-overlap {
-  id {
-    id: "road_24_lane_0_-1_signal_24_384"
-  }
-  object {
-    id {
-      id: "road_24_lane_0_-1"
-    }
-  }
-  object {
-    id {
-      id: "signal_24_384"
+    signal_overlap_info {
     }
   }
 }
 overlap {
   id {
-    id: "road_24_lane_0_-2_signal_24_384"
+    id: "road_23_lane_0_1_signal_390"
   }
   object {
     id {
-      id: "road_24_lane_0_-2"
+      id: "road_23_lane_0_1"
+    }
+    lane_overlap_info {
+      start_s: 33.80364746184244
+      end_s: 33.90364746184244
+      is_merge: false
     }
   }
   object {
     id {
-      id: "signal_24_384"
+      id: "signal_390"
     }
-  }
-}
-overlap {
-  id {
-    id: "road_24_lane_0_-3_signal_24_384"
-  }
-  object {
-    id {
-      id: "road_24_lane_0_-3"
-    }
-  }
-  object {
-    id {
-      id: "signal_24_384"
+    signal_overlap_info {
     }
   }
 }
 overlap {
   id {
-    id: "road_24_lane_0_-1_signal_24_368"
+    id: "road_22_lane_0_-1_signal_391"
   }
   object {
     id {
-      id: "road_24_lane_0_-1"
+      id: "road_22_lane_0_-1"
+    }
+    lane_overlap_info {
+      start_s: 44.11571136862719
+      end_s: 44.21571136862719
+      is_merge: false
     }
   }
   object {
     id {
-      id: "signal_24_368"
+      id: "signal_391"
     }
-  }
-}
-overlap {
-  id {
-    id: "road_24_lane_0_-2_signal_24_368"
-  }
-  object {
-    id {
-      id: "road_24_lane_0_-2"
-    }
-  }
-  object {
-    id {
-      id: "signal_24_368"
+    signal_overlap_info {
     }
   }
 }
 overlap {
   id {
-    id: "road_24_lane_0_-3_signal_24_368"
+    id: "road_4_lane_0_1_signal_392"
   }
   object {
     id {
-      id: "road_24_lane_0_-3"
+      id: "road_4_lane_0_1"
+    }
+    lane_overlap_info {
+      start_s: 214.3169214735632
+      end_s: 214.4169214735632
+      is_merge: false
     }
   }
   object {
     id {
-      id: "signal_24_368"
+      id: "signal_392"
+    }
+    signal_overlap_info {
     }
   }
 }
 overlap {
   id {
-    id: "road_25_lane_0_-1_signal_25_363"
+    id: "road_9_lane_0_-1_signal_393"
+  }
+  object {
+    id {
+      id: "road_9_lane_0_-1"
+    }
+    lane_overlap_info {
+      start_s: 34.94873460166754
+      end_s: 35.04873460166754
+      is_merge: false
+    }
+  }
+  object {
+    id {
+      id: "signal_393"
+    }
+    signal_overlap_info {
+    }
+  }
+}
+overlap {
+  id {
+    id: "road_25_lane_0_-1_signal_394"
   }
   object {
     id {
       id: "road_25_lane_0_-1"
     }
+    lane_overlap_info {
+      start_s: 26.530835279909393
+      end_s: 26.630835279909395
+      is_merge: false
+    }
   }
   object {
     id {
-      id: "signal_25_363"
+      id: "signal_394"
+    }
+    signal_overlap_info {
     }
   }
 }
 overlap {
   id {
-    id: "road_25_lane_0_-2_signal_25_363"
+    id: "road_10_lane_0_1_signal_395"
   }
   object {
     id {
-      id: "road_25_lane_0_-2"
+      id: "road_10_lane_0_1"
+    }
+    lane_overlap_info {
+      start_s: 148.08081796764108
+      end_s: 148.18081796764108
+      is_merge: false
     }
   }
   object {
     id {
-      id: "signal_25_363"
+      id: "signal_395"
     }
-  }
-}
-overlap {
-  id {
-    id: "road_25_lane_0_-3_signal_25_363"
-  }
-  object {
-    id {
-      id: "road_25_lane_0_-3"
-    }
-  }
-  object {
-    id {
-      id: "signal_25_363"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_25_lane_0_-1_signal_25_394"
-  }
-  object {
-    id {
-      id: "road_25_lane_0_-1"
-    }
-  }
-  object {
-    id {
-      id: "signal_25_394"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_25_lane_0_-2_signal_25_394"
-  }
-  object {
-    id {
-      id: "road_25_lane_0_-2"
-    }
-  }
-  object {
-    id {
-      id: "signal_25_394"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_25_lane_0_-3_signal_25_394"
-  }
-  object {
-    id {
-      id: "road_25_lane_0_-3"
-    }
-  }
-  object {
-    id {
-      id: "signal_25_394"
-    }
-  }
-}
-overlap {
-  id {
-    id: "road_218_lane_0_-1_signal_218_380"
-  }
-  object {
-    id {
-      id: "road_218_lane_0_-1"
-    }
-  }
-  object {
-    id {
-      id: "signal_218_380"
+    signal_overlap_info {
     }
   }
 }
