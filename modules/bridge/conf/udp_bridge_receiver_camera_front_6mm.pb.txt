@@ -1,0 +1,4 @@
+topic_name: "/apollo/sensor/camera/front_6mm/image"
+bind_port: 8902
+proto_name: "Image"
+enable_timeout: false

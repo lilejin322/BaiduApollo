@@ -10,6 +10,8 @@
 #   - Localization = RTK (Drivora publishes odometry / ins_stat / corrected_imu;
 #     MSF would need a lidar localization map)
 #   - no Guardian (it drives canbus, which is absent; Drivora reads /apollo/control)
+#   - Sensor Bridge = UDP bridge receivers for the simulator's lidar and
+#     camera frames (modules/bridge/dag/bridge_sensor_receiver.dag)
 cyber_modules {
   key: "Control"
   value: {
@@ -71,6 +73,13 @@ cyber_modules {
   key: "Transform"
   value: {
     dag_files: "/apollo/modules/transform/dag/static_transform.dag"
+  }
+}
+cyber_modules {
+  key: "Sensor Bridge"
+  value: {
+    # lidar / camera frames from the simulator over UDP (modules/bridge)
+    dag_files: "/apollo/modules/bridge/dag/bridge_sensor_receiver.dag"
   }
 }
 monitored_components {

@@ -100,5 +100,4 @@ __MACOSX
 /dev/
 /dumps/
 *.drivora_bak
-/drivora_injector.py
 /modules/perception/data/models/apollo_bevnet_onnx/

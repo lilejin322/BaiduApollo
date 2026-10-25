@@ -1,0 +1,27 @@
+# Sensor data from a simulator: lidar and cameras over Apollo's UDP bridge,
+# one port per sensor (modules/bridge/conf/udp_bridge_receiver_<sensor>.pb.txt).
+module_config {
+    module_library: "modules/bridge/libudp_bridge_receiver_component.so"
+
+    components {
+        class_name: "UDPBridgeReceiverComponent<drivers::PointCloud>"
+        config {
+            name: "bridge_receiver_lidar128"
+            config_file_path: "/apollo/modules/bridge/conf/udp_bridge_receiver_lidar128.pb.txt"
+        }
+    }
+    components {
+        class_name: "UDPBridgeReceiverComponent<drivers::Image>"
+        config {
+            name: "bridge_receiver_camera_front_6mm"
+            config_file_path: "/apollo/modules/bridge/conf/udp_bridge_receiver_camera_front_6mm.pb.txt"
+        }
+    }
+    components {
+        class_name: "UDPBridgeReceiverComponent<drivers::Image>"
+        config {
+            name: "bridge_receiver_camera_front_12mm"
+            config_file_path: "/apollo/modules/bridge/conf/udp_bridge_receiver_camera_front_12mm.pb.txt"
+        }
+    }
+}
