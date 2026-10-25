@@ -1,15 +1,15 @@
-# Drivora (CARLA) closed loop with lidar + camera perception on the Mkz Lgsvl
-# 321 sensor set (velodyne128 + front_6mm + front_12mm), RTK localization from
-# the simulator's GNSS/IMU, no hardware drivers. drivora_lidar.pb.txt is the
-# same without cameras.
+# CARLA closed loop with lidar + camera perception on the Mkz Carla
+# sensor set (velodyne128 + front_6mm + front_12mm), RTK localization from
+# the simulator's GNSS/IMU, no hardware drivers.
 #   - Perception = fusion + the lidar set of perception_lidar.launch + the
 #     front_6mm obstacle chain (the unsuffixed camera_* dags; the *_front /
 #     *_rear ones read camera_front / camera_rear, which this vehicle lacks)
 #   - Traffic Light = the front_6mm / front_12mm traffic light chain (the
 #     stock modes point at a production dag that does not exist in Apollo 11)
-#   - Localization = RTK (Drivora publishes odometry / ins_stat / corrected_imu;
-#     MSF would need a lidar localization map)
-#   - no Guardian (it drives canbus, which is absent; Drivora reads /apollo/control)
+#   - Localization = RTK (the simulator side publishes odometry / ins_stat /
+#     corrected_imu; MSF would need a lidar localization map)
+#   - no Guardian (it drives canbus, which is absent; the simulator side reads
+#     /apollo/control)
 #   - Sensor Bridge = UDP bridge receivers for the simulator's lidar and
 #     camera frames (modules/bridge/dag/bridge_sensor_receiver.dag)
 cyber_modules {
