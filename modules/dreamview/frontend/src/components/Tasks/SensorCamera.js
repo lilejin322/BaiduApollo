@@ -31,6 +31,14 @@ export default class SensorCamera extends React.Component {
           this.setState({ channels });
         });
     }, 200);
+    // The backend keeps its camera reader across page reloads and the select
+    // then shows that channel already, so picking it again fires no change:
+    // request the images as soon as the view is shown.
+    CAMERA_WS.startCamera();
+  }
+
+  componentWillUnmount() {
+    CAMERA_WS.stopCamera();
   }
 
   onStatusSelectChange = (event) => {

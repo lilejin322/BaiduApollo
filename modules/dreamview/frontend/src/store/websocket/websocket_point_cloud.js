@@ -34,6 +34,9 @@ export default class PointCloudWebSocketEndpoint {
     };
     this.worker.onmessage = (event) => {
       if (event.data.type === 'PointCloudStatus') {
+        // The backend status also drives the requests: a page (re)loaded while
+        // the point cloud is enabled shows the switch on, so request too.
+        this.enabled = event.data.enabled;
         STORE.setOptionStatus('showPointCloud', event.data.enabled);
         if (STORE.options.showPointCloud === false) {
           RENDERER.updatePointCloud({ num: [] });

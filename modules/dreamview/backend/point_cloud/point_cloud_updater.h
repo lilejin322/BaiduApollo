@@ -27,6 +27,7 @@
 #include <boost/thread/locks.hpp>
 #include <boost/thread/shared_mutex.hpp>
 
+#include "Eigen/Dense"
 #include "pcl/point_cloud.h"
 #include "pcl/point_types.h"
 
@@ -94,6 +95,7 @@ class PointCloudUpdater {
 
   void GetChannelMsg(std::vector<std::string> *channels);
   bool ChangeChannel(const std::string &channel);
+  void UpdateLidarToVehicle(const std::string &frame_id);
   constexpr static float kDefaultLidarHeight = 1.91f;
 
   std::unique_ptr<cyber::Node> node_;
@@ -120,6 +122,12 @@ class PointCloudUpdater {
   bool enable_voxel_filter_ = false;
   std::string curr_channel_name = "";
   DvCallback callback_api_;
+  // Lidar frame -> vehicle frame (forward-left-up at the localization point,
+  // which is where the frontend draws the cloud), from the static TF. Without
+  // it the cloud is drawn as if the lidar sat at the localization point.
+  std::string lidar_frame_id_;
+  Eigen::Matrix3d lidar_rotation_ = Eigen::Matrix3d::Identity();
+  Eigen::Vector3d lidar_translation_ = Eigen::Vector3d::Zero();
 };
 }  // namespace dreamview
 }  // namespace apollo

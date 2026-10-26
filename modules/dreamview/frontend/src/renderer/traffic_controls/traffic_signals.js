@@ -29,7 +29,7 @@ export default class TrafficSignals extends TrafficControlsBase {
   // facing to rather than away from the stop line.
   static getHeadingFromStopLineAndTrafficLightBoundary(signal) {
     // find the plane of the signal
-    const boundaryPoints = signal.boundary.point;
+    const boundaryPoints = _.get(signal, 'boundary.point', []);
     if (boundaryPoints.length < 3) {
       console.warn(`Cannot get three points from boundary, signal_id: ${signal.id.id}`);
       return super.getHeadingFromStopLine(signal);
@@ -116,14 +116,19 @@ export default class TrafficSignals extends TrafficControlsBase {
 
   getPositionAndHeading(signal, coordinates) {
     const locations = [];
-    signal.subsignal.forEach((subsignal) => {
+    (signal.subsignal || []).forEach((subsignal) => {
       if (subsignal.location) {
         locations.push(subsignal.location);
       }
     });
-    if (locations.length === 0) {
+    if (locations.length === 0 && _.get(signal, 'boundary.point.length')) {
       console.warn('Subsignal locations not found, use signal boundary instead.');
       locations.push(signal.boundary.point);
+    }
+    if (locations.length === 0) {
+      // Maps without signal geometry (e.g. converted from OpenDRIVE) only have
+      // the stop line: place the signal there.
+      locations.push(..._.get(signal, 'stopLine[0].segment[0].lineSegment.point', []));
     }
     if (locations.length === 0) {
       console.warn('Unable to determine signal location, skip.');

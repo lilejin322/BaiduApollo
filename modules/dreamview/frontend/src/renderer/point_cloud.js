@@ -60,7 +60,9 @@ export default class PointCloud {
       const x = pointCloud.num[i * 3];
       const y = pointCloud.num[i * 3 + 1];
       const z = pointCloud.num[i * 3 + 2];
-      this.points.geometry.vertices[i].set(x, y, z + 0.8);
+      // z is the height above the ground: lift the points just above the
+      // map's lane lines so the cloud lies on the road it was measured on.
+      this.points.geometry.vertices[i].set(x, y, z + 0.1);
       // Update color based on height.
       if (z < 0.5) {
         colorKey = 0.5;

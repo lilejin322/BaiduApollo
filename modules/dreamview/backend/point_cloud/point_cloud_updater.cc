@@ -30,6 +30,7 @@
 #include "cyber/time/clock.h"
 #include "modules/common/adapters/adapter_gflags.h"
 #include "modules/dreamview/backend/common/dreamview_gflags.h"
+#include "modules/transform/buffer.h"
 namespace apollo {
 namespace dreamview {
 
@@ -235,11 +236,40 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr PointCloudUpdater::ConvertPCLPointCloud(
 
   for (size_t i = 0; i < pcl_ptr->points.size(); ++i) {
     const auto &point = point_cloud->point(static_cast<int>(i));
-    pcl_ptr->points[i].x = point.x();
-    pcl_ptr->points[i].y = point.y();
-    pcl_ptr->points[i].z = point.z();
+    const Eigen::Vector3d p =
+        lidar_rotation_ * Eigen::Vector3d(point.x(), point.y(), point.z()) +
+        lidar_translation_;
+    pcl_ptr->points[i].x = static_cast<float>(p.x());
+    pcl_ptr->points[i].y = static_cast<float>(p.y());
+    pcl_ptr->points[i].z = static_cast<float>(p.z());
   }
   return pcl_ptr;
+}
+
+void PointCloudUpdater::UpdateLidarToVehicle(const std::string &frame_id) {
+  if (frame_id.empty() || frame_id == lidar_frame_id_) {
+    return;
+  }
+  apollo::transform::TransformStamped transform;
+  if (!apollo::transform::Buffer::Instance()->GetLatestStaticTF(
+          "novatel", frame_id, &transform)) {
+    return;  // not published yet: try again with the next cloud
+  }
+  const auto &q = transform.transform().rotation();
+  const auto &t = transform.transform().translation();
+  // novatel is right-forward-up; the frontend wants forward-left-up.
+  Eigen::Matrix3d rfu_to_flu;
+  rfu_to_flu << 0, 1, 0, -1, 0, 0, 0, 0, 1;
+  lidar_rotation_ =
+      rfu_to_flu *
+      Eigen::Quaterniond(q.qw(), q.qx(), q.qy(), q.qz()).normalized()
+          .toRotationMatrix();
+  // The height comes from lidar_height_ (lidar above the ground), so only the
+  // horizontal mounting offset is applied here.
+  lidar_translation_ = rfu_to_flu * Eigen::Vector3d(t.x(), t.y(), 0.0);
+  lidar_frame_id_ = frame_id;
+  AINFO << "Point cloud " << frame_id << " drawn at its novatel offset ("
+        << t.x() << ", " << t.y() << ")";
 }
 
 void PointCloudUpdater::UpdatePointCloud(
@@ -257,6 +287,7 @@ void PointCloudUpdater::UpdatePointCloud(
     AWARN << "skipping outdated point cloud data";
     return;
   }
+  UpdateLidarToVehicle(point_cloud->header().frame_id());
   pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_ptr;
   // Check if last filter process has finished before processing new data.
   if (enable_voxel_filter_) {
