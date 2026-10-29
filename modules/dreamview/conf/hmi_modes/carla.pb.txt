@@ -1,9 +1,10 @@
-# CARLA closed loop with lidar + camera perception on the Mkz Carla
-# sensor set (velodyne128 + front_6mm + front_12mm), RTK localization from
+# CARLA closed loop with lidar + camera + radar perception on the Mkz Carla
+# sensor set (velodyne128 + front_6mm + front_12mm + radar_front), RTK localization from
 # the simulator's GNSS/IMU, no hardware drivers.
 #   - Perception = fusion + the lidar set of perception_lidar.launch + the
 #     front_6mm obstacle chain (the unsuffixed camera_* dags; the *_front /
 #     *_rear ones read camera_front / camera_rear, which this vehicle lacks)
+#     + front radar detection/tracking, feeding the same fusion component
 #   - Traffic Light = the front_6mm / front_12mm traffic light chain (the
 #     stock modes point at a production dag that does not exist in Apollo 11)
 #   - Localization = RTK (the simulator side publishes odometry / ins_stat /
@@ -11,7 +12,7 @@
 #   - no Guardian (it drives canbus, which is absent; the simulator side reads
 #     /apollo/control)
 #   - Sensor Bridge = UDP bridge receivers for the simulator's lidar and
-#     camera frames (modules/bridge/dag/bridge_sensor_receiver.dag)
+#     camera and radar frames (modules/bridge/dag/bridge_sensor_receiver.dag)
 cyber_modules {
   key: "Control"
   value: {
@@ -38,6 +39,7 @@ cyber_modules {
     dag_files: "/apollo/modules/perception/camera_location_estimation/dag/camera_location_estimation.dag"
     dag_files: "/apollo/modules/perception/camera_location_refinement/dag/camera_location_refinement.dag"
     dag_files: "/apollo/modules/perception/camera_tracking/dag/camera_tracking.dag"
+    dag_files: "/apollo/modules/perception/radar_detection/dag/radar_detection_carla.dag"
     dag_files: "/apollo/modules/perception/multi_sensor_fusion/dag/multi_sensor_fusion.dag"
   }
 }
@@ -78,7 +80,7 @@ cyber_modules {
 cyber_modules {
   key: "Sensor Bridge"
   value: {
-    # lidar / camera frames from the simulator over UDP (modules/bridge)
+    # lidar / camera / radar frames from the simulator over UDP (modules/bridge)
     dag_files: "/apollo/modules/bridge/dag/bridge_sensor_receiver.dag"
   }
 }
@@ -101,6 +103,14 @@ monitored_components {
   value: {
     channel {
       name: "/apollo/sensor/camera/front_6mm/image"
+    }
+  }
+}
+monitored_components {
+  key: "Radar Front"
+  value: {
+    channel {
+      name: "/apollo/sensor/radar/front"
     }
   }
 }

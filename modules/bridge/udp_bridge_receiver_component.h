@@ -26,6 +26,7 @@
 
 #include "modules/bridge/proto/udp_bridge_remote_info.pb.h"
 #include "modules/common_msgs/chassis_msgs/chassis.pb.h"
+#include "modules/common_msgs/sensor_msgs/conti_radar.pb.h"
 #include "modules/common_msgs/sensor_msgs/pointcloud.pb.h"
 #include "modules/common_msgs/sensor_msgs/sensor_image.pb.h"
 
@@ -87,5 +88,6 @@ class UDPBridgeReceiverComponent final : public cyber::Component<> {
 RECEIVER_BRIDGE_COMPONENT_REGISTER(canbus::Chassis)
 RECEIVER_BRIDGE_COMPONENT_REGISTER(drivers::PointCloud)
 RECEIVER_BRIDGE_COMPONENT_REGISTER(drivers::Image)
+RECEIVER_BRIDGE_COMPONENT_REGISTER(drivers::ContiRadar)
 }  // namespace bridge
 }  // namespace apollo

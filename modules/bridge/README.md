@@ -65,6 +65,34 @@ client of docker.
 
 ## Add new message
 
+### CARLA sensor receivers
+
+The `Carla` HMI mode starts `dag/bridge_sensor_receiver.dag` with one UDP
+receiver per sensor:
+
+| UDP port | Bridge message name | Cyber channel |
+| --- | --- | --- |
+| 8901 | `PointCloud` | `/apollo/sensor/lidar128/compensator/PointCloud2` |
+| 8902 | `Image` | `/apollo/sensor/camera/front_6mm/image` |
+| 8903 | `Image` | `/apollo/sensor/camera/front_12mm/image` |
+| 8904 | `ContiRadar` | `/apollo/sensor/radar/front` |
+
+Radar payloads are serialized `apollo.drivers.ContiRadar` messages wrapped in
+the existing BridgeHeader framing, using the message name `ContiRadar`.
+The receiver preserves the payload, including frame and per-observation
+timestamps; coordinate conversion and observation construction belong to the
+simulator adapter. The receiver does not synthesize missing measurements.
+
+The `Carla` mode loads `radar_detection_carla.dag` in the Perception process
+alongside fusion and monitors the radar input as `Radar Front`. Until a
+simulator publishes radar frames, that channel will have no measurements.
+This enables the existing fused-obstacle display; it does not add a raw radar
+point-cloud view to Dreamview. Radar preprocessing delay and tracking settings
+remain in `modules/perception/radar_detection/data` and must match the
+simulator adapter's timestamp convention and update rate.
+
+### Registering a message type
+
 To send/receive new messages via udp, you can add two lines of code to the
 corresponding file. If you want to add the message apollo::test::PbTest, as
 shown below. ![](images/Picture5.png) Add a new line after the 80th line of this

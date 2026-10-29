@@ -1,0 +1,2 @@
+# The adapter sends the acquisition stamp, shared with GNSS/IMU.
+delay_time: 0.0

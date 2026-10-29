@@ -1,0 +1,10 @@
+# Allow missed observations at the adapter's 10 Hz output rate.
+tracking_time_window: 0.3
+matcher_param {
+  name: "HMMatcher"
+  config_path: "perception/radar_detection/data"
+  config_file: "hm_matcher.pb.txt"
+}
+chosen_filter: "AdaptiveKalmanFilter"
+tracked_times_threshold: 3
+use_filter: false

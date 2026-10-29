@@ -243,5 +243,6 @@ bool UDPBridgeReceiverComponent<T>::RemoveInvalidBuf(uint32_t msg_id) {
 BRIDGE_RECV_IMPL(canbus::Chassis);
 BRIDGE_RECV_IMPL(drivers::PointCloud);
 BRIDGE_RECV_IMPL(drivers::Image);
+BRIDGE_RECV_IMPL(drivers::ContiRadar);
 }  // namespace bridge
 }  // namespace apollo
